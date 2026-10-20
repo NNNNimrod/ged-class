@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Identify and Classify a Polynomial</title>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{--ink:#1a1a2e;--muted:#4a4a5a;--bg:#fbfaf7;
+--c1:#1d4ed8;--c1bg:#e6eeff;--c2:#b42318;--c2bg:#fde8e6;--c3:#0f7a3d;--c3bg:#e3f6ea;
+--c4:#7a3fb3;--c4bg:#f1e8fb;--c5:#a35a00;--c5bg:#fff1dc;--c6:#0e6e7a;--c6bg:#e0f4f6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:18px;line-height:1.6}
+main{max-width:980px;margin:0 auto;padding:16px}
+header.hero{background:#1a1a2e;color:#fff;border-radius:16px;padding:20px 22px;margin-bottom:18px}
+header.hero h1{margin:0 0 6px;font-size:1.7em;line-height:1.25}
+header.hero p{margin:4px 0;color:#e8e8f2}
+.tag{font-size:.78em;color:#d5d5e5;margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.goal{background:#fff;border:2px dashed #8a8aa0;border-radius:12px;padding:12px 16px;margin:0 0 18px}
+.step{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:0;background:#fff;border-radius:14px;margin:0 0 16px;border:2px solid var(--sc);overflow:hidden;break-inside:avoid}
+.step .body{padding:14px 18px}
+.step h2{margin:0 0 8px;font-size:1.2em;display:flex;align-items:center;gap:10px;line-height:1.3}
+.num{flex:none;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--sc);color:#fff;font-weight:700}
+.why{background:var(--sbg);border-left:2px solid var(--sc);padding:14px 16px;font-size:.93em}
+.why h3{margin:0 0 6px;font-size:.95em;text-transform:uppercase;letter-spacing:.05em;color:var(--sc)}
+.s1{--sc:var(--c1);--sbg:var(--c1bg)} .s2{--sc:var(--c3);--sbg:var(--c3bg)} .s3{--sc:var(--c2);--sbg:var(--c2bg)}
+.s4{--sc:var(--c4);--sbg:var(--c4bg)} .s5{--sc:var(--c5);--sbg:var(--c5bg)} .s6{--sc:var(--c6);--sbg:var(--c6bg)}
+.s7{--sc:#9b1c5a;--sbg:#fce7f1} .s8{--sc:#1a1a2e;--sbg:#ececf3}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0;font-size:1.15em}
+.t{display:inline-block;padding:4px 10px;border-radius:10px;border:2px solid;font-weight:600}
+.ta{color:var(--c1);background:var(--c1bg);border-color:var(--c1)}
+.tb{color:var(--c2);background:var(--c2bg);border-color:var(--c2)}
+.tc{color:var(--c3);background:var(--c3bg);border-color:var(--c3)}
+.label{font-size:.8em;color:var(--muted)}
+table.names{border-collapse:collapse;margin:8px 0;width:100%;max-width:460px}
+table.names th,table.names td{border:1px solid #c8c8d4;padding:6px 10px;text-align:left}
+table.names th{background:#f0f0f6}
+.yes{color:#0f6b35;font-weight:700} .no{color:#a3170d;font-weight:700}
+ul.check{padding-left:1.2em} ul.check li{margin:.3em 0}
+.bonus{background:#fffbea;border:2px dotted #a35a00;border-radius:14px;padding:14px 18px;margin:0 0 16px}
+.bonus h2{margin:0 0 6px;font-size:1.1em;color:#7a4300}
+.mistakes{background:#fff4f2;border:3px solid #b42318;border-radius:14px;padding:14px 18px;margin:20px 0}
+.mistakes h2{margin:0 0 8px;color:#8f1c12;font-size:1.2em}
+.mistakes li{margin:.4em 0}
+.turn{background:#fff;border:3px solid #0f7a3d;border-radius:14px;padding:14px 18px;margin:20px 0}
+.turn h2{margin:0 0 6px;color:#0b5e2f}
+.turn ol{padding-left:1.4em} .turn li{margin:14px 0}
+details{margin-top:6px}
+summary{display:inline-block;cursor:pointer;list-style:none;background:#0f7a3d;color:#fff;font-weight:700;padding:8px 16px;border-radius:999px;font-size:.92em}
+summary::-webkit-details-marker{display:none}
+summary:focus-visible{outline:3px solid #1d4ed8;outline-offset:3px}
+details[open] summary{background:#0b5e2f}
+.answer{margin-top:8px;background:#e3f6ea;border-radius:10px;padding:8px 12px}
+.fill{display:inline-block;white-space:nowrap;margin:4px 16px 0 0}
+.blankline{display:inline-block;min-width:6em;border-bottom:2px solid #555;margin:0 4px}
+footer{font-size:.8em;color:var(--muted);margin:24px 0 8px}
+@media (max-width:720px){
+ body{font-size:17px}
+ main{padding:10px}
+ .step{grid-template-columns:1fr}
+ .why{border-left:none;border-top:2px solid var(--sc)}
+ header.hero h1{font-size:1.4em}
+}
+@media print{
+ body{background:#fff;font-size:12pt}
+ header.hero{background:#fff;color:#000;border:2px solid #000}
+ header.hero p,.tag{color:#000}
+ .step,.turn,.mistakes,.bonus{break-inside:avoid}
+ summary{background:#fff;color:#000;border:1px solid #000}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+ <h1>How to Identify and Classify a Polynomial</h1>
+ <p>A step-by-step guide to naming a polynomial by counting its terms. There's nothing to solve here, only something to <strong>look at carefully and name</strong>.</p>
+ <p class="tag">General class material (not assigned to a student) · Skill tag: [MATH | A.1 | MP.4.b | DOK 1 | FIB | NA | CCR:E] (expressions and polynomials, foundation for A.1.d–A.1.g)</p>
+</header>
+
+<div class="goal"><strong>Our example for the whole page:</strong> \(4y^2 - 9\).
+By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a binomial (a two-term polynomial)."</em></div>
+
+<section class="step s1" aria-labelledby="h1">
+ <div class="body">
+  <h2 id="h1"><span class="num" aria-hidden="true">1</span>Know what a term is</h2>
+  <p>A <strong>term</strong> is one "chunk" of an expression. It can be:</p>
+  <ul class="check">
+   <li>a number by itself, like \(8\)</li>
+   <li>a letter (variable) by itself, like \(k\)</li>
+   <li>numbers and letters <strong>multiplied together</strong>, like \(4y^2\) or \(3a^2b\)</li>
+  </ul>
+  <p>In \(4y^2 - 9\), the chunks are \(4y^2\) and \(9\) (with its sign, as you'll see in Step 3).</p>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  Think of terms like items in a shopping list. Each item is one thing, even if it has a few words, like "large red apples". A term can have several parts stuck together by multiplication and still be just <strong>one</strong> item.
+ </aside>
+</section>
+
+<section class="step s2" aria-labelledby="h2">
+ <div class="body">
+  <h2 id="h2"><span class="num" aria-hidden="true">2</span>Check that it's a polynomial at all</h2>
+  <p>A <strong>polynomial</strong> is one or more terms added or subtracted, where every exponent on a variable is a <strong>whole number</strong> (0, 1, 2, 3, …).</p>
+  <table class="names">
+   <thead><tr><th scope="col">Expression</th><th scope="col">Polynomial?</th></tr></thead>
+   <tbody>
+    <tr><td>\(4y^2 - 9\)</td><td><span class="yes">Yes</span>, the exponents are whole numbers</td></tr>
+    <tr><td>\(\dfrac{y}{2} + 1\)</td><td><span class="yes">Yes</span>, dividing by a number is fine</td></tr>
+    <tr><td>\(\sqrt{16} + k\)</td><td><span class="yes">Yes</span>, \(\sqrt{16}\) is just the number 4</td></tr>
+    <tr><td>\(\dfrac{3}{x} + 1\)</td><td><span class="no">No</span>, there's a variable in the denominator</td></tr>
+    <tr><td>\(\sqrt{x} + 2\)</td><td><span class="no">No</span>, there's a variable under a root</td></tr>
+    <tr><td>\(x^{-2} + 4\)</td><td><span class="no">No</span>, it has a negative exponent</td></tr>
+   </tbody>
+  </table>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  \(\dfrac{3}{x}\) is the same as \(3x^{-1}\), and \(\sqrt{x}\) is the same as \(x^{1/2}\). Those exponents aren't whole numbers, so they break the rule.<br><br>
+  A <strong>plain number</strong> under a root, like \(\sqrt{16}\), is fine because it's just a constant, the number 4.
+ </aside>
+</section>
+
+<section class="step s3" aria-labelledby="h3">
+ <div class="body">
+  <h2 id="h3"><span class="num" aria-hidden="true">3</span>Split at every + and − sign</h2>
+  <p>The plus and minus signs <strong>between</strong> chunks are where you cut. Each sign stays glued to the term <strong>after</strong> it.</p>
+  <div class="expr" role="group" aria-label="4 y squared minus 9, split into two terms">
+   <span class="t ta">\(+4y^2\)</span><span class="t tb">\(-9\)</span>
+  </div>
+  <p class="label">Term 1 (blue): \(+4y^2\) &nbsp;·&nbsp; Term 2 (red): \(-9\)</p>
+  <p>The first term has no sign written, so it's positive.</p>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  Subtracting 9 is the same as <strong>adding negative 9</strong>:
+  \(4y^2 - 9 = 4y^2 + (-9)\).
+  So the minus sign is really part of the second term. Keeping signs attached matters later, when you combine or move terms.
+ </aside>
+</section>
+
+<section class="step s4" aria-labelledby="h4">
+ <div class="body">
+  <h2 id="h4"><span class="num" aria-hidden="true">4</span>Don't split inside a term</h2>
+  <p>Multiplying, exponents and dividing by a number all happen <strong>inside</strong> a term. They never cut it apart.</p>
+  <div class="expr" role="group" aria-label="3 a squared b is one term">
+   <span class="t tc">\(3a^2b\)</span> <span class="label">→ one term (3 times a times a times b)</span>
+  </div>
+  <div class="expr" role="group" aria-label="4 y squared is one term">
+   <span class="t ta">\(4y^2\)</span> <span class="label">→ one term (4 times y times y)</span>
+  </div>
+  <div class="expr" role="group" aria-label="y over 2 is one term">
+   <span class="t tc">\(\dfrac{y}{2}\)</span> <span class="label">→ one term (y divided by 2)</span>
+  </div>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  Only <strong>adding and subtracting</strong> separate terms. The little 2 in \(4y^2\) means \(4 \cdot y \cdot y\), which is multiplication, so it stays in one piece.
+ </aside>
+</section>
+
+<section class="step s5" aria-labelledby="h5">
+ <div class="body">
+  <h2 id="h5"><span class="num" aria-hidden="true">5</span>Count numbers by themselves too</h2>
+  <p>A number with no letter is called a <strong>constant</strong>, and it <strong>counts as a term</strong>.</p>
+  <div class="expr" role="group" aria-label="the constant negative 9 is a term">
+   <span class="t ta">\(4y^2\)</span><span class="t tb">\(-9\)</span> <span class="label">← the \(-9\) counts!</span>
+  </div>
+  <p>A constant alone, like \(8\), is a polynomial with one term.</p>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  It's called a constant because its value never changes, no matter what \(y\) is. It's still one chunk of the expression, so it gets counted like any other term.
+ </aside>
+</section>
+
+<section class="step s6" aria-labelledby="h6">
+ <div class="body">
+  <h2 id="h6"><span class="num" aria-hidden="true">6</span>Count the terms, then name it</h2>
+  <p>Count the colored chunks: \(4y^2 - 9\) has <strong>2</strong> terms.</p>
+  <table class="names">
+   <thead><tr><th scope="col">Number of terms</th><th scope="col">Name</th><th scope="col">Example</th></tr></thead>
+   <tbody>
+    <tr><td>1</td><td><strong>mono</strong>mial</td><td>\(5k\)</td></tr>
+    <tr><td>2</td><td><strong>bi</strong>nomial</td><td>\(4y^2 - 9\)</td></tr>
+    <tr><td>3</td><td><strong>tri</strong>nomial</td><td>\(-6m^3 + 2m - 7\)</td></tr>
+   </tbody>
+  </table>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  The start of the word tells you the number:<br>
+  <strong>mono</strong> = 1 (like a <em>mono</em>rail, one rail)<br>
+  <strong>bi</strong> = 2 (like a <em>bi</em>cycle, two wheels)<br>
+  <strong>tri</strong> = 3 (like a <em>tri</em>cycle, three wheels)<br>
+  With 4 or more terms, just call it a polynomial.
+ </aside>
+</section>
+
+<section class="step s7" aria-labelledby="h7">
+ <div class="body">
+  <h2 id="h7"><span class="num" aria-hidden="true">7</span>Watch out: count it <em>as written</em></h2>
+  <p>Look at \(5x^2 + 2x^2\). You could simplify it to \(7x^2\), but this question asks about the expression <strong>as it's written</strong>.</p>
+  <div class="expr" role="group" aria-label="5 x squared plus 2 x squared, two terms">
+   <span class="t ta">\(+5x^2\)</span><span class="t tc">\(+2x^2\)</span> <span class="label">→ 2 terms → <strong>binomial</strong></span>
+  </div>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  Your book counts the terms you can <strong>see</strong>. Don't combine like terms before you count unless the question tells you to. Simplifying first changes the expression, so you'd be naming a different one.
+ </aside>
+</section>
+
+<section class="step s8" aria-labelledby="h8">
+ <div class="body">
+  <h2 id="h8"><span class="num" aria-hidden="true">8</span>Put it all together</h2>
+  <ul class="check">
+   <li>Is it a polynomial? <span class="yes">Yes</span>, the only exponent is 2, a whole number.</li>
+   <li>Split at the signs: <span class="t ta">\(4y^2\)</span> <span class="t tb">\(-9\)</span></li>
+   <li>Count: 2 terms.</li>
+  </ul>
+  <p style="font-size:1.1em"><strong>\(4y^2 - 9\) has two terms, so it's a binomial (a two-term polynomial).</strong></p>
+ </div>
+ <aside class="why" aria-label="Why it works">
+  <h3>Why it works</h3>
+  Every time, follow the same order: <strong>check → split → count → name</strong>. Doing the steps the same way each time keeps you from skipping a sign or a constant.
+ </aside>
+</section>
+
+<section class="bonus" aria-labelledby="hb">
+ <h2 id="hb">Bonus (optional): the highest exponent</h2>
+ <p>You don't need this to name a polynomial by its terms. If you're curious, look at every exponent and find the biggest one. In \(4y^2 - 9\), the biggest exponent is <strong>2</strong>. In \(-6m^3 + 2m - 7\), it's <strong>3</strong>. Some books call this number the <em>degree</em>.</p>
+</section>
+
+<section class="mistakes" aria-labelledby="hm">
+ <h2 id="hm">⚠ Common mistakes</h2>
+ <ul>
+  <li><strong>Forgetting the constant.</strong> \(4y^2 - 9\) has 2 terms, not 1. The \(-9\) counts.</li>
+  <li><strong>Splitting at multiplication.</strong> \(3a^2b\) is <strong>one</strong> term, not three.</li>
+  <li><strong>Thinking an exponent means more terms.</strong> The 2 in \(4y^2\) doesn't make two terms.</li>
+  <li><strong>Simplifying before counting.</strong> \(5x^2 + 2x^2\) is a binomial as written.</li>
+  <li><strong>Dropping the sign.</strong> The second term of \(4y^2 - 9\) is \(-9\), not \(9\).</li>
+ </ul>
+</section>
+
+<section class="turn" aria-labelledby="ht">
+ <h2 id="ht">✏ Your turn</h2>
+ <p>For each one, write <strong>how many terms</strong> it has and its <strong>name</strong> (monomial, binomial or trinomial). Then tap the button to check.</p>
+ <ol>
+  <li>\(7p - 2\) <br><span class="fill">Terms: <span class="blankline"></span></span> <span class="fill">Name: <span class="blankline"></span></span>
+   <details><summary>Show answer</summary><div class="answer"><span class="t ta">\(7p\)</span> <span class="t tb">\(-2\)</span><br><strong>2 terms, so it's a binomial.</strong> The constant \(-2\) counts as a term.</div></details></li>
+  <li>\(-2n^3 + n^2 + 6\) <br><span class="fill">Terms: <span class="blankline"></span></span> <span class="fill">Name: <span class="blankline"></span></span>
+   <details><summary>Show answer</summary><div class="answer"><span class="t ta">\(-2n^3\)</span> <span class="t tb">\(+n^2\)</span> <span class="t tc">\(+6\)</span><br><strong>3 terms, so it's a trinomial.</strong></div></details></li>
+  <li>\(9mn^2\) <br><span class="fill">Terms: <span class="blankline"></span></span> <span class="fill">Name: <span class="blankline"></span></span>
+   <details><summary>Show answer</summary><div class="answer"><span class="t tc">\(9mn^2\)</span><br><strong>1 term, so it's a monomial.</strong> Everything is multiplied together, with no + or − to split it.</div></details></li>
+  <li>\(4w^2 + w^2\) <br><span class="fill">Terms: <span class="blankline"></span></span> <span class="fill">Name: <span class="blankline"></span></span>
+   <details><summary>Show answer</summary><div class="answer"><span class="t ta">\(4w^2\)</span> <span class="t tb">\(+w^2\)</span><br><strong>2 terms as written, so it's a binomial.</strong> It simplifies to \(5w^2\), but we count it as written.</div></details></li>
+ </ol>
+</section>
+
+<footer>Original material written for this class. Math is shown with MathJax, and every expression is real text you can read aloud or zoom.</footer>
+</main>
+</body>
+</html>
