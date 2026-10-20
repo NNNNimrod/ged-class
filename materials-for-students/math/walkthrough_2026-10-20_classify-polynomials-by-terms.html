@@ -39,6 +39,9 @@ table.names{border-collapse:collapse;margin:8px 0;width:100%;max-width:460px}
 table.names th,table.names td{border:1px solid #c8c8d4;padding:6px 10px;text-align:left}
 table.names th{background:#f0f0f6}
 ul.check{padding-left:1.2em} ul.check li{margin:.3em 0}
+.goodtoknow{background:#eef6ff;border:2px dotted #1d4ed8;border-radius:14px;padding:14px 18px;margin:0 0 16px}
+.goodtoknow h2{margin:0 0 6px;font-size:1.1em;color:#163fa8}
+.goodtoknow li{margin:.3em 0}
 .bonus{background:#fffbea;border:2px dotted #a35a00;border-radius:14px;padding:14px 18px;margin:0 0 16px}
 .bonus h2{margin:0 0 6px;font-size:1.1em;color:#7a4300}
 .mistakes{background:#fff4f2;border:3px solid #b42318;border-radius:14px;padding:14px 18px;margin:20px 0}
@@ -68,7 +71,7 @@ footer{font-size:.8em;color:var(--muted);margin:24px 0 8px}
  body{background:#fff;font-size:12pt}
  header.hero{background:#fff;color:#000;border:2px solid #000}
  header.hero p,.tag{color:#000}
- .step,.turn,.mistakes,.bonus{break-inside:avoid}
+ .step,.turn,.mistakes,.bonus,.goodtoknow{break-inside:avoid}
  summary{background:#fff;color:#000;border:1px solid #000}
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
@@ -92,13 +95,20 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
   <ul class="check">
    <li>a number by itself, like \(8\)</li>
    <li>a letter (variable) by itself, like \(k\)</li>
-   <li>numbers and letters <strong>multiplied together</strong>, like \(4y^2\) or \(3a^2b\)</li>
+   <li>numbers and letters <strong>multiplied together</strong>, like \(4y^2\) or \(3m^2n\)</li>
   </ul>
-  <p>In \(4y^2 - 9\), the chunks are \(4y^2\) and \(9\) (with its sign, as you'll see in Step 2).</p>
+  <p>A term can have up to three kinds of parts. Here's \(4y^2\):</p>
+  <ul class="check">
+   <li><strong>coefficient</strong>: the number in front, \(4\)</li>
+   <li><strong>variable</strong>: the letter, \(y\)</li>
+   <li><strong>exponent</strong>: the small raised number, \(2\)</li>
+  </ul>
+  <p>A number by itself, like \(9\), is called a <strong>constant</strong>. In \(4y^2 - 9\), the terms are \(4y^2\) and \(9\) (with its sign, as you'll see in Step 2).</p>
  </div>
  <aside class="why" aria-label="Why it works">
   <h3>Why it works</h3>
-  Think of terms like items in a shopping list. Each item is one thing, even if it has a few words, like "large red apples". A term can have several parts stuck together by multiplication and still be just <strong>one</strong> item.
+  Think of terms like items in a shopping list. Each item is one thing, even if it has a few words, like "large red apples". A term can have several parts stuck together by multiplication and still be just <strong>one</strong> item.<br><br>
+  <strong>No number in front?</strong> Then the coefficient is 1. So \(k\) means \(1k\), and \(-k\) means \(-1k\).
  </aside>
 </section>
 
@@ -116,7 +126,7 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
   <h3>Why it works</h3>
   Subtracting 9 is the same as <strong>adding negative 9</strong>:
   \(4y^2 - 9 = 4y^2 + (-9)\).
-  So the minus sign is really part of the second term. Keeping signs attached matters later, when you combine or move terms.
+  So the minus sign is really part of the second term. That's why we write the second term as \(-9\), not \(9\).
  </aside>
 </section>
 
@@ -125,7 +135,7 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
   <h2 id="h3"><span class="num" aria-hidden="true">3</span><span>Don't split inside a term</span></h2>
   <p>Multiplying, exponents and dividing by a number all happen <strong>inside</strong> a term. They never cut it apart.</p>
   <div class="expr" role="group" aria-label="3 a squared b is one term">
-   <span class="t tc">\(3a^2b\)</span> <span class="label">→ one term (3 times a times a times b)</span>
+   <span class="t tc">\(3m^2n\)</span> <span class="label">→ one term (3 times m times m times n)</span>
   </div>
   <div class="expr" role="group" aria-label="4 y squared is one term">
    <span class="t ta">\(4y^2\)</span> <span class="label">→ one term (4 times y times y)</span>
@@ -181,14 +191,14 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
 <section class="step s6" aria-labelledby="h6">
  <div class="body">
   <h2 id="h6"><span class="num" aria-hidden="true">6</span><span>Watch out: count it <em>as written</em></span></h2>
-  <p>Look at \(5x^2 + 2x^2\). You could simplify it to \(7x^2\), but this question asks about the expression <strong>as it's written</strong>.</p>
+  <p>Look at \(5x^2 + 2x^2\). You could add the two terms to get \(7x^2\), but this question asks about the expression <strong>as it's written</strong>.</p>
   <div class="expr" role="group" aria-label="5 x squared plus 2 x squared, two terms">
    <span class="t ta">\(+5x^2\)</span><span class="t tc">\(+2x^2\)</span> <span class="label">→ 2 terms → <strong>binomial</strong></span>
   </div>
  </div>
  <aside class="why" aria-label="Why it works">
   <h3>Why it works</h3>
-  Your book counts the terms you can <strong>see</strong>. Don't combine like terms before you count unless the question tells you to. Simplifying first changes the expression, so you'd be naming a different one.
+  Your book counts the terms you can <strong>see</strong>. Don't add terms together before you count unless the question tells you to. Adding them first gives you a different expression, so you'd be naming the wrong one.
  </aside>
 </section>
 
@@ -207,18 +217,30 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
  </aside>
 </section>
 
+<section class="goodtoknow" aria-labelledby="hg">
+ <h2 id="hg">Good to know (optional): what can't be in a polynomial term</h2>
+ <p>You don't need this to count terms, but polynomial terms can't have:</p>
+ <ul>
+  <li><strong>division by a variable</strong>, like \(\dfrac{5}{y}\)</li>
+  <li><strong>negative exponents</strong>, like \(2m^{-3}\) (exponents can only be 0, 1, 2, 3, and so on)</li>
+  <li><strong>fractional exponents</strong>, like \(5n^{\frac{1}{3}}\)</li>
+  <li><strong>a variable inside a radical</strong>, like \(\sqrt{5t}\)</li>
+ </ul>
+ <p>Dividing by a constant is fine, like \(\dfrac{3y}{5}\), and so is a number inside a radical, like \(\sqrt{7}\).</p>
+</section>
+
 <section class="bonus" aria-labelledby="hb">
  <h2 id="hb">Bonus (optional): the highest exponent</h2>
- <p>You don't need this to name a polynomial by its terms. If you're curious, look at every exponent and find the biggest one. In \(4y^2 - 9\), the biggest exponent is <strong>2</strong>. In \(-6m^3 + 2m - 7\), it's <strong>3</strong>. Some books call this number the <em>degree</em>.</p>
+ <p>You don't need this to name a polynomial by its terms. If you're curious, look at every exponent and find the biggest one. In \(4y^2 - 9\), the biggest exponent is <strong>2</strong>. In \(-6m^3 + 2m - 7\), it's <strong>3</strong>. This number is called the <strong>degree</strong>.</p>
 </section>
 
 <section class="mistakes" aria-labelledby="hm">
  <h2 id="hm">⚠ Common mistakes</h2>
  <ul>
   <li><strong>Forgetting the constant.</strong> \(4y^2 - 9\) has 2 terms, not 1. The \(-9\) counts.</li>
-  <li><strong>Splitting at multiplication.</strong> \(3a^2b\) is <strong>one</strong> term, not three.</li>
+  <li><strong>Splitting at multiplication.</strong> \(3m^2n\) is <strong>one</strong> term, not three.</li>
   <li><strong>Thinking an exponent means more terms.</strong> The 2 in \(4y^2\) doesn't make two terms.</li>
-  <li><strong>Simplifying before counting.</strong> \(5x^2 + 2x^2\) is a binomial as written.</li>
+  <li><strong>Adding terms before counting.</strong> \(5x^2 + 2x^2\) is a binomial as written.</li>
   <li><strong>Dropping the sign.</strong> The second term of \(4y^2 - 9\) is \(-9\), not \(9\).</li>
  </ul>
 </section>
@@ -234,7 +256,7 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
   <li>\(9mn^2\) <br><span class="fill">Terms: <span class="blankline"></span></span> <span class="fill">Name: <span class="blankline"></span></span>
    <details><summary>Show answer</summary><div class="answer"><span class="t tc">\(9mn^2\)</span><br><strong>1 term, so it's a monomial.</strong> Everything is multiplied together, with no + or − to split it.</div></details></li>
   <li>\(4w^2 + w^2\) <br><span class="fill">Terms: <span class="blankline"></span></span> <span class="fill">Name: <span class="blankline"></span></span>
-   <details><summary>Show answer</summary><div class="answer"><span class="t ta">\(4w^2\)</span> <span class="t tb">\(+w^2\)</span><br><strong>2 terms as written, so it's a binomial.</strong> It simplifies to \(5w^2\), but we count it as written.</div></details></li>
+   <details><summary>Show answer</summary><div class="answer"><span class="t ta">\(4w^2\)</span> <span class="t tb">\(+w^2\)</span><br><strong>2 terms as written, so it's a binomial.</strong> You could add them to get \(5w^2\), but we count it as written.</div></details></li>
  </ol>
 </section>
 
