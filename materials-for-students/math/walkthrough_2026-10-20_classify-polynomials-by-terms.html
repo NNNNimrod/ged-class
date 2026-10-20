@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="ged-students" content="">
 <title>How to Identify and Classify a Polynomial</title>
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'}};</script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
@@ -25,18 +26,18 @@ header.hero p{margin:4px 0;color:#e8e8f2}
 .why{background:var(--sbg);border-left:2px solid var(--sc);padding:14px 16px;font-size:.93em}
 .why h3{margin:0 0 6px;font-size:.95em;text-transform:uppercase;letter-spacing:.05em;color:var(--sc)}
 .s1{--sc:var(--c1);--sbg:var(--c1bg)} .s2{--sc:var(--c3);--sbg:var(--c3bg)} .s3{--sc:var(--c2);--sbg:var(--c2bg)}
-.s4{--sc:var(--c4);--sbg:var(--c4bg)} .s5{--sc:var(--c5);--sbg:var(--c5bg)} .s6{--sc:var(--c6);--sbg:var(--c6bg)}
-.s7{--sc:#9b1c5a;--sbg:#fce7f1} .s8{--sc:#1a1a2e;--sbg:#ececf3}
+.s4{--sc:var(--c4);--sbg:var(--c4bg)} .s5{--sc:var(--c5);--sbg:var(--c5bg)}
+.s6{--sc:#9b1c5a;--sbg:#fce7f1} .s7{--sc:#1a1a2e;--sbg:#ececf3}
 .expr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0;font-size:1.15em}
 .t{display:inline-block;padding:4px 10px;border-radius:10px;border:2px solid;font-weight:600}
 .ta{color:var(--c1);background:var(--c1bg);border-color:var(--c1)}
 .tb{color:var(--c2);background:var(--c2bg);border-color:var(--c2)}
 .tc{color:var(--c3);background:var(--c3bg);border-color:var(--c3)}
 .label{font-size:.8em;color:var(--muted)}
+.tablewrap{overflow-x:auto;max-width:100%}
 table.names{border-collapse:collapse;margin:8px 0;width:100%;max-width:460px}
 table.names th,table.names td{border:1px solid #c8c8d4;padding:6px 10px;text-align:left}
 table.names th{background:#f0f0f6}
-.yes{color:#0f6b35;font-weight:700} .no{color:#a3170d;font-weight:700}
 ul.check{padding-left:1.2em} ul.check li{margin:.3em 0}
 .bonus{background:#fffbea;border:2px dotted #a35a00;border-radius:14px;padding:14px 18px;margin:0 0 16px}
 .bonus h2{margin:0 0 6px;font-size:1.1em;color:#7a4300}
@@ -61,6 +62,7 @@ footer{font-size:.8em;color:var(--muted);margin:24px 0 8px}
  .step{grid-template-columns:1fr}
  .why{border-left:none;border-top:2px solid var(--sc)}
  header.hero h1{font-size:1.4em}
+ table.names th,table.names td{padding:5px 7px;font-size:.92em}
 }
 @media print{
  body{background:#fff;font-size:12pt}
@@ -85,14 +87,14 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
 
 <section class="step s1" aria-labelledby="h1">
  <div class="body">
-  <h2 id="h1"><span class="num" aria-hidden="true">1</span>Know what a term is</h2>
+  <h2 id="h1"><span class="num" aria-hidden="true">1</span><span>Know what a term is</span></h2>
   <p>A <strong>term</strong> is one "chunk" of an expression. It can be:</p>
   <ul class="check">
    <li>a number by itself, like \(8\)</li>
    <li>a letter (variable) by itself, like \(k\)</li>
    <li>numbers and letters <strong>multiplied together</strong>, like \(4y^2\) or \(3a^2b\)</li>
   </ul>
-  <p>In \(4y^2 - 9\), the chunks are \(4y^2\) and \(9\) (with its sign, as you'll see in Step 3).</p>
+  <p>In \(4y^2 - 9\), the chunks are \(4y^2\) and \(9\) (with its sign, as you'll see in Step 2).</p>
  </div>
  <aside class="why" aria-label="Why it works">
   <h3>Why it works</h3>
@@ -102,30 +104,7 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
 
 <section class="step s2" aria-labelledby="h2">
  <div class="body">
-  <h2 id="h2"><span class="num" aria-hidden="true">2</span>Check that it's a polynomial at all</h2>
-  <p>A <strong>polynomial</strong> is one or more terms added or subtracted, where every exponent on a variable is a <strong>whole number</strong> (0, 1, 2, 3, …).</p>
-  <table class="names">
-   <thead><tr><th scope="col">Expression</th><th scope="col">Polynomial?</th></tr></thead>
-   <tbody>
-    <tr><td>\(4y^2 - 9\)</td><td><span class="yes">Yes</span>, the exponents are whole numbers</td></tr>
-    <tr><td>\(\dfrac{y}{2} + 1\)</td><td><span class="yes">Yes</span>, dividing by a number is fine</td></tr>
-    <tr><td>\(\sqrt{16} + k\)</td><td><span class="yes">Yes</span>, \(\sqrt{16}\) is just the number 4</td></tr>
-    <tr><td>\(\dfrac{3}{x} + 1\)</td><td><span class="no">No</span>, there's a variable in the denominator</td></tr>
-    <tr><td>\(\sqrt{x} + 2\)</td><td><span class="no">No</span>, there's a variable under a root</td></tr>
-    <tr><td>\(x^{-2} + 4\)</td><td><span class="no">No</span>, it has a negative exponent</td></tr>
-   </tbody>
-  </table>
- </div>
- <aside class="why" aria-label="Why it works">
-  <h3>Why it works</h3>
-  \(\dfrac{3}{x}\) is the same as \(3x^{-1}\), and \(\sqrt{x}\) is the same as \(x^{1/2}\). Those exponents aren't whole numbers, so they break the rule.<br><br>
-  A <strong>plain number</strong> under a root, like \(\sqrt{16}\), is fine because it's just a constant, the number 4.
- </aside>
-</section>
-
-<section class="step s3" aria-labelledby="h3">
- <div class="body">
-  <h2 id="h3"><span class="num" aria-hidden="true">3</span>Split at every + and − sign</h2>
+  <h2 id="h2"><span class="num" aria-hidden="true">2</span><span>Split at every + and − sign</span></h2>
   <p>The plus and minus signs <strong>between</strong> chunks are where you cut. Each sign stays glued to the term <strong>after</strong> it.</p>
   <div class="expr" role="group" aria-label="4 y squared minus 9, split into two terms">
    <span class="t ta">\(+4y^2\)</span><span class="t tb">\(-9\)</span>
@@ -141,9 +120,9 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
  </aside>
 </section>
 
-<section class="step s4" aria-labelledby="h4">
+<section class="step s3" aria-labelledby="h3">
  <div class="body">
-  <h2 id="h4"><span class="num" aria-hidden="true">4</span>Don't split inside a term</h2>
+  <h2 id="h3"><span class="num" aria-hidden="true">3</span><span>Don't split inside a term</span></h2>
   <p>Multiplying, exponents and dividing by a number all happen <strong>inside</strong> a term. They never cut it apart.</p>
   <div class="expr" role="group" aria-label="3 a squared b is one term">
    <span class="t tc">\(3a^2b\)</span> <span class="label">→ one term (3 times a times a times b)</span>
@@ -152,18 +131,18 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
    <span class="t ta">\(4y^2\)</span> <span class="label">→ one term (4 times y times y)</span>
   </div>
   <div class="expr" role="group" aria-label="y over 2 is one term">
-   <span class="t tc">\(\dfrac{y}{2}\)</span> <span class="label">→ one term (y divided by 2)</span>
+   <span class="t tc">\(\dfrac{y}{2}\)</span> <span class="label">→ one term (y divided by 2, which is the same as \(\tfrac{1}{2}\) times y)</span>
   </div>
  </div>
  <aside class="why" aria-label="Why it works">
   <h3>Why it works</h3>
-  Only <strong>adding and subtracting</strong> separate terms. The little 2 in \(4y^2\) means \(4 \cdot y \cdot y\), which is multiplication, so it stays in one piece.
+  Only <strong>adding and subtracting</strong> separate terms. Multiplying and dividing by a number keep everything in one piece. The little 2 in \(4y^2\) means \(4 \cdot y \cdot y\), which is multiplication, so it stays in one piece.
  </aside>
 </section>
 
-<section class="step s5" aria-labelledby="h5">
+<section class="step s4" aria-labelledby="h4">
  <div class="body">
-  <h2 id="h5"><span class="num" aria-hidden="true">5</span>Count numbers by themselves too</h2>
+  <h2 id="h4"><span class="num" aria-hidden="true">4</span><span>Count numbers by themselves too</span></h2>
   <p>A number with no letter is called a <strong>constant</strong>, and it <strong>counts as a term</strong>.</p>
   <div class="expr" role="group" aria-label="the constant negative 9 is a term">
    <span class="t ta">\(4y^2\)</span><span class="t tb">\(-9\)</span> <span class="label">← the \(-9\) counts!</span>
@@ -176,18 +155,18 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
  </aside>
 </section>
 
-<section class="step s6" aria-labelledby="h6">
+<section class="step s5" aria-labelledby="h5">
  <div class="body">
-  <h2 id="h6"><span class="num" aria-hidden="true">6</span>Count the terms, then name it</h2>
+  <h2 id="h5"><span class="num" aria-hidden="true">5</span><span>Count the terms, then name it</span></h2>
   <p>Count the colored chunks: \(4y^2 - 9\) has <strong>2</strong> terms.</p>
-  <table class="names">
+  <div class="tablewrap"><table class="names">
    <thead><tr><th scope="col">Number of terms</th><th scope="col">Name</th><th scope="col">Example</th></tr></thead>
    <tbody>
     <tr><td>1</td><td><strong>mono</strong>mial</td><td>\(5k\)</td></tr>
     <tr><td>2</td><td><strong>bi</strong>nomial</td><td>\(4y^2 - 9\)</td></tr>
     <tr><td>3</td><td><strong>tri</strong>nomial</td><td>\(-6m^3 + 2m - 7\)</td></tr>
    </tbody>
-  </table>
+  </table></div>
  </div>
  <aside class="why" aria-label="Why it works">
   <h3>Why it works</h3>
@@ -199,9 +178,9 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
  </aside>
 </section>
 
-<section class="step s7" aria-labelledby="h7">
+<section class="step s6" aria-labelledby="h6">
  <div class="body">
-  <h2 id="h7"><span class="num" aria-hidden="true">7</span>Watch out: count it <em>as written</em></h2>
+  <h2 id="h6"><span class="num" aria-hidden="true">6</span><span>Watch out: count it <em>as written</em></span></h2>
   <p>Look at \(5x^2 + 2x^2\). You could simplify it to \(7x^2\), but this question asks about the expression <strong>as it's written</strong>.</p>
   <div class="expr" role="group" aria-label="5 x squared plus 2 x squared, two terms">
    <span class="t ta">\(+5x^2\)</span><span class="t tc">\(+2x^2\)</span> <span class="label">→ 2 terms → <strong>binomial</strong></span>
@@ -213,11 +192,10 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
  </aside>
 </section>
 
-<section class="step s8" aria-labelledby="h8">
+<section class="step s7" aria-labelledby="h7">
  <div class="body">
-  <h2 id="h8"><span class="num" aria-hidden="true">8</span>Put it all together</h2>
+  <h2 id="h7"><span class="num" aria-hidden="true">7</span><span>Put it all together</span></h2>
   <ul class="check">
-   <li>Is it a polynomial? <span class="yes">Yes</span>, the only exponent is 2, a whole number.</li>
    <li>Split at the signs: <span class="t ta">\(4y^2\)</span> <span class="t tb">\(-9\)</span></li>
    <li>Count: 2 terms.</li>
   </ul>
@@ -225,7 +203,7 @@ By the end you'll be able to say: <em>"\(4y^2 - 9\) has two terms, so it's a bin
  </div>
  <aside class="why" aria-label="Why it works">
   <h3>Why it works</h3>
-  Every time, follow the same order: <strong>check → split → count → name</strong>. Doing the steps the same way each time keeps you from skipping a sign or a constant.
+  Every time, follow the same order: <strong>split → count → name</strong>. Doing the steps the same way each time keeps you from skipping a sign or a constant.
  </aside>
 </section>
 
