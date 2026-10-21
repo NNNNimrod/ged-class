@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="ged-students" content="S001">
+<title>Probability Walkthrough: Problems 1 and 2 (by hand)</title>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{--ink:#1a1a2e;--muted:#4a4a5a;--bg:#fbfaf7;
+--c1:#1d4ed8;--c1bg:#e6eeff;--c2:#b42318;--c2bg:#fde8e6;--c3:#0f7a3d;--c3bg:#e3f6ea;
+--c4:#7a3fb3;--c4bg:#f1e8fb;--c5:#a35a00;--c5bg:#fff1dc;--c6:#0e6e7a;--c6bg:#e0f4f6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:18px;line-height:1.6}
+main{max-width:980px;margin:0 auto;padding:16px}
+header.hero{background:#1a1a2e;color:#fff;border-radius:16px;padding:20px 22px;margin-bottom:18px}
+header.hero h1{margin:0 0 6px;font-size:1.7em;line-height:1.25}
+header.hero p{margin:4px 0;color:#e8e8f2}
+.tag{font-size:.78em;color:#d5d5e5;margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.goal{background:#fff;border:2px dashed #8a8aa0;border-radius:12px;padding:12px 16px;margin:0 0 18px}
+.step{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:0;background:#fff;border-radius:14px;margin:0 0 16px;border:2px solid var(--sc);overflow:hidden;break-inside:avoid}
+.step .body{padding:14px 18px}
+.step h2{margin:0 0 8px;font-size:1.2em;display:flex;align-items:center;gap:10px;line-height:1.3}
+.num{flex:none;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--sc);color:#fff;font-weight:700}
+.why{background:var(--sbg);border-left:2px solid var(--sc);padding:14px 16px;font-size:.93em}
+.why h3{margin:0 0 6px;font-size:.95em;text-transform:uppercase;letter-spacing:.05em;color:var(--sc)}
+.s1{--sc:var(--c1);--sbg:var(--c1bg)} .s2{--sc:var(--c3);--sbg:var(--c3bg)} .s3{--sc:var(--c2);--sbg:var(--c2bg)}
+.s4{--sc:var(--c4);--sbg:var(--c4bg)} .s5{--sc:var(--c5);--sbg:var(--c5bg)}
+.s6{--sc:#9b1c5a;--sbg:#fce7f1} .s7{--sc:#1a1a2e;--sbg:#ececf3}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0;font-size:1.15em}
+.t{display:inline-block;padding:4px 10px;border-radius:10px;border:2px solid;font-weight:600}
+.ta{color:var(--c1);background:var(--c1bg);border-color:var(--c1)}
+.tb{color:var(--c2);background:var(--c2bg);border-color:var(--c2)}
+.tc{color:var(--c3);background:var(--c3bg);border-color:var(--c3)}
+.label{font-size:.8em;color:var(--muted)}
+.tablewrap{overflow-x:auto;max-width:100%}
+table.names{border-collapse:collapse;margin:8px 0;width:100%;max-width:460px}
+table.names th,table.names td{border:1px solid #c8c8d4;padding:6px 10px;text-align:left}
+table.names th{background:#f0f0f6}
+ul.check{padding-left:1.2em} ul.check li{margin:.3em 0}
+.goodtoknow{background:#eef6ff;border:2px dotted #1d4ed8;border-radius:14px;padding:14px 18px;margin:0 0 16px}
+.goodtoknow h2{margin:0 0 6px;font-size:1.1em;color:#163fa8}
+.goodtoknow li{margin:.3em 0}
+.bonus{background:#fffbea;border:2px dotted #a35a00;border-radius:14px;padding:14px 18px;margin:0 0 16px}
+.bonus h2{margin:0 0 6px;font-size:1.1em;color:#7a4300}
+.mistakes{background:#fff4f2;border:3px solid #b42318;border-radius:14px;padding:14px 18px;margin:20px 0}
+.mistakes h2{margin:0 0 8px;color:#8f1c12;font-size:1.2em}
+.mistakes li{margin:.4em 0}
+.turn{background:#fff;border:3px solid #0f7a3d;border-radius:14px;padding:14px 18px;margin:20px 0}
+.turn h2{margin:0 0 6px;color:#0b5e2f}
+.turn ol{padding-left:1.4em} .turn li{margin:14px 0}
+details{margin-top:6px}
+summary{display:inline-block;cursor:pointer;list-style:none;background:#0f7a3d;color:#fff;font-weight:700;padding:8px 16px;border-radius:999px;font-size:.92em}
+summary::-webkit-details-marker{display:none}
+summary:focus-visible{outline:3px solid #1d4ed8;outline-offset:3px}
+details[open] summary{background:#0b5e2f}
+.answer{margin-top:8px;background:#e3f6ea;border-radius:10px;padding:8px 12px}
+.fill{display:inline-block;white-space:nowrap;margin:4px 16px 0 0}
+.blankline{display:inline-block;min-width:6em;border-bottom:2px solid #555;margin:0 4px}
+footer{font-size:.8em;color:var(--muted);margin:24px 0 8px}
+@media (max-width:720px){
+ body{font-size:17px}
+ main{padding:10px}
+ .step{grid-template-columns:1fr}
+ .why{border-left:none;border-top:2px solid var(--sc)}
+ header.hero h1{font-size:1.4em}
+ table.names th,table.names td{padding:5px 7px;font-size:.92em}
+}
+@media print{
+ body{background:#fff;font-size:12pt}
+ header.hero{background:#fff;color:#000;border:2px solid #000}
+ header.hero p,.tag{color:#000}
+ .step,.turn,.mistakes,.bonus,.goodtoknow{break-inside:avoid}
+ summary{background:#fff;color:#000;border:1px solid #000}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.nocalc{display:inline-block;background:#b42318;color:#fff;font-weight:700;border-radius:999px;padding:4px 14px;margin-top:8px;font-size:.9em}
+.method{background:#fff;border:2px solid #1a1a2e;border-radius:14px;padding:12px 16px;margin:0 0 18px}
+.method h2{margin:0 0 8px;font-size:1.15em}
+.method ol{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0;counter-reset:m}
+.method li{counter-increment:m;background:#ececf3;border-radius:999px;padding:4px 12px;font-size:.92em}
+.method li::before{content:counter(m) ". ";font-weight:700}
+.problem{background:#1a1a2e;color:#fff;border-radius:14px;padding:14px 18px;margin:26px 0 14px}
+.problem h2{margin:0 0 6px;font-size:1.35em}
+.problem p{margin:4px 0;color:#f0f0f6}
+table.freq{border-collapse:collapse;margin:8px 0}
+table.freq th,table.freq td{border:1px solid #c8c8d4;padding:6px 12px;text-align:left;vertical-align:middle}
+table.freq th{background:#f0f0f6}
+.tally{display:block}
+.big{font-size:1.15em}
+.answerbox{background:#e3f6ea;border:3px solid #0f7a3d;border-radius:12px;padding:10px 14px;font-size:1.1em;margin:8px 0}
+.forms{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+.forms .t{font-size:1.05em}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+ <h1>Probability Walkthrough: Problems 1 and 2</h1>
+ <p>Two probability questions from your practice set, Lesson 7 (Practice 7.1, numbers 1 and 2), worked out step by step. For each one you'll write the answer three ways: as a <strong>fraction</strong>, a <strong>decimal</strong>, and a <strong>percent</strong>.</p>
+ <span class="nocalc">✋ Do these by hand. No calculator.</span>
+ <p class="tag">Problem 1: [MATH | Q.8.b | — | 1 | FIB | NOCALC | CCR:D]<br>Problem 2: [MATH | Q.8.b | MP.2.c | 2 | FIB | NOCALC | CCR:D]</p>
+</header>
+
+<div class="goal"><strong>The big idea for today:</strong> probability is a ratio, the part you want compared with the total.
+\[\text{probability}=\frac{\text{what you want}}{\text{all the chances}}\]
+It is always a number from 0 (it can't happen) to 1 (it will surely happen).</div>
+
+<section class="method" aria-labelledby="hmeth">
+ <h2 id="hmeth">The same 7 moves for every problem</h2>
+ <ol>
+  <li>Read it all once</li>
+  <li>What is it asking?</li>
+  <li>Givens and keywords</li>
+  <li>Plan</li>
+  <li>Pick the operations</li>
+  <li>Compute</li>
+  <li>Check the answer form</li>
+ </ol>
+</section>
+
+<!-- ================= PROBLEM 1 ================= -->
+<div class="problem">
+ <h2>Problem 1: the vowel tiles</h2>
+ <p>In a word game there are <strong>50</strong> wooden letter tiles in all. <strong>20</strong> of them have a vowel on them. You pull out one tile without looking. What's the chance it shows a vowel?</p>
+</div>
+
+<section class="step s1" aria-labelledby="p1s1">
+ <div class="body">
+  <h2 id="p1s1"><span class="num" aria-hidden="true">1</span><span>Read it. What is it asking?</span></h2>
+  <p>It wants the <strong>probability of getting a vowel tile</strong>, written as a fraction, a decimal and a percent.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Saying the goal out loud before touching numbers keeps you from solving the wrong question. Here the goal is "chance of a vowel", not "how many vowels".</aside>
+</section>
+
+<section class="step s2" aria-labelledby="p1s2">
+ <div class="body">
+  <h2 id="p1s2"><span class="num" aria-hidden="true">2</span><span>Givens and keywords</span></h2>
+  <div class="expr"><span class="t tc">want: 20 vowel tiles</span><span class="t ta">total: 50 tiles</span></div>
+  <p>Keyword: <strong>probability</strong>. That tells you to build a fraction of <em>favorable</em> over <em>possible</em>.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>A <strong>favorable outcome</strong> is the result you're hoping for (a vowel). The <strong>possible outcomes</strong> are every tile you could pull (all 50). Probability isn't on the formula sheet, so you need to remember this one.</aside>
+</section>
+
+<section class="step s3" aria-labelledby="p1s3">
+ <div class="body">
+  <h2 id="p1s3"><span class="num" aria-hidden="true">3</span><span>Plan and set up the fraction</span></h2>
+  <p class="big">\[\frac{\text{favorable}}{\text{possible}}=\frac{20}{50}\]</p>
+  <p>Plan: write the fraction → simplify it → turn it into a decimal → turn it into a percent.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Every tile has the same chance of being picked, so the chance of a vowel is just "how many vowels" out of "how many tiles". The part you want goes on <strong>top</strong> and the total goes on the <strong>bottom</strong>.</aside>
+</section>
+
+<section class="step s4" aria-labelledby="p1s4">
+ <div class="body">
+  <h2 id="p1s4"><span class="num" aria-hidden="true">4</span><span>Simplify the fraction</span></h2>
+  <p>Both 20 and 50 end in 0, so both can be divided by 10:</p>
+  <p class="big">\[\frac{20}{50}=\frac{20\div 10}{50\div 10}=\frac{2}{5}\]</p>
+  <p>Can 2 and 5 share any other factor? No, so \(\frac{2}{5}\) is in lowest terms.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Dividing the top and bottom by the <strong>same</strong> number is like cutting a pizza into bigger slices: you have fewer slices, but the same amount of pizza. The value doesn't change.</aside>
+</section>
+
+<section class="step s5" aria-labelledby="p1s5">
+ <div class="body">
+  <h2 id="p1s5"><span class="num" aria-hidden="true">5</span><span>Fraction → decimal</span></h2>
+  <p><strong>Way A, make the bottom 10:</strong> 5 × 2 = 10, so multiply the top and bottom by 2.</p>
+  <p class="big">\[\frac{2}{5}=\frac{2\times 2}{5\times 2}=\frac{4}{10}=0.4\]</p>
+  <p><strong>Way B, long division:</strong> \(2\div 5\). 5 doesn't go into 2, so write "0." and bring down a zero: 5 goes into 20 four times. Answer: <strong>0.4</strong>.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>A fraction bar means "divide". Tenths are the first place after the decimal point, so 4 tenths is written 0.4. Making the bottom 10 or 100 is the fastest hand trick whenever it works.</aside>
+</section>
+
+<section class="step s6" aria-labelledby="p1s6">
+ <div class="body">
+  <h2 id="p1s6"><span class="num" aria-hidden="true">6</span><span>Decimal → percent</span></h2>
+  <p class="big">\[0.4=\frac{4}{10}=\frac{40}{100}=40\%\]</p>
+  <p>Shortcut: move the decimal point 2 places to the right. 0.4 → 0.40 → <strong>40%</strong>.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3><strong>Percent means "per hundred"</strong>: 40% is 40 out of every 100. So once the bottom is 100, the top number is the percent.</aside>
+</section>
+
+<section class="step s7" aria-labelledby="p1s7">
+ <div class="body">
+  <h2 id="p1s7"><span class="num" aria-hidden="true">7</span><span>Check: does it make sense? Is it in all three forms?</span></h2>
+  <p>Fewer than half of the tiles are vowels (20 is less than 25), so the answer should be a little under 50%. 40% fits.</p>
+  <div class="answerbox">Problem 1 answer:
+   <div class="forms"><span class="t tc">\(\frac{2}{5}\)</span><span class="t ta">0.4</span><span class="t tb">40%</span></div>
+  </div>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>A quick "is it about right?" check catches upside-down fractions. If you'd gotten \(\frac{50}{20}\), that's more than 1, and a probability can never be more than 1.</aside>
+</section>
+
+<!-- ================= PROBLEM 2 ================= -->
+<div class="problem">
+ <h2>Problem 2: the color spinner</h2>
+ <p>A spinner is split into <strong>5 equal parts</strong>, and each part is red, white or blue. Someone spins it <strong>40 times</strong> and keeps track with tally marks. What is the <strong>experimental probability</strong> that a spin does <strong>NOT</strong> land on blue?</p>
+ <p>Here is the record of the 40 spins (redrawn):</p>
+</div>
+
+<div class="tablewrap" style="background:#fff;border-radius:12px;padding:8px 12px;margin:0 0 16px;border:2px solid #c8c8d4">
+<table class="freq" aria-label="Spin results">
+ <thead><tr><th scope="col">Color</th><th scope="col">Tally marks</th><th scope="col">Count</th></tr></thead>
+ <tbody>
+  <tr><td>red</td><td><svg class="tally" width="50" height="30" viewBox="0 0 50 30" role="img" aria-label="tally marks showing 5"><g stroke="#b42318" stroke-width="2.6" stroke-linecap="round"><line x1="4" y1="4" x2="4" y2="26"/><line x1="11" y1="4" x2="11" y2="26"/><line x1="18" y1="4" x2="18" y2="26"/><line x1="25" y1="4" x2="25" y2="26"/><line x1="0" y1="22" x2="29" y2="8"/></g></svg></td><td>?</td></tr>
+  <tr><td>white</td><td><svg class="tally" width="64" height="30" viewBox="0 0 64 30" role="img" aria-label="tally marks showing 7"><g stroke="#4a4a5a" stroke-width="2.6" stroke-linecap="round"><line x1="4" y1="4" x2="4" y2="26"/><line x1="11" y1="4" x2="11" y2="26"/><line x1="18" y1="4" x2="18" y2="26"/><line x1="25" y1="4" x2="25" y2="26"/><line x1="0" y1="22" x2="29" y2="8"/><line x1="44" y1="4" x2="44" y2="26"/><line x1="51" y1="4" x2="51" y2="26"/></g></svg></td><td>?</td></tr>
+  <tr><td>blue</td><td><svg class="tally" width="231" height="30" viewBox="0 0 231 30" role="img" aria-label="tally marks showing 28"><g stroke="#1d4ed8" stroke-width="2.6" stroke-linecap="round"><line x1="4" y1="4" x2="4" y2="26"/><line x1="11" y1="4" x2="11" y2="26"/><line x1="18" y1="4" x2="18" y2="26"/><line x1="25" y1="4" x2="25" y2="26"/><line x1="0" y1="22" x2="29" y2="8"/><line x1="44" y1="4" x2="44" y2="26"/><line x1="51" y1="4" x2="51" y2="26"/><line x1="58" y1="4" x2="58" y2="26"/><line x1="65" y1="4" x2="65" y2="26"/><line x1="40" y1="22" x2="69" y2="8"/><line x1="84" y1="4" x2="84" y2="26"/><line x1="91" y1="4" x2="91" y2="26"/><line x1="98" y1="4" x2="98" y2="26"/><line x1="105" y1="4" x2="105" y2="26"/><line x1="80" y1="22" x2="109" y2="8"/><line x1="124" y1="4" x2="124" y2="26"/><line x1="131" y1="4" x2="131" y2="26"/><line x1="138" y1="4" x2="138" y2="26"/><line x1="145" y1="4" x2="145" y2="26"/><line x1="120" y1="22" x2="149" y2="8"/><line x1="164" y1="4" x2="164" y2="26"/><line x1="171" y1="4" x2="171" y2="26"/><line x1="178" y1="4" x2="178" y2="26"/><line x1="185" y1="4" x2="185" y2="26"/><line x1="160" y1="22" x2="189" y2="8"/><line x1="204" y1="4" x2="204" y2="26"/><line x1="211" y1="4" x2="211" y2="26"/><line x1="218" y1="4" x2="218" y2="26"/></g></svg></td><td>?</td></tr>
+ </tbody>
+</table>
+</div>
+
+<section class="step s1" aria-labelledby="p2s1">
+ <div class="body">
+  <h2 id="p2s1"><span class="num" aria-hidden="true">1</span><span>Read it. What is it asking?</span></h2>
+  <p>The chance of <strong>not blue</strong>, meaning red <em>or</em> white, based on what really happened in the 40 spins. Give it as a fraction, decimal and percent.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Little words like <strong>NOT</strong> flip the whole question. Circle them when you read. Lots of people find the chance of blue and stop.</aside>
+</section>
+
+<section class="step s2" aria-labelledby="p2s2">
+ <div class="body">
+  <h2 id="p2s2"><span class="num" aria-hidden="true">2</span><span>Givens: count the tally marks</span></h2>
+  <p>Each bundle (4 lines with a slash across) is <strong>5</strong>. Count by fives, then add the loose lines.</p>
+  <ul class="check">
+   <li>red: 1 bundle = <strong>5</strong></li>
+   <li>white: 1 bundle + 2 = 5 + 2 = <strong>7</strong></li>
+   <li>blue: 5 bundles + 3 = 5, 10, 15, 20, 25 … + 3 = <strong>28</strong></li>
+  </ul>
+  <p>Check the total: 5 + 7 + 28 = <strong>40</strong> ✔ (it matches the 40 spins).</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Tally marks are grouped in fives so you can skip-count instead of counting every line. Checking that the counts add up to the number of spins proves you read the table right.</aside>
+</section>
+
+<section class="step s3" aria-labelledby="p2s3">
+ <div class="body">
+  <h2 id="p2s3"><span class="num" aria-hidden="true">3</span><span>Keyword: <em>experimental</em>, and spot the distractor</span></h2>
+  <p><strong>Experimental probability</strong> uses what actually happened:</p>
+  <p class="big">\[\frac{\text{times it happened}}{\text{number of tries (trials)}}\]</p>
+  <p>The <strong>"5 equal parts"</strong> is a <strong>distractor</strong>. We don't use it at all, because we aren't predicting. We're using the real results.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>There are two kinds of probability. <strong>Theoretical</strong> means what <em>should</em> happen, worked out from the spinner itself. <strong>Experimental</strong> means what <em>did</em> happen, worked out from the record. The question says "experimental", so the 40 spins are the bottom of the fraction. (We also aren't told how many parts are blue, so the 5 parts couldn't help anyway.)</aside>
+</section>
+
+<section class="step s4" aria-labelledby="p2s4">
+ <div class="body">
+  <h2 id="p2s4"><span class="num" aria-hidden="true">4</span><span>Plan: how many spins were NOT blue?</span></h2>
+  <p><strong>Way A, take blue away:</strong> \(40-28=12\)</p>
+  <p><strong>Way B, add the others:</strong> red + white = \(5+7=12\)</p>
+  <p>Both ways give <strong>12</strong> spins that were not blue. So:</p>
+  <p class="big">\[\frac{\text{not blue}}{\text{all spins}}=\frac{12}{40}\]</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Every spin is either blue or not blue. There's no third choice. So the non-blue spins are just everything left over after you take away the blue ones. Getting the same number two different ways is a built-in check.</aside>
+</section>
+
+<section class="step s5" aria-labelledby="p2s5">
+ <div class="body">
+  <h2 id="p2s5"><span class="num" aria-hidden="true">5</span><span>Simplify the fraction</span></h2>
+  <p>12 and 40 can both be divided by 4:</p>
+  <p class="big">\[\frac{12}{40}=\frac{12\div 4}{40\div 4}=\frac{3}{10}\]</p>
+  <p>3 and 10 share no other factor, so \(\frac{3}{10}\) is in lowest terms.</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Choose the <strong>biggest</strong> number that goes into both, and you're done in one step. If you divide by 2 first you get \(\frac{6}{20}\). That's fine, just divide by 2 again to get \(\frac{3}{10}\).</aside>
+</section>
+
+<section class="step s6" aria-labelledby="p2s6">
+ <div class="body">
+  <h2 id="p2s6"><span class="num" aria-hidden="true">6</span><span>Decimal and percent</span></h2>
+  <p>The bottom is already 10, so you can read the decimal right off: 3 tenths.</p>
+  <p class="big">\[\frac{3}{10}=0.3\qquad 0.3=\frac{30}{100}=30\%\]</p>
+  <p>(Long-division check: \(3\div 10\). 10 goes into 30 three times, so the answer is 0.3.)</p>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>Tenths are the first place after the decimal point. Then multiply the top and bottom by 10 to get <strong>per hundred</strong>, which is exactly what percent means.</aside>
+</section>
+
+<section class="step s7" aria-labelledby="p2s7">
+ <div class="body">
+  <h2 id="p2s7"><span class="num" aria-hidden="true">7</span><span>Check with the "blue" side</span></h2>
+  <p>Chance of blue: \(\frac{28}{40}=\frac{7}{10}=70\%\). Blue and not-blue together cover every spin, so they must add up to 100%:</p>
+  <p class="big">\[100\%-70\%=30\%\qquad\text{or}\qquad 1-\frac{7}{10}=\frac{3}{10}\]</p><p>Both match our answer ✔</p>
+  <div class="answerbox">Problem 2 answer:
+   <div class="forms"><span class="t tc">\(\frac{3}{10}\)</span><span class="t ta">0.3</span><span class="t tb">30%</span></div>
+  </div>
+ </div>
+ <aside class="why" aria-label="Why it works"><h3>Why it works</h3>"Blue" and "not blue" split all 40 spins into two groups with nothing missing and nothing counted twice. So their chances add up to the whole: 1, which is 100%. Blue came up a lot, so a small "not blue" answer makes sense.</aside>
+</section>
+
+<section class="mistakes" aria-labelledby="hm">
+ <h2 id="hm">⚠ Common mistakes</h2>
+ <ul>
+  <li><strong>Upside-down fraction.</strong> The total goes on the bottom: \(\frac{20}{50}\), not \(\frac{50}{20}\).</li>
+  <li><strong>Missing the word NOT.</strong> \(\frac{28}{40}=70\%\) is the chance of blue, not the answer.</li>
+  <li><strong>Using the 5 spinner parts.</strong> "Experimental" means you use the 40 real spins.</li>
+  <li><strong>Miscounting tallies.</strong> Each crossed bundle is 5, not 4. Check that the counts add up to 40.</li>
+  <li><strong>Only one form.</strong> These questions want all three: fraction, decimal <em>and</em> percent.</li>
+ </ul>
+</section>
+
+<section class="turn" aria-labelledby="ht">
+ <h2 id="ht">✏ Your turn (by hand)</h2>
+ <p>Use the same 7 moves. Write each answer as a fraction, a decimal and a percent. Then tap the button to check.</p>
+ <ol>
+  <li>A jar holds 25 buttons, and 5 of them are yellow. You grab one without looking. What's the probability it's yellow?
+   <details><summary>Show answer</summary><div class="answer">\(\frac{5}{25}=\frac{1}{5}=\frac{2}{10}=0.2=20\%\)</div></details></li>
+  <li>Dana shot 20 free throws and made 15 of them. Based on her shots, what is the experimental probability that she <strong>misses</strong> a free throw?
+   <details><summary>Show answer</summary><div class="answer">Misses: \(20-15=5\). \(\frac{5}{20}=\frac{1}{4}=\frac{25}{100}=0.25=25\%\)</div></details></li>
+ </ol>
+</section>
+
+<footer>Original material written for this class. The tally table is redrawn, and the problems are restated in our own words. Math is shown with MathJax, so every number is real text you can zoom or read aloud.</footer>
+</main>
+</body>
+</html>
