@@ -225,3 +225,24 @@ button.iw-work-line{
 button.iw-work-line:hover{border-color:var(--c1);background:var(--c1bg)}
 button.iw-work-line:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 button.iw-work-line.iw-work-current:hover{border-color:var(--c3);background:var(--c3bg)}
+
+
+/* —— Fraction work layouts (standing rule §14–15) ——
+   Add/sub: top→bottom (.iw-frac-work-col). Mul/div / equality chains: left→right (.iw-frac-work-row).
+   Individual fractions always stacked via MathJax \frac / \dfrac. */
+.iw-frac-work-col{
+  display:flex;flex-direction:column;align-items:center;gap:6px;margin:12px 0;
+}
+.iw-frac-work-row{
+  display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:8px 12px;margin:12px 0;
+}
+.iw-frac-op{font-weight:800;color:var(--muted);font-size:1.15em;line-height:1;padding:0 2px}
+.iw-frac-work-col .iw-frac-op,
+.iw-frac-work-row .iw-frac-op{flex:none}
+.iw-frac-eq{font-weight:800;color:var(--ink);font-size:1.2em}
+
+/* Collapse try-first pane after walkthrough opens (§16) */
+#iw-app.iw-open #iw-choice-mount,
+#iw-app.iw-open #iw-gate-feedback{display:none!important}
+#iw-app.iw-open #iw-work{max-height:min(70vh,640px)}

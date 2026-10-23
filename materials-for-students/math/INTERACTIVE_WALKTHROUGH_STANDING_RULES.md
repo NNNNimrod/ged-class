@@ -123,10 +123,31 @@ Chip states after Check:
 - Full per-chip correct vs incorrect reveal happens **only** after Check/submit.
 - Implemented in `interactive-player.js` (`_checkAnswers` + `_applyRevealMarks`).
 
+
+## 14. Stacked fractions (on-screen)
+
+On-screen fractions in **body**, **why**, **Work so far**, **problem**, **build notes**, and **choice chips** must render as **stacked** fractions (numerator over denominator) via MathJax `\(\frac{a}{b}\)` / `\(\dfrac{a}{b}\)` (or display math) — matching the answer-choice chips.
+
+- **Do not** show inline slash text like `2/5` or spelled-out "two fifths" as the visible fraction in HTML.
+- **Voice/TTS** may still say "two fifths" / "twenty over fifty"; `speakMath()` already normalizes spoken fractions. Keep `voice:` strings natural for speech.
+
+## 15. Fraction operation layout
+
+When showing work with fraction **operations**:
+
+- **Addition or subtraction** of fractions: work flows **top to bottom** (use `.iw-frac-work-col`).
+- **Multiplication or division** of fractions (and equality / rewrite chains of stacked fractions): fractions stay stacked individually, but the work flows **left to right** (use `.iw-frac-work-row`).
+
+Helpers live in `interactive-player.css`.
+
+## 16. Collapse try-first when walkthrough opens
+
+When the student opens the walkthrough (`Show walkthrough` or **Continue to walkthrough** after a correct Check; `gateState → open`), **hide/collapse the try-first pane** (answer-choice selection, Check, and gate feedback) so **Work so far** gets more vertical room. Before the walkthrough starts, try-first stays visible. Implemented in `_applyGate` + `#iw-app.iw-open #iw-choice-mount` CSS.
+
 ## Checklist for every new interactive page
 
 1. Sticky problem + `choices` + choose-first gate (Check for single **and** multi)
-2. Show walkthrough pill; work + main hidden until open
+2. Show walkthrough pill; work + main hidden until open; try-first collapses when open (§16)
 3. Student-only `why`; `buildNotes` below nav
 4. Bold + color-matched terms across problem / body / work / diagrams
 5. Distribute step uses `distributeArrows` when teaching distribute
@@ -136,4 +157,5 @@ Chip states after Check:
 9. Work so far rows are clickable (jump to that step)
 10. After Check: per-chip correct/wrong/missed marks (§13); no reveal before Check
 11. Choice button labels: MC shows A–D only; multi-form chips show math values only (never `f1`/`d1`/`p1`)
-12. `audit.sh` → commit → push → confirm Pages 200
+12. On-screen fractions stacked via MathJax (§14); add/sub col, mul/div row (§15)
+13. `audit.sh` → commit → push → confirm Pages 200

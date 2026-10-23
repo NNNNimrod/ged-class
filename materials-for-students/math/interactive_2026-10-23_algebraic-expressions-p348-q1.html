@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lesson 6 Algebraic Expressions, page 348, problems 1, walkthrough</title>
-<link rel="stylesheet" href="interactive-player.css?v=check13">
+<link rel="stylesheet" href="interactive-player.css?v=frac16">
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-<script defer src="interactive-player.js?v=check13"></script>
+<script defer src="interactive-player.js?v=frac16"></script>
 </head>
 <body>
 <div id="iw-app"></div>
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
      term-c green  = 3 (inside)
      term-d teal   = outside 6
      term-e amber  = product −4x
-     term-f red    = product −12 / final constant −6
+     term-f red    = product −12, final constant −6
   */
   var T = {
     a: function (h) { return '<strong class="iw-term iw-term-a">' + h + '</strong>'; },
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
     choices: choices,
     choiceMode: 'single',
     buildNotes:
-      '<p>Color roles: <strong class="iw-term iw-term-a">−4 factor</strong>, <strong class="iw-term iw-term-b">x</strong>, <strong class="iw-term iw-term-c">3</strong>, <strong class="iw-term iw-term-d">6 outside</strong>, <strong class="iw-term iw-term-e">−4x</strong>, <strong class="iw-term iw-term-f">−12 / −6</strong>. Bold + color everywhere.</p>' +
+      '<p>Color roles: <strong class="iw-term iw-term-a">−4 factor</strong>, <strong class="iw-term iw-term-b">x</strong>, <strong class="iw-term iw-term-c">3</strong>, <strong class="iw-term iw-term-d">6 outside</strong>, <strong class="iw-term iw-term-e">−4x</strong>, <strong class="iw-term iw-term-f">−12</strong> and final <strong class="iw-term iw-term-f">−6</strong>. Bold + color everywhere. No fraction ops on this page (algebra). Try-first collapses when walkthrough opens.</p>' +
       '<p>Distribute step uses branching arrows (distributeArrows helper).</p>',
     autoplay: true,
     muted: false

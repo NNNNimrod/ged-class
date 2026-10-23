@@ -494,6 +494,10 @@
     this.btnNext.hidden = !open;
     this.speaking.hidden = !open;
     this.btnShowWalk.hidden = open;
+    // Collapse try-first choices + gate feedback once walkthrough is open (more room for Work so far)
+    if (this.choiceMount) this.choiceMount.hidden = open || !this.choices.length;
+    if (this.gateFeedback) this.gateFeedback.hidden = open;
+    if (this.btnCheck) this.btnCheck.hidden = open;
     this.progress.textContent = open
       ? this.progress.textContent
       : 'Try the problem first';
