@@ -14,6 +14,8 @@
  *
  * Slide fields:
  *   kind, kicker, title, num, accent, whyBg, body, why, voice, audio, work
+ *
+ * Voice: every utterance passes through speakMath() so 4x → "four x", 0.4 → "zero point four", etc.
  */
 (function (global) {
   'use strict';
@@ -41,6 +43,85 @@
       return MathJax.typesetPromise([root]).catch(function () {});
     }
     return Promise.resolve();
+  }
+
+  /**
+   * Normalize math-ish text for Web Speech so "4x" is "four x", not "x times".
+   * On-screen math is unchanged; only the spoken string is rewritten.
+   */
+  function speakMath(text) {
+    if (!text) return '';
+    var s = String(text);
+
+    var ones = ['zero','one','two','three','four','five','six','seven','eight','nine',
+      'ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+    var tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+
+    function numWords(n) {
+      n = Math.abs(parseInt(n, 10));
+      if (isNaN(n)) return String(n);
+      if (n < 20) return ones[n];
+      if (n < 100) {
+        var t = Math.floor(n / 10), o = n % 10;
+        return tens[t] + (o ? '-' + ones[o] : '');
+      }
+      if (n < 1000) {
+        var h = Math.floor(n / 100), r = n % 100;
+        return ones[h] + ' hundred' + (r ? ' ' + numWords(r) : '');
+      }
+      return String(n);
+    }
+
+    function digitWords(str) {
+      return String(str).split('').map(function (d) {
+        return ones[parseInt(d, 10)] || d;
+      }).join(' ');
+    }
+
+    // Strip simple HTML if a caller ever passes markup
+    s = s.replace(/<[^>]+>/g, ' ');
+
+    // Percents: 40% / 40 %
+    s = s.replace(/(\d+)\s*%/g, function (_, n) { return numWords(n) + ' percent'; });
+
+    // Decimals: 0.4 → zero point four (digit-by-digit after the point)
+    s = s.replace(/\b(\d+)\.(\d+)\b/g, function (_, whole, frac) {
+      return numWords(whole) + ' point ' + digitWords(frac);
+    });
+
+    // Fractions a/b (not dates): 20/50, 2/5
+    s = s.replace(/\b(\d+)\s*\/\s*(\d+)\b/g, function (_, a, b) {
+      return numWords(a) + ' over ' + numWords(b);
+    });
+
+    // Signed term glued to a variable: -4x, −4x, +6y
+    s = s.replace(/([−\-])(\d+)([a-zA-Z])\b/g, function (_, sign, digs, letter) {
+      return ' negative ' + numWords(digs) + ' ' + letter.toLowerCase();
+    });
+    s = s.replace(/\+(\d+)([a-zA-Z])\b/g, function (_, digs, letter) {
+      return ' plus ' + numWords(digs) + ' ' + letter.toLowerCase();
+    });
+
+    // "negative 4x" / "minus 4x" / "plus 4x" (words already present)
+    s = s.replace(/\b(negative|minus|plus)\s+(\d+)([a-zA-Z])\b/gi, function (_, word, digs, letter) {
+      return word.toLowerCase() + ' ' + numWords(digs) + ' ' + letter.toLowerCase();
+    });
+
+    // Bare coefficient×variable: 4x, 6y, 12x (avoid matching mid-word)
+    s = s.replace(/(^|[^a-zA-Z0-9])(\d+)([a-zA-Z])\b/g, function (_, pre, digs, letter) {
+      return pre + numWords(digs) + ' ' + letter.toLowerCase();
+    });
+
+    // Parentheses cues often written as (x+3)
+    s = s.replace(/\(\s*/g, ' open parenthesis ');
+    s = s.replace(/\s*\)/g, ' close parenthesis ');
+
+    // Remaining bare integers → words (Step 4 → Step four; minus 6 → minus six)
+    s = s.replace(/\b(\d+)\b/g, function (_, n) { return numWords(n); });
+
+    // Collapse whitespace
+    s = s.replace(/\s+/g, ' ').trim();
+    return s;
   }
 
   function resolveProblem(config) {
@@ -403,7 +484,8 @@
       return;
     }
     var self = this;
-    var u = new SpeechSynthesisUtterance(text);
+    var spoken = speakMath(text);
+    var u = new SpeechSynthesisUtterance(spoken);
     u.rate = 0.95;
     u.pitch = 1;
     u.onstart = function () { self.speaking.textContent = 'Speaking…'; };
@@ -510,6 +592,7 @@
   InteractiveWalkthrough.mount = function (root, config) {
     return new InteractiveWalkthrough(root, config);
   };
+  InteractiveWalkthrough.speakMath = speakMath;
 
   global.InteractiveWalkthrough = InteractiveWalkthrough;
 })(typeof window !== 'undefined' ? window : this);
