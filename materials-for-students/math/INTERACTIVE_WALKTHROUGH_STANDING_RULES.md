@@ -144,6 +144,15 @@ Helpers live in `interactive-player.css`.
 
 When the student opens the walkthrough (`Show walkthrough` or **Continue to walkthrough** after a correct Check; `gateState → open`), **hide/collapse the try-first pane** (answer-choice selection, Check, and gate feedback) so **Work so far** gets more vertical room. Before the walkthrough starts, try-first stays visible. Implemented in `_applyGate` + `#iw-app.iw-open #iw-choice-mount` CSS.
 
+
+## 17. Flat non-button surfaces
+
+Non-button UI must **not** look raised: **no drop shadows**, no black underside shadow, no fake 3D / scale-up on chips or numbers. Keep colors; flatten (`box-shadow: none`).
+
+Applies to: step number circles (`.iw-num`, `.iw-work-n`), answer/value chips (`.iw-chip`), term highlights (`.iw-term`), shaded panels behind numbers, problem/work/stage cards.
+
+**Real buttons** (Back, Next, Replay, Check, Show walkthrough, choice buttons) may keep a light interactive affordance if needed. Chips that are not buttons stay flat.
+
 ## Checklist for every new interactive page
 
 1. Sticky problem + `choices` + choose-first gate (Check for single **and** multi)
@@ -158,4 +167,5 @@ When the student opens the walkthrough (`Show walkthrough` or **Continue to walk
 10. After Check: per-chip correct/wrong/missed marks (§13); no reveal before Check
 11. Choice button labels: MC shows A–D only; multi-form chips show math values only (never `f1`/`d1`/`p1`)
 12. On-screen fractions stacked via MathJax (§14); add/sub col, mul/div row (§15)
-13. `audit.sh` → commit → push → confirm Pages 200
+13. Non-button chips/numbers/panels flat — no drop shadows (§17)
+14. `audit.sh` → commit → push → confirm Pages 200
