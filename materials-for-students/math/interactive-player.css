@@ -92,7 +92,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
   padding:4px 14px;margin-top:8px;font-size:.88em}
 .iw-answerbox{background:var(--c3bg);border:3px solid var(--c3);border-radius:0;padding:14px 16px;margin:10px 0;text-align:center}
 .iw-forms{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:8px}
-.iw-hl{background:var(--c5bg);padding:2px 6px;border-radius:6px;border-bottom:3px solid var(--c5)}
+.iw-hl{background:var(--c5bg);padding:2px 6px;border-radius:4px;border:none;border-bottom:none;box-shadow:none}
 .iw-circ{display:inline-flex;align-items:center;justify-content:center;min-width:2.4em;padding:4px 10px;
   border:3px solid var(--c2);border-radius:50%;font-weight:800;color:var(--c2);background:var(--c2bg)}
 .iw-goal{background:var(--bg);border:2px dashed #8a8aa0;border-radius:0;padding:12px 16px;margin:8px 0}
@@ -172,7 +172,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 .iw-pill-stop{background:#fff;color:var(--ink);border-color:var(--line)}
 #iw-show-walk{background:var(--c1);color:#fff;border-color:var(--c1);margin-left:auto}
 .iw-inline-pill{display:inline-block;background:var(--c1bg);color:var(--c1);font-weight:700;
-  border-radius:999px;padding:1px 10px;border:1.5px solid var(--c1);font-size:.92em}
+  border-radius:4px;padding:1px 10px;border:none;box-shadow:none;font-size:.92em}
 
 #iw-gate-placeholder{flex:1;display:flex;align-items:center;justify-content:center;padding:22px 24px}
 #iw-gate-placeholder[hidden]{display:none!important}
@@ -202,8 +202,10 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 .iw-term{
   font-weight:800!important;
   padding:1px 5px;
-  border-radius:6px;
-  border-bottom:2.5px solid currentColor;
+  border-radius:4px;
+  border:none;
+  border-bottom:none;
+  box-shadow:none;
   white-space:nowrap;
 }
 .iw-term-a{color:var(--c4);background:var(--c4bg)} /* factor / primary actor */
@@ -216,7 +218,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 .iw-term-fav{color:var(--c3);background:var(--c3bg)}
 .iw-term-tot{color:var(--c1);background:var(--c1bg)}
 .iw-term-dec{color:var(--c5);background:var(--c5bg)}
-.iw-term-pct{color:#9b1c5a;background:#fce7f1;border-bottom-color:#9b1c5a}
+.iw-term-pct{color:#9b1c5a;background:#fce7f1}
 
 .iw-expr{font-size:1.15em;font-weight:600;letter-spacing:.02em}
 .iw-expr .iw-term{font-size:1em}
@@ -343,6 +345,31 @@ button.iw-work-line.iw-work-current:hover{border-color:var(--c3);background:var(
 #iw-stage .iw-problem{
   /* dark callout is content, not a raised sheet — keep fill, kill radius */
   border-radius:0!important;
+}
+
+
+/* —— flat23: walkthrough text highlights are flat color only ——
+   .iw-term had border-bottom:2.5px (looked like a fraction bar / raised badge).
+   .iw-hl had a thick bottom edge. Stage chips/inline pills looked like buttons.
+   Keep tinted backgrounds; strip border, shadow, outline, bottom edge. */
+#iw-stage .iw-term,
+#iw-stage .iw-hl,
+#iw-stage .iw-inline-pill,
+#iw-stage .iw-chip,
+#iw-stage .iw-circ,
+#iw-stage .iw-nocalc{
+  border:none!important;
+  border-bottom:none!important;
+  border-top:none!important;
+  box-shadow:none!important;
+  outline:none!important;
+  filter:none!important;
+  text-shadow:none!important;
+  background-image:none!important;
+}
+#iw-stage .iw-chip-hi{
+  outline:none!important;
+  box-shadow:none!important;
 }
 
 /* HTML stacked fractions (standing rule: stacked, no MathJax \\color) */

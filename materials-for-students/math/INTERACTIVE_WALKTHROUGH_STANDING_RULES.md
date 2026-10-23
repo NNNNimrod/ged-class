@@ -153,6 +153,8 @@ The **walkthrough / explanation pane** (`#iw-stage`) must be **completely flat**
 
 Non-button chips and step numbers elsewhere stay flat (no drop shadows / fake 3D): `.iw-chip`, `.iw-num`, `.iw-work-n`, `.iw-term`, choice chips (border only).
 
+**Text highlights in `#iw-stage`** (`.iw-term`, `.iw-hl`, inline pills, explanation chips): colored background only — **no** border, box-shadow, or dark bottom edge (that edge reads as a fraction bar). Same rule on Practice 7.1 and p348 interactive pages.
+
 **Real buttons** (Back, Next, Replay, Voice, Check, Show walkthrough, Continue/Stop) may keep a light interactive affordance if needed.
 
 ## Checklist for every new interactive page
