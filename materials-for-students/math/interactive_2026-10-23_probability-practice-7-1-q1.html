@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="ged-students" content="S001">
 <title>Lesson 7 Probability, page 297, problems 1, walkthrough</title>
-<link rel="stylesheet" href="interactive-player.css?v=tex19">
+<link rel="stylesheet" href="interactive-player.css?v=stack20">
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-<script defer src="interactive-player.js?v=tex19"></script>
+<script defer src="interactive-player.js?v=stack20"></script>
 </head>
 <body>
 <div id="iw-app"></div>
@@ -28,15 +28,21 @@ document.addEventListener('DOMContentLoaded', function () {
   var Pct = function (h) { return '<strong class="iw-term iw-term-pct">' + h + '</strong>'; };
 
   /** Stacked MathJax fraction (on-screen). Voice still says "two fifths" etc. */
-  function texColor(c){ return String(c == null ? '' : c).replace(/#/g, ''); }
+    // Stacked colored fractions via HTML (avoid MathJax \\color / # issues)
   function sf(num, den, cNum, cDen) {
-    cNum = cNum || C_FAV_MATH; cDen = cDen || C_TOT_MATH;
-    return '\\(\\dfrac{\\color{' + texColor(cNum) + '}{\\mathbf{' + num + '}}}{\\color{' + texColor(cDen) + '}{\\mathbf{' + den + '}}}\\)';
+    // cNum/cDen ignored for class mapping; use fav/tot semantic classes
+    return '<span class="iw-stack-frac" role="img" aria-label="' + num + ' over ' + den + '">' +
+      '<span class="iw-stack-num iw-term iw-term-fav">' + num + '</span>' +
+      '<span class="iw-stack-bar" aria-hidden="true"></span>' +
+      '<span class="iw-stack-den iw-term iw-term-tot">' + den + '</span></span>';
   }
   function sfText(numT, denT) {
-    return '\\(\\dfrac{\\color{' + texColor(C_FAV_MATH) + '}{\\mathbf{\\text{' + numT + '}}}}{\\color{' + texColor(C_TOT_MATH) + '}{\\mathbf{\\text{' + denT + '}}}}\\)';
+    return '<span class="iw-stack-frac iw-stack-frac-text" role="img" aria-label="' + numT + ' over ' + denT + '">' +
+      '<span class="iw-stack-num iw-term iw-term-fav">' + numT + '</span>' +
+      '<span class="iw-stack-bar" aria-hidden="true"></span>' +
+      '<span class="iw-stack-den iw-term iw-term-tot">' + denT + '</span></span>';
   }
-  function row() {
+function row() {
     return '<div class="iw-frac-work-row">' + Array.prototype.slice.call(arguments).join('') + '</div>';
   }
   function col() {
@@ -56,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var frac410 = sf('4', '10');
   var frac40100 = sf('40', '100');
   var fracMid = sf('20\\div 10', '50\\div 10');
-  var fracUpside = sf('50', '20', C_TOT_MATH, C_FAV_MATH); // wrong orientation example
+  var fracUpside = '<span class="iw-stack-frac" role="img" aria-label="50 over 20">' +'<span class="iw-stack-num iw-term iw-term-tot">50</span>' +'<span class="iw-stack-bar" aria-hidden="true"></span>' +'<span class="iw-stack-den iw-term iw-term-fav">20</span></span>';
   var fracWant = sfText('what you want', 'all the chances');
   var fracFavPoss = sfText('favorable', 'possible');
 

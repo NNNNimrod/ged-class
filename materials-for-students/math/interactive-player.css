@@ -295,3 +295,14 @@ button.iw-work-line.iw-work-current:hover{border-color:var(--c3);background:var(
   outline:3px solid var(--focus);
   outline-offset:2px;
 }
+
+
+/* HTML stacked fractions (standing rule: stacked, no MathJax \\color) */
+.iw-stack-frac{
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  vertical-align:middle;margin:0 .15em;line-height:1.15;font-weight:800;
+}
+.iw-stack-frac .iw-stack-num,.iw-stack-frac .iw-stack-den{padding:1px 6px;border-radius:6px}
+.iw-stack-bar{display:block;width:100%;min-width:1.6em;height:0;border-top:2.5px solid var(--ink);margin:2px 0}
+.iw-stack-frac-text{font-size:.92em;max-width:11em;text-align:center}
+.iw-stack-frac-text .iw-stack-num,.iw-stack-frac-text .iw-stack-den{white-space:normal;text-align:center}

@@ -171,3 +171,4 @@ Non-button chips and step numbers elsewhere stay flat (no drop shadows / fake 3D
 12. On-screen fractions stacked via MathJax (§14); add/sub col, mul/div row (§15)
 13. Stage flat; problem/work may be raised; chips/numbers flat (§17)
 14. `audit.sh` → commit → push → confirm Pages 200
+18. **Colored fractions:** Prefer HTML stacked fractions (`.iw-stack-frac`) for colored num/den. Do not put `#hex` inside MathJax `\\color` (causes TeX macro-parameter errors).
