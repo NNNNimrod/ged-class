@@ -294,7 +294,13 @@
         className: 'iw-choice-btn',
         'data-id': c.id,
         'aria-pressed': 'false',
-        html: '<span class="iw-choice-id">' + (c.id || '') + '</span><span class="iw-choice-label">' + (c.label || '') + '</span>',
+        html: (function () {
+          var id = c.id || '';
+          // Show letter tags only for MC (A–D). Hide internal FIB ids like f1/d1/p1.
+          var showId = /^[A-Da-d]$/.test(id);
+          return (showId ? '<span class="iw-choice-id">' + id.toUpperCase() + '</span>' : '') +
+            '<span class="iw-choice-label">' + (c.label || '') + '</span>';
+        })(),
         onclick: function () { self._onChoiceClick(c.id); }
       });
       list.appendChild(btn);

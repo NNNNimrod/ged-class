@@ -117,3 +117,4 @@ Each entry in the **Work so far** strip is **clickable**. Clicking a step (for e
 8. No em/en dashes as separators (use parentheses / colon / “to”)
 9. Work so far rows are clickable (jump to that step)
 10. `audit.sh` → commit → push → confirm Pages 200
+13. **Choice button labels:** For multiple-choice, show A–D only. For fill-in / multi-form chips, show the math value only — never internal ids like `f1`, `d1`, `p1`.
