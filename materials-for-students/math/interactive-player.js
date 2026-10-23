@@ -92,6 +92,9 @@
       return numWords(whole) + ' point ' + digitWords(frac);
     });
 
+    // Obelus ÷ → divided by (stacked HTML may show 20÷10)
+    s = s.replace(/\s*÷\s*/g, ' divided by ');
+
     // Fractions a/b (not dates): 20/50, 2/5
     s = s.replace(/\b(\d+)\s*\/\s*(\d+)\b/g, function (_, a, b) {
       return numWords(a) + ' over ' + numWords(b);
