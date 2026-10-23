@@ -171,3 +171,34 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 @media (max-width:820px){
   #iw-app.iw-gated #iw-stage{min-height:200px}
 }
+
+/* —— Color-matched + bolded terms (standing rule) —— */
+.iw-term{
+  font-weight:800!important;
+  padding:1px 5px;
+  border-radius:6px;
+  border-bottom:2.5px solid currentColor;
+  white-space:nowrap;
+}
+.iw-term-a{color:var(--c4);background:var(--c4bg)} /* factor / primary actor */
+.iw-term-b{color:var(--c1);background:var(--c1bg)} /* first inside / total */
+.iw-term-c{color:var(--c3);background:var(--c3bg)} /* second inside / favorable */
+.iw-term-d{color:var(--c6);background:var(--c6bg)} /* outside constant / tertiary */
+.iw-term-e{color:var(--c5);background:var(--c5bg)} /* derived product / decimal */
+.iw-term-f{color:var(--c2);background:var(--c2bg)} /* second product / percent */
+/* Semantic aliases used by probability (same ink as chips) */
+.iw-term-fav{color:var(--c3);background:var(--c3bg)}
+.iw-term-tot{color:var(--c1);background:var(--c1bg)}
+.iw-term-dec{color:var(--c5);background:var(--c5bg)}
+.iw-term-pct{color:#9b1c5a;background:#fce7f1;border-bottom-color:#9b1c5a}
+
+.iw-expr{font-size:1.15em;font-weight:600;letter-spacing:.02em}
+.iw-expr .iw-term{font-size:1em}
+
+/* —— Distribute arrows (default visual for distribute steps) —— */
+.iw-distribute{
+  display:flex;justify-content:center;margin:14px 0 8px;padding:8px 4px;
+  background:#fafafc;border:1.5px dashed var(--line);border-radius:14px;
+}
+.iw-distribute svg{max-width:100%;height:auto;display:block}
+.iw-distribute-caption{text-align:center;font-size:.88em;color:var(--muted);margin:0 0 4px;font-weight:600}

@@ -15,7 +15,10 @@
  * Slide fields:
  *   kind, kicker, title, num, accent, whyBg, body, why, voice, audio, work
  *
- * Voice: every utterance passes through speakMath() so 4x → "four x", 0.4 → "zero point four", etc.
+ * Standing rules (required for every interactive page):
+ *   INTERACTIVE_WALKTHROUGH_STANDING_RULES.md (same folder)
+ *
+ * Voice: every utterance passes through speakMath() so 4x → "four x", 0.4 → "zero point four", choice A → "choice ay", etc.
  */
 (function (global) {
   'use strict';
@@ -118,6 +121,18 @@
 
     // Remaining bare integers → words (Step 4 → Step four; minus 6 → minus six)
     s = s.replace(/\b(\d+)\b/g, function (_, n) { return numWords(n); });
+
+    // Letter names: capital A must be "ay" (never schwa "uh"). Don't touch article "a" or mid-word.
+    // Phrases first, then bare standalone A / B / C / D as choice letters.
+    s = s.replace(/\b(choice|answer|option|letter|pick|matches?)\s+A\b/gi, function (_, w) {
+      return w + ' ay';
+    });
+    s = s.replace(/\bA\s+through\s+D\b/gi, 'ay through dee');
+    s = s.replace(/\bA\s+and\s+B\b/gi, 'ay and bee');
+    s = s.replace(/\bA\s*,\s*B\s*,\s*C\b/gi, 'ay, bee, see');
+    s = s.replace(/\b([ABCD])\b/g, function (_, L) {
+      return ({ A: 'ay', B: 'bee', C: 'see', D: 'dee' })[L] || L;
+    });
 
     // Collapse whitespace
     s = s.replace(/\s+/g, ' ').trim();
@@ -589,10 +604,58 @@
     if (this.i > 0) this._show(this.i - 1, false);
   };
 
+
+  /**
+   * SVG: branching arrows from a front factor to each inside term (distribute standard).
+   * opts: { factorHtml, factorClass, terms: [{ html, termClass }] }
+   * Colors come from .iw-term-* on the labels; arrow strokes match term classes.
+   */
+  var TERM_STROKE = {
+    'iw-term-a': '#7a3fb3', 'iw-term-b': '#1d4ed8', 'iw-term-c': '#0f7a3d',
+    'iw-term-d': '#0e6e7a', 'iw-term-e': '#a35a00', 'iw-term-f': '#b42318',
+    'iw-term-fav': '#0f7a3d', 'iw-term-tot': '#1d4ed8', 'iw-term-dec': '#a35a00', 'iw-term-pct': '#9b1c5a'
+  };
+
+  function distributeArrows(opts) {
+    opts = opts || {};
+    var terms = opts.terms || [];
+    var n = Math.max(terms.length, 1);
+    var W = 340, H = 118;
+    var fx = 70, fy = 24;
+    var y2 = 92;
+    var gap = Math.min(120, (W - 40) / n);
+    var startX = (W - gap * (n - 1)) / 2;
+    var fClass = opts.factorClass || 'iw-term-a';
+    var fStroke = TERM_STROKE[fClass] || '#7a3fb3';
+    var paths = '';
+    var labels = '';
+    for (var i = 0; i < n; i++) {
+      var tx = startX + i * gap;
+      var tc = terms[i].termClass || 'iw-term-b';
+      var stroke = TERM_STROKE[tc] || '#1d4ed8';
+      // quadratic curve from factor down to term
+      var cpx = (fx + tx) / 2;
+      var cpy = 50;
+      paths += '<path d="M' + fx + ' ' + (fy + 18) + ' Q' + cpx + ' ' + cpy + ' ' + tx + ' ' + (y2 - 16) +
+        '" fill="none" stroke="' + stroke + '" stroke-width="2.6" stroke-linecap="round"/>';
+      paths += '<path d="M' + (tx - 6) + ' ' + (y2 - 26) + ' L' + tx + ' ' + (y2 - 16) + ' L' + (tx + 6) + ' ' + (y2 - 26) +
+        '" fill="none" stroke="' + stroke + '" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';
+      labels += '<foreignObject x="' + (tx - 36) + '" y="' + (y2 - 12) + '" width="72" height="28">' +
+        '<div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;font:700 15px system-ui,sans-serif">' +
+        '<span class="iw-term ' + tc + '">' + (terms[i].html || '') + '</span></div></foreignObject>';
+    }
+    var factorLabel = '<foreignObject x="' + (fx - 40) + '" y="2" width="80" height="28">' +
+      '<div xmlns="http://www.w3.org/1999/xhtml" style="text-align:center;font:700 15px system-ui,sans-serif">' +
+      '<span class="iw-term ' + fClass + '">' + (opts.factorHtml || '') + '</span></div></foreignObject>';
+    return '<div class="iw-distribute" aria-hidden="true"><svg viewBox="0 0 ' + W + ' ' + H + '" width="340" height="118">' +
+      factorLabel + paths + labels + '</svg></div>';
+  }
+
   InteractiveWalkthrough.mount = function (root, config) {
     return new InteractiveWalkthrough(root, config);
   };
   InteractiveWalkthrough.speakMath = speakMath;
+  InteractiveWalkthrough.distributeArrows = distributeArrows;
 
   global.InteractiveWalkthrough = InteractiveWalkthrough;
 })(typeof window !== 'undefined' ? window : this);

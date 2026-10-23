@@ -14,14 +14,25 @@
 <div id="iw-app"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  var arrowSvg =
-    '<svg width="28" height="14" viewBox="0 0 36 18" aria-hidden="true">' +
-    '<path d="M2 9h28M24 3l8 6-8 6" fill="none" stroke="#4a4a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  /* Color roles (locked):
+     term-fav green  = 20 / favorable / numerator / 2 in 2/5
+     term-tot blue   = 50 / total / denominator / 5 in 2/5
+     term-dec amber  = 0.4 decimal form
+     term-pct pink   = 40% percent form
+  */
+  var F = function (h) { return '<strong class="iw-term iw-term-fav">' + h + '</strong>'; };
+  var Tot = function (h) { return '<strong class="iw-term iw-term-tot">' + h + '</strong>'; };
+  var Dec = function (h) { return '<strong class="iw-term iw-term-dec">' + h + '</strong>'; };
+  var Pct = function (h) { return '<strong class="iw-term iw-term-pct">' + h + '</strong>'; };
 
   var problemHtml =
     '<p><strong>Problem 1: the vowel tiles</strong></p>' +
-    '<p>In a word game there are <strong>50</strong> wooden letter tiles in all. <strong>20</strong> of them have a vowel on them. You pull out one tile without looking. What\'s the chance it shows a vowel?</p>' +
+    '<p>In a word game there are ' + Tot('50') + ' wooden letter tiles in all. ' +
+    F('20') + ' of them have a vowel on them. You pull out one tile without looking. What\'s the chance it shows a vowel?</p>' +
     '<span class="iw-nocalc">✋ By hand. No calculator.</span>';
+
+  var frac2050 = F('20') + ' / ' + Tot('50');
+  var frac25 = F('2') + ' / ' + Tot('5');
 
   var slides = [
     {
@@ -31,11 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#1a1a2e',
       whyBg: '#ececf3',
       body:
-        '<div class="iw-goal"><strong>The big idea:</strong> probability is a ratio — the part you want compared with the total.' +
-        '\\[\\text{probability}=\\frac{\\text{what you want}}{\\text{all the chances}}\\]' +
+        '<div class="iw-goal"><strong>The big idea:</strong> probability is a ratio (the part you want compared with the total).' +
+        '<p style="margin:.6em 0 0;text-align:center;font-size:1.15em">probability = ' + F('what you want') + ' / ' + Tot('all the chances') + '</p>' +
         'It is always a number from 0 (it can\'t happen) to 1 (it will surely happen).</div>' +
         '<p>You\'ll write the answer three ways: as a <strong>fraction</strong>, a <strong>decimal</strong>, and a <strong>percent</strong>.</p>' +
-        '<p style="margin-top:12px;color:var(--muted);font-size:.92em">The <strong>Problem</strong> stays pinned on the left. <strong>Work so far</strong> builds under it as you go. Tap <strong>Next</strong> after each step.</p>',
+        '<p style="margin-top:12px;color:var(--muted);font-size:.92em">Matching colors (bold) track ' + F('favorable') + ' and ' + Tot('total') + ' across the page. Tap <strong>Next</strong> after each step.</p>',
       why: 'Probability is a ratio from 0 to 1. Writing it three ways (fraction, decimal, percent) is the same amount of pizza, different slice sizes.',
       voice: 'Lesson 7 Probability, page 297, problem 1. Probability is what you want over all the chances. We will write the answer as a fraction, a decimal, and a percent. Do this by hand. The problem stays on the left. Tap Next after each step.'
     },
@@ -46,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#1a1a2e',
       body:
         '<p>The original problem is pinned on the left so you can glance back anytime.</p>' +
-        '<p>Find the two numbers you\'ll need: how many <strong>vowels</strong>, and how many tiles <strong>in all</strong>.</p>',
+        '<p>Find the two numbers you\'ll need: how many <strong>vowels</strong> (' + F('20') + '), and how many tiles <strong>in all</strong> (' + Tot('50') + ').</p>',
       why: 'Read the whole problem once before touching numbers. The numbers you need are already sitting in the sentence.',
       voice: 'Read the whole problem once. It stays pinned on the left. Find how many vowels and how many tiles in all.',
-      work: '<em>Read problem</em> — look for vowels and total'
+      work: '<em>Read</em>: ' + F('vowels') + ' and ' + Tot('total')
     },
     {
       kind: 'step',
@@ -74,14 +85,13 @@ document.addEventListener('DOMContentLoaded', function () {
       whyBg: '#e3f6ea',
       body:
         '<div class="iw-chips">' +
-        '<span class="iw-chip iw-chip-fav">want: 20 vowel tiles</span>' +
-        '<span class="iw-arrow">favorable ' + arrowSvg + '</span>' +
-        '<span class="iw-chip iw-chip-tot">total: 50 tiles</span>' +
+        '<span class="iw-chip iw-chip-fav">want: ' + F('20') + ' vowel tiles</span>' +
+        '<span class="iw-chip iw-chip-tot">total: ' + Tot('50') + ' tiles</span>' +
         '</div>' +
-        '<p style="text-align:center">Keyword: <strong>probability</strong> → build <em>favorable</em> over <em>possible</em>.</p>',
-      why: 'A <strong>favorable outcome</strong> is the result you\'re hoping for (a vowel). The <strong>possible outcomes</strong> are every tile you could pull (all 50). Probability isn\'t on the formula sheet, so you need to remember this one.',
+        '<p style="text-align:center">Keyword: <strong>probability</strong> → build ' + F('favorable') + ' over ' + Tot('possible') + '.</p>',
+      why: 'A <strong>favorable outcome</strong> is the result you\'re hoping for (a vowel). The <strong>possible outcomes</strong> are every tile you could pull (all ' + Tot('50') + '). Probability isn\'t on the formula sheet, so you need to remember this one.',
       voice: 'Step 2. Givens and keywords. Want: 20 vowel tiles. Total: 50 tiles. Keyword: probability. That means favorable over possible.',
-      work: '<span class="iw-chip iw-chip-fav iw-chip-sm">20 vowels</span> ' + arrowSvg + ' <span class="iw-chip iw-chip-tot iw-chip-sm">50 total</span>'
+      work: F('20 vowels') + ' / ' + Tot('50 total')
     },
     {
       kind: 'step',
@@ -91,16 +101,16 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#b42318',
       whyBg: '#fde8e6',
       body:
-        '<p class="big">\\[\\frac{\\text{favorable}}{\\text{possible}}=\\frac{20}{50}\\]</p>' +
+        '<p class="big" style="text-align:center;font-size:1.35em">' + F('favorable') + ' / ' + Tot('possible') + ' = ' + frac2050 + '</p>' +
         '<div class="iw-arrow-row">' +
-        '<span class="iw-chip iw-chip-fav">20</span>' +
-        '<span class="iw-arrow">over ' + arrowSvg + '</span>' +
-        '<span class="iw-chip iw-chip-tot">50</span>' +
+        '<span class="iw-chip iw-chip-fav">' + F('20') + '</span>' +
+        '<span class="iw-arrow">over</span>' +
+        '<span class="iw-chip iw-chip-tot">' + Tot('50') + '</span>' +
         '</div>' +
         '<p>Plan: write the fraction → simplify → decimal → percent.</p>',
-      why: 'Every tile has the same chance of being picked, so the chance of a vowel is just "how many vowels" out of "how many tiles". The part you want goes on <strong>top</strong> and the total goes on the <strong>bottom</strong>.',
+      why: 'Every tile has the same chance of being picked, so the chance of a vowel is just "how many vowels" out of "how many tiles". The part you want (' + F('20') + ') goes on <strong>top</strong> and the total (' + Tot('50') + ') goes on the <strong>bottom</strong>.',
       voice: 'Step 3. Plan and set up the fraction. Favorable over possible equals 20 over 50. Part you want on top, total on the bottom.',
-      work: '\\(\\dfrac{20}{50}\\)'
+      work: frac2050
     },
     {
       kind: 'step',
@@ -110,12 +120,12 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#7a3fb3',
       whyBg: '#f1e8fb',
       body:
-        '<p>Both 20 and 50 end in 0, so both can be divided by 10:</p>' +
-        '<p class="big">\\[\\frac{20}{50}=\\frac{20\\div 10}{50\\div 10}=\\frac{2}{5}\\]</p>' +
-        '<p style="text-align:center">Lowest terms: <span class="iw-hl">\\(\\frac{2}{5}\\)</span> — 2 and 5 share no other factor.</p>',
+        '<p>Both ' + F('20') + ' and ' + Tot('50') + ' end in 0, so both can be divided by 10:</p>' +
+        '<p class="big" style="text-align:center;font-size:1.25em">' + frac2050 + ' = ' + F('20') + '÷10 / ' + Tot('50') + '÷10 = ' + frac25 + '</p>' +
+        '<p style="text-align:center">Lowest terms: ' + frac25 + ' (' + F('2') + ' and ' + Tot('5') + ' share no other factor).</p>',
       why: 'Dividing the top and bottom by the <strong>same</strong> number is like cutting a pizza into bigger slices: you have fewer slices, but the same amount of pizza. The value doesn\'t change.',
       voice: 'Step 4. Simplify. Both 20 and 50 divide by 10, so 20 over 50 becomes 2 over 5. That is lowest terms.',
-      work: '\\(\\dfrac{20}{50}=\\dfrac{2}{5}\\) <span class="iw-hl">lowest terms</span>'
+      work: frac2050 + ' = ' + frac25 + ' <span class="iw-hl">lowest terms</span>'
     },
     {
       kind: 'step',
@@ -125,12 +135,12 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#a35a00',
       whyBg: '#fff1dc',
       body:
-        '<p><strong>Way A, make the bottom 10:</strong> 5 × 2 = 10, so multiply top and bottom by 2.</p>' +
-        '<p class="big">\\[\\frac{2}{5}=\\frac{2\\times 2}{5\\times 2}=\\frac{4}{10}=0.4\\]</p>' +
-        '<p><strong>Way B, long division:</strong> \\(2\\div 5\\). 5 doesn\'t go into 2, so write "0." and bring down a zero: 5 goes into 20 four times → <span class="iw-circ">0.4</span></p>',
-      why: 'A fraction bar means "divide". Tenths are the first place after the decimal point, so 4 tenths is written 0.4. Making the bottom 10 or 100 is the fastest hand trick whenever it works.',
+        '<p><strong>Way A, make the bottom 10:</strong> ' + Tot('5') + ' × 2 = 10, so multiply top and bottom by 2.</p>' +
+        '<p class="big" style="text-align:center;font-size:1.25em">' + frac25 + ' = ' + F('4') + ' / ' + Tot('10') + ' = ' + Dec('0.4') + '</p>' +
+        '<p><strong>Way B, long division:</strong> ' + F('2') + ' ÷ ' + Tot('5') + '. 5 doesn\'t go into 2, so write "0." and bring down a zero: 5 goes into 20 four times → ' + Dec('0.4') + '</p>',
+      why: 'A fraction bar means "divide". Tenths are the first place after the decimal point, so 4 tenths is written ' + Dec('0.4') + '. Making the bottom 10 or 100 is the fastest hand trick whenever it works.',
       voice: 'Step 5. Fraction to decimal. Two fifths equals 4 tenths, which is 0.4. Or divide 2 by 5 and get the same answer.',
-      work: '\\(\\dfrac{2}{5}=0.4\\) <span class="iw-circ" style="font-size:.85em;min-width:auto;padding:2px 8px">0.4</span>'
+      work: frac25 + ' = ' + Dec('0.4')
     },
     {
       kind: 'step',
@@ -140,34 +150,33 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#9b1c5a',
       whyBg: '#fce7f1',
       body:
-        '<p class="big">\\[0.4=\\frac{4}{10}=\\frac{40}{100}=40\\%\\]</p>' +
-        '<p style="text-align:center">Shortcut: move the decimal 2 places right. 0.4 → 0.40 → <span class="iw-circ">40%</span></p>',
-      why: '<strong>Percent means "per hundred"</strong>: 40% is 40 out of every 100. So once the bottom is 100, the top number is the percent.',
+        '<p class="big" style="text-align:center;font-size:1.25em">' + Dec('0.4') + ' = ' + F('4') + '/' + Tot('10') + ' = ' + F('40') + '/' + Tot('100') + ' = ' + Pct('40%') + '</p>' +
+        '<p style="text-align:center">Shortcut: move the decimal 2 places right. ' + Dec('0.4') + ' → 0.40 → ' + Pct('40%') + '</p>',
+      why: '<strong>Percent means "per hundred"</strong>: ' + Pct('40%') + ' is 40 out of every 100. So once the bottom is 100, the top number is the percent.',
       voice: 'Step 6. Decimal to percent. 0.4 is 40 per hundred, so 40 percent. Shortcut: move the decimal point two places to the right.',
-      work: '\\(0.4=40\\%\\) <span class="iw-circ" style="font-size:.85em;min-width:auto;padding:2px 8px">40%</span>'
+      work: Dec('0.4') + ' = ' + Pct('40%')
     },
     {
       kind: 'answer',
-      kicker: 'Step 7 — check and answer',
+      kicker: 'Step 7 (check and answer)',
       title: 'Does it make sense? All three forms?',
       num: 7,
       accent: '#0f7a3d',
       whyBg: '#e3f6ea',
       body:
-        '<p>Fewer than half of the tiles are vowels (20 is less than 25), so the answer should be a little under 50%. <strong>40% fits.</strong></p>' +
+        '<p>Fewer than half of the tiles are vowels (' + F('20') + ' is less than 25), so the answer should be a little under 50%. <strong>' + Pct('40%') + ' fits.</strong></p>' +
         '<div class="iw-answerbox">Problem 1 answer:' +
         '<div class="iw-forms">' +
-        '<span class="iw-chip iw-chip-fav iw-chip-hi">\\(\\frac{2}{5}\\)</span>' +
-        '<span class="iw-chip iw-chip-tot">0.4</span>' +
-        '<span class="iw-chip iw-chip-ans">40%</span>' +
+        '<span class="iw-chip iw-chip-fav iw-chip-hi">' + frac25 + '</span>' +
+        '<span class="iw-chip iw-chip-tot">' + Dec('0.4') + '</span>' +
+        '<span class="iw-chip iw-chip-ans">' + Pct('40%') + '</span>' +
         '</div></div>',
-      why: 'A quick "is it about right?" check catches upside-down fractions. If you\'d gotten \\(\\frac{50}{20}\\), that\'s more than 1, and a probability can never be more than 1.',
+      why: 'A quick "is it about right?" check catches upside-down fractions. If you\'d gotten ' + Tot('50') + '/' + F('20') + ', that\'s more than 1, and a probability can never be more than 1.',
       voice: 'Step 7. Check. Fewer than half the tiles are vowels, so a little under 50 percent makes sense. 40 percent fits. The answer is 2 fifths, 0.4, and 40 percent.',
-      work: '<span class="iw-chip iw-chip-fav iw-chip-sm">\\(\\frac{2}{5}\\)</span> <span class="iw-chip iw-chip-tot iw-chip-sm">0.4</span> <span class="iw-chip iw-chip-ans iw-chip-sm">40%</span>'
+      work: frac25 + ' · ' + Dec('0.4') + ' · ' + Pct('40%')
     }
   ];
 
-  // FIB gate: three correct forms mixed with distractors; multi-select + Check
   var choices = [
     { id: 'f1', label: '\\(\\frac{2}{5}\\)', correct: true },
     { id: 'f2', label: '\\(\\frac{1}{5}\\)', correct: false },
@@ -183,9 +192,8 @@ document.addEventListener('DOMContentLoaded', function () {
     choices: choices,
     choiceMode: 'multi',
     buildNotes:
-      '<p>Player shell: choose-first gate before walkthrough; Build notes live below nav (not in Why it works).</p>' +
-      '<p>FIB handling: multi-select chips for the three answer forms plus distractors; Check requires all correct and no extras.</p>' +
-      '<p>Assigned student code only in meta (S001).</p>',
+      '<p>Color roles: <strong class="iw-term iw-term-fav">20 / favorable / numerator</strong>, <strong class="iw-term iw-term-tot">50 / total / denominator</strong>, <strong class="iw-term iw-term-dec">0.4</strong>, <strong class="iw-term iw-term-pct">40%</strong>. Bold + color everywhere.</p>' +
+      '<p>FIB multi-select gate; S001 in meta only.</p>',
     autoplay: true,
     muted: false
   });

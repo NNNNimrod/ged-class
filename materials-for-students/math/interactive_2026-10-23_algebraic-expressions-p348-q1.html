@@ -13,16 +13,43 @@
 <div id="iw-app"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  var arrowSvg =
-    '<svg width="28" height="14" viewBox="0 0 36 18" aria-hidden="true">' +
-    '<path d="M2 9h28M24 3l8 6-8 6" fill="none" stroke="#4a4a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  /* Color roles (locked):
+     term-a purple = factor −4
+     term-b blue   = x (inside)
+     term-c green  = 3 (inside)
+     term-d teal   = outside 6
+     term-e amber  = product −4x
+     term-f red    = product −12 / final constant −6
+  */
+  var T = {
+    a: function (h) { return '<strong class="iw-term iw-term-a">' + h + '</strong>'; },
+    b: function (h) { return '<strong class="iw-term iw-term-b">' + h + '</strong>'; },
+    c: function (h) { return '<strong class="iw-term iw-term-c">' + h + '</strong>'; },
+    d: function (h) { return '<strong class="iw-term iw-term-d">' + h + '</strong>'; },
+    e: function (h) { return '<strong class="iw-term iw-term-e">' + h + '</strong>'; },
+    f: function (h) { return '<strong class="iw-term iw-term-f">' + h + '</strong>'; }
+  };
+
+  var exprColored =
+    '<span class="iw-expr">' +
+    T.d('6') + ' − ' + T.a('4') + '(' + T.b('x') + ' + ' + T.c('3') + ')' +
+    '</span>';
 
   var problemHtml =
     '<div data-verbatim="problem">' +
     '<p><strong>Problem 1</strong></p>' +
-    '<p>Which of the following expressions is equal to \\(6 - 4(x + 3)\\)?</p>' +
+    '<p>Which of the following expressions is equal to ' + exprColored + '?</p>' +
     '</div>' +
     '<span class="iw-nocalc">✋ By hand. No calculator.</span>';
+
+  var distSvg = InteractiveWalkthrough.distributeArrows({
+    factorHtml: '−4',
+    factorClass: 'iw-term-a',
+    terms: [
+      { html: 'x', termClass: 'iw-term-b' },
+      { html: '3', termClass: 'iw-term-c' }
+    ]
+  });
 
   var slides = [
     {
@@ -32,12 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#1a1a2e',
       whyBg: '#ececf3',
       body:
-        '<div class="iw-goal"><strong>The big idea:</strong> when a number sits in front of parentheses, multiply that number by <em>every</em> term inside. That is the <strong>distributive property</strong>.' +
-        '\\[a(b+c)=ab+ac\\]' +
-        'A minus sign in front means you are distributing a <strong>negative</strong>.</div>' +
-        '<p>You\'ll expand \\(6 - 4(x + 3)\\), combine like terms, and match a choice.</p>' +
-        '<p style="margin-top:12px;color:var(--muted);font-size:.92em">The <strong>Problem</strong> stays pinned on the left. <strong>Work so far</strong> builds under it as you go. Tap <strong>Next</strong> after each step.</p>',
-      why: 'Clear the parentheses with the distributive property, then combine like terms — that is the whole plan.',
+        '<div class="iw-goal"><strong>The big idea:</strong> when a number sits in front of parentheses, multiply that number by <em>every</em> term inside. That is the <strong>distributive property</strong>.</div>' +
+        '<p>You\'ll expand ' + exprColored + ', combine like terms, and match a choice.</p>' +
+        '<p style="margin-top:12px;color:var(--muted);font-size:.92em">Colors stay matched across the problem, the steps, and Work so far. Tap <strong>Next</strong> after each step.</p>',
+      why: 'Clear the parentheses with the distributive property, then combine like terms (that is the whole plan).',
       voice: 'Lesson 6 Algebraic Expressions, page 348, problem 1. When a number sits in front of parentheses, multiply it by every term inside. A minus sign means you are distributing a negative. We will expand 6 minus 4 times the quantity x plus 3, combine like terms, and match a choice. Tap Next after each step.'
     },
     {
@@ -47,10 +72,10 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#1a1a2e',
       body:
         '<p>The original problem is pinned on the left so you can glance back anytime.</p>' +
-        '<p>Spot the expression to simplify: <span class="iw-hl">\\(6 - 4(x + 3)\\)</span>. Then four answer choices.</p>',
+        '<p>Spot the expression to simplify: ' + exprColored + '. Then four answer choices.</p>',
       why: 'Read the whole problem once before touching algebra. You need both the expression and the choices.',
       voice: 'Read the whole problem once. It stays pinned on the left. Spot 6 minus 4 times the quantity x plus 3, then the four choices.',
-      work: '<em>Read problem</em> — simplify \\(6-4(x+3)\\), match a choice'
+      work: '<em>Read</em>: simplify ' + exprColored
     },
     {
       kind: 'step',
@@ -60,10 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#1d4ed8',
       whyBg: '#e6eeff',
       body:
-        '<p>It wants an expression <strong>equal to</strong> \\(6 - 4(x + 3)\\) — same value for every \\(x\\), not a number.</p>' +
-        '<p class="iw-arrow-row"><span class="iw-chip iw-chip-fav">goal: simplify, then match A–D</span></p>',
-      why: 'Saying the goal out loud keeps you from plugging in a random value for \\(x\\). This is an <strong>identity</strong> question: rewrite the expression.',
-      voice: 'Step 1. What is it asking? It wants an expression equal to 6 minus 4 times the quantity x plus 3. Simplify, then match A through D.',
+        '<p>It wants an expression <strong>equal to</strong> ' + exprColored + ' (same value for every ' + T.b('x') + ', not a number).</p>' +
+        '<p class="iw-arrow-row"><span class="iw-chip iw-chip-fav">goal: simplify, then match A to D</span></p>',
+      why: 'Saying the goal out loud keeps you from plugging in a random value for ' + T.b('x') + '. This is an <strong>identity</strong> question: rewrite the expression.',
+      voice: 'Step 1. What is it asking? It wants an expression equal to 6 minus 4 times the quantity x plus 3. Simplify, then match ay through dee.',
       work: '<span class="iw-chip iw-chip-fav iw-chip-sm">goal: simplify → match</span>'
     },
     {
@@ -75,14 +100,16 @@ document.addEventListener('DOMContentLoaded', function () {
       whyBg: '#e3f6ea',
       body:
         '<div class="iw-chips">' +
-        '<span class="iw-chip iw-chip-tot">outside: 6</span>' +
-        '<span class="iw-arrow">then ' + arrowSvg + '</span>' +
-        '<span class="iw-chip iw-chip-fav">\\(-4(x+3)\\)</span>' +
+        '<span class="iw-chip" style="border-color:var(--c6);color:var(--c6);background:var(--c6bg)">outside: ' + T.d('6') + '</span>' +
+        '<span class="iw-chip" style="border-color:var(--c4);color:var(--c4);background:var(--c4bg)">factor: ' + T.a('−4') + '</span>' +
+        '<span class="iw-chip" style="border-color:var(--c1);color:var(--c1);background:var(--c1bg)">inside: ' + T.b('x') + '</span>' +
+        '<span class="iw-chip" style="border-color:var(--c3);color:var(--c3);background:var(--c3bg)">inside: ' + T.c('3') + '</span>' +
         '</div>' +
-        '<p style="text-align:center">Keyword: the minus before the 4 means distribute <strong>negative 4</strong>, not positive 4.</p>',
-      why: 'Kaplan\'s tip: treat a subtraction in front of parentheses as adding a negative. So \\(6 - 4(x+3)\\) is the same as \\(6 + (-4)(x+3)\\).',
+        '<p style="text-align:center">Keyword: the minus before the ' + T.a('4') + ' means distribute <strong class="iw-term iw-term-a">negative 4</strong>, not positive 4.</p>' +
+        '<p style="text-align:center">Expression: ' + exprColored + '</p>',
+      why: 'Kaplan\'s tip: treat a subtraction in front of parentheses as adding a negative. So ' + exprColored + ' is the same as ' + T.d('6') + ' + (' + T.a('−4') + ')(' + T.b('x') + ' + ' + T.c('3') + ').',
       voice: 'Step 2. Givens and keywords. You have a 6 outside, then minus 4 times the parentheses. That minus means distribute negative 4, not positive 4.',
-      work: '<span class="iw-chip iw-chip-tot iw-chip-sm">6</span> + <span class="iw-chip iw-chip-fav iw-chip-sm">\\((-4)(x+3)\\)</span>'
+      work: T.d('6') + ' + (' + T.a('−4') + ')(' + T.b('x') + '+' + T.c('3') + ')'
     },
     {
       kind: 'step',
@@ -92,32 +119,32 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#b42318',
       whyBg: '#fde8e6',
       body:
-        '<p class="big">\\[6 - 4(x + 3) = 6 + (-4)(x + 3)\\]</p>' +
+        '<p class="big">' + exprColored + ' = ' + T.d('6') + ' + (' + T.a('−4') + ')(' + T.b('x') + ' + ' + T.c('3') + ')</p>' +
         '<div class="iw-arrow-row">' +
         '<span class="iw-chip iw-chip-fav">plan</span>' +
-        '<span class="iw-arrow">rewrite ' + arrowSvg + '</span>' +
-        '<span class="iw-chip iw-chip-tot">distribute \\(-4\\)</span>' +
-        '<span class="iw-arrow">then ' + arrowSvg + '</span>' +
+        '<span class="iw-chip" style="border-color:var(--c4);color:var(--c4);background:var(--c4bg)">distribute ' + T.a('−4') + '</span>' +
         '<span class="iw-chip iw-chip-ans">combine like terms</span>' +
         '</div>',
-      why: 'Order of operations says parentheses first — but here the parentheses hold two terms you cannot add yet. So you <strong>clear</strong> them with the distributive property, then combine.',
+      why: 'Order of operations says parentheses first (but here the parentheses hold two terms you cannot add yet). So you <strong>clear</strong> them with the distributive property, then combine.',
       voice: 'Step 3. Plan. Rewrite the minus as plus negative 4 times the parentheses. Then distribute negative 4, then combine like terms.',
-      work: '\\(6+(-4)(x+3)\\) → distribute → combine'
+      work: T.d('6') + '+(' + T.a('−4') + ')(' + T.b('x') + '+' + T.c('3') + ') → distribute'
     },
     {
       kind: 'step',
       kicker: 'Step 4',
-      title: 'Distribute \\(-4\\) to each term inside',
+      title: 'Distribute ' + T.a('−4') + ' to each term inside',
       num: 4,
       accent: '#7a3fb3',
       whyBg: '#f1e8fb',
       body:
-        '<p>Multiply \\(-4\\) by \\(x\\) and by \\(3\\):</p>' +
-        '<p class="big">\\[(-4)(x + 3) = (-4)(x) + (-4)(3) = -4x + (-12)\\]</p>' +
-        '<p style="text-align:center">So the whole expression is <span class="iw-hl">\\(6 + (-4x) + (-12)\\)</span>.</p>',
-      why: 'Distributive property: \\(a(b+c)=ab+ac\\). Here \\(a=-4\\), \\(b=x\\), \\(c=3\\). Both products keep the negative from \\(-4\\).',
+        '<p>Multiply ' + T.a('negative 4') + ' by ' + T.b('x') + ' and by ' + T.c('3') + ':</p>' +
+        '<p class="iw-distribute-caption">Branching arrows = distribute</p>' +
+        distSvg +
+        '<p class="big">(' + T.a('−4') + ')(' + T.b('x') + ' + ' + T.c('3') + ') = (' + T.a('−4') + ')(' + T.b('x') + ') + (' + T.a('−4') + ')(' + T.c('3') + ') = ' + T.e('−4x') + ' + (' + T.f('−12') + ')</p>' +
+        '<p style="text-align:center">Whole expression: ' + T.d('6') + ' + ' + T.e('−4x') + ' + (' + T.f('−12') + ')</p>',
+      why: 'Distributive property: <em>a</em>(<em>b</em>+<em>c</em>)=<em>ab</em>+<em>ac</em>. Here ' + T.a('a = −4') + ', ' + T.b('b = x') + ', ' + T.c('c = 3') + '. Both products keep the negative from ' + T.a('−4') + '.',
       voice: 'Step 4. Distribute negative 4. Multiply negative 4 by x to get negative 4x. Multiply negative 4 by 3 to get negative 12. The expression is now 6 plus negative 4x plus negative 12.',
-      work: '\\((-4)(x)+(-4)(3)=-4x-12\\)'
+      work: '(' + T.a('−4') + ')(' + T.b('x') + ')+(' + T.a('−4') + ')(' + T.c('3') + ')=' + T.e('−4x') + T.f('−12')
     },
     {
       kind: 'step',
@@ -127,12 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#a35a00',
       whyBg: '#fff1dc',
       body:
-        '<p>The \\(x\\) term stands alone. The constants are \\(6\\) and \\(-12\\):</p>' +
-        '<p class="big">\\[6 + (-4x) + (-12) = -4x + (6 - 12) = -4x - 6\\]</p>' +
-        '<p style="text-align:center">Simplified: <span class="iw-circ" style="font-size:.9em;min-width:auto;padding:4px 12px">\\(-4x - 6\\)</span></p>',
-      why: 'Like terms have the same variable to the same power. Constants are like terms with each other. You cannot combine \\(-4x\\) with \\(-6\\) — different kinds of terms.',
+        '<p>The ' + T.e('x-term') + ' stands alone. The constants are ' + T.d('6') + ' and ' + T.f('−12') + ':</p>' +
+        '<p class="big">' + T.d('6') + ' + ' + T.e('−4x') + ' + (' + T.f('−12') + ') = ' + T.e('−4x') + ' + (' + T.d('6') + ' − ' + T.f('12') + ') = ' + T.e('−4x') + ' − ' + T.f('6') + '</p>' +
+        '<p style="text-align:center">Simplified: <span class="iw-circ" style="font-size:.9em;min-width:auto;padding:4px 12px">' + T.e('−4x') + ' − ' + T.f('6') + '</span></p>',
+      why: 'Like terms have the same variable to the same power. Constants are like terms with each other. You cannot combine ' + T.e('−4x') + ' with ' + T.f('−6') + ' (different kinds of terms).',
       voice: 'Step 5. Combine like terms. Six and negative twelve make negative six. The x term stays. You get negative 4x minus 6.',
-      work: '\\(-4x-6\\) <span class="iw-hl">simplified</span>'
+      work: T.e('−4x') + ' − ' + T.f('6') + ' <span class="iw-hl">simplified</span>'
     },
     {
       kind: 'step',
@@ -142,33 +169,33 @@ document.addEventListener('DOMContentLoaded', function () {
       accent: '#9b1c5a',
       whyBg: '#fce7f1',
       body:
-        '<p>Look for \\(-4x - 6\\) in the list:</p>' +
+        '<p>Look for ' + T.e('−4x') + ' − ' + T.f('6') + ' in the list:</p>' +
         '<ul style="margin:.4em 0;padding-left:1.2em;line-height:1.7">' +
-        '<li>A. \\(4x + 3\\) — wrong signs</li>' +
-        '<li>B. \\(4x - 9\\) — distributed positive 4 by mistake</li>' +
-        '<li>C. \\(-4x + 9\\) — combined constants as \\(6+3\\) instead of \\(6-12\\)</li>' +
-        '<li><strong>D. \\(-4x - 6\\)</strong> — matches</li>' +
+        '<li>A. 4x + 3 (wrong signs)</li>' +
+        '<li>B. 4x − 9 (distributed positive 4 by mistake)</li>' +
+        '<li>C. −4x + 9 (combined constants as 6+3 instead of ' + T.d('6') + '−' + T.f('12') + ')</li>' +
+        '<li><strong>D. ' + T.e('−4x') + ' − ' + T.f('6') + </strong> (matches)</li>' +
         '</ul>',
-      why: 'Common traps: forgetting the minus on the 4 (choice B), or distributing only to the first term inside the parentheses (choice C-style mistakes).',
-      voice: 'Step 6. Match the choices. A and B have the wrong sign on the x term. C has the wrong constant. D is negative 4x minus 6. That matches.',
-      work: '<span class="iw-chip iw-chip-ans iw-chip-sm">matches D</span>'
+      why: 'Common traps: forgetting the minus on the ' + T.a('4') + ' (choice B), or distributing only to the first term inside the parentheses (choice C-style mistakes).',
+      voice: 'Step 6. Match the choices. ay and bee have the wrong sign on the x term. C has the wrong constant. D is negative 4x minus 6. That matches.',
+      work: '<span class="iw-chip iw-chip-ans iw-chip-sm">matches D: ' + T.e('−4x') + '−' + T.f('6') + '</span>'
     },
     {
       kind: 'answer',
-      kicker: 'Step 7 — check and answer',
+      kicker: 'Step 7 (check and answer)',
       title: 'Does it make sense?',
       num: 7,
       accent: '#0f7a3d',
       whyBg: '#e3f6ea',
       body:
-        '<p>Quick check: plug in \\(x=0\\). Original: \\(6 - 4(0+3)=6-12=-6\\). Choice D: \\(-4(0)-6=-6\\). Same.</p>' +
+        '<p>Quick check: plug in ' + T.b('x') + ' = 0. Original: ' + T.d('6') + ' − ' + T.a('4') + '(0+' + T.c('3') + ') = ' + T.d('6') + '−' + T.f('12') + ' = ' + T.f('−6') + '. Choice D: ' + T.e('−4') + '(0) − ' + T.f('6') + ' = ' + T.f('−6') + '. Same.</p>' +
         '<div class="iw-answerbox">Problem 1 answer:' +
         '<div class="iw-forms">' +
-        '<span class="iw-chip iw-chip-ans iw-chip-hi">D. \\(-4x - 6\\)</span>' +
+        '<span class="iw-chip iw-chip-ans iw-chip-hi">D. ' + T.e('−4x') + ' − ' + T.f('6') + '</span>' +
         '</div></div>',
       why: 'A single test value will not prove two expressions are always equal, but it quickly catches arithmetic slips before you bubble the answer.',
-      voice: 'Step 7. Check. When x is 0, both the original and choice D equal negative 6. The answer is D, negative 4x minus 6.',
-      work: '<span class="iw-chip iw-chip-ans iw-chip-sm">D. \\(-4x-6\\)</span>'
+      voice: 'Step 7. Check. When x is 0, both the original and choice D equal negative 6. The answer is dee, negative 4x minus 6.',
+      work: '<span class="iw-chip iw-chip-ans iw-chip-sm">D. ' + T.e('−4x') + '−' + T.f('6') + '</span>'
     }
   ];
 
@@ -185,9 +212,8 @@ document.addEventListener('DOMContentLoaded', function () {
     choices: choices,
     choiceMode: 'single',
     buildNotes:
-      '<p>Player shell: choose-first gate (MC A–D) before walkthrough; Build notes live below nav.</p>' +
-      '<p>Lesson 6 method from Kaplan p330: rewrite minus as plus a negative, distribute, combine like terms.</p>' +
-      '<p>Correct choice D is never highlighted on a wrong pick.</p>',
+      '<p>Color roles: <strong class="iw-term iw-term-a">−4 factor</strong>, <strong class="iw-term iw-term-b">x</strong>, <strong class="iw-term iw-term-c">3</strong>, <strong class="iw-term iw-term-d">6 outside</strong>, <strong class="iw-term iw-term-e">−4x</strong>, <strong class="iw-term iw-term-f">−12 / −6</strong>. Bold + color everywhere.</p>' +
+      '<p>Distribute step uses branching arrows (distributeArrows helper).</p>',
     autoplay: true,
     muted: false
   });
