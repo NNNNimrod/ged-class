@@ -22,8 +22,20 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 #iw-main{flex:1;display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);gap:12px;min-height:420px;align-items:stretch}
 #iw-rail{display:flex;flex-direction:column;gap:12px;min-width:0}
 #iw-problem-panel,#iw-work-panel,#iw-stage{
-  background:var(--card);border:2px solid var(--line);border-radius:16px;
-  box-shadow:none;overflow:hidden}
+  background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden}
+/* §17: Problem + Work so far MAY be raised (subtle shadow) to distinguish on page bg */
+#iw-problem-panel,#iw-work-panel{
+  box-shadow:0 2px 8px rgba(26,26,46,.10);
+  filter:none}
+/* §17: Walkthrough stage (#iw-stage) must be COMPLETELY flat — no raised/3D look */
+#iw-stage{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:0;
+  box-shadow:none!important;
+  filter:none!important;
+  background-image:none!important;
+  text-shadow:none}
 #iw-problem-panel{padding:0}
 #iw-problem-panel .iw-panel-label,#iw-work-panel .iw-panel-label{
   margin:0;padding:8px 14px;font-size:.72em;letter-spacing:.06em;text-transform:uppercase;
@@ -87,7 +99,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 .iw-tag{font-size:.78em;color:#d5d5e5;font-family:ui-monospace,Menlo,Consolas,monospace;margin-top:8px}
 
 #iw-nav{display:flex;flex-wrap:wrap;gap:10px;padding:12px 14px;margin-top:12px;border:2px solid var(--line);
-  border-radius:16px;background:#fafafc}
+  border-radius:16px;background:#fafafc;box-shadow:none}
 #iw-nav button{font:inherit;font-weight:700;padding:10px 18px;border-radius:999px;border:2px solid transparent;cursor:pointer}
 #iw-nav button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 #iw-back{background:#fff;border-color:var(--line);color:var(--ink)}
@@ -174,7 +186,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 #iw-app.iw-open #iw-gate-placeholder{display:none!important}
 
 /* —— Build notes (below nav; not student “Why it works”) —— */
-#iw-build-notes{margin-top:14px;padding:12px 14px;border-radius:12px;border:1px dashed #b8b8c8;
+#iw-build-notes{margin-top:14px;padding:12px 14px;border-radius:0;border:1px dashed #b8b8c8;box-shadow:none!important;
   background:#f3f3f7;color:#5a5a6a;font-size:.82em;line-height:1.45}
 #iw-build-notes h3{margin:0 0 6px;font-size:.78em;letter-spacing:.06em;text-transform:uppercase;
   color:#6a6a7a;font-weight:800}
@@ -248,12 +260,38 @@ button.iw-work-line.iw-work-current:hover{border-color:var(--c3);background:var(
 #iw-app.iw-open #iw-work{max-height:min(70vh,640px)}
 
 
-/* —— Flat non-button surfaces (standing rule §17) ——
-   Chips, step numbers, term highlights, panels: no drop shadow / raised look.
-   Real buttons (nav, Check, Show walkthrough, choice buttons) may keep light affordance. */
+/* —— Raised vs flat panes (standing rule §17 / flat19) ——
+   #iw-problem-panel + #iw-work-panel: subtle raised shadow OK (content vs page bg).
+   #iw-stage (walkthrough/explanation): COMPLETELY flat — no shadow / 3D / gradient.
+   Chips, step numbers, non-button surfaces elsewhere stay flat. */
 .iw-chip,.iw-num,.iw-work-n,.iw-term,.iw-nocalc,.iw-answerbox,.iw-goal,.iw-circ,
-#iw-problem-panel,#iw-work-panel,#iw-stage,#iw-nav,#iw-build-notes{
+.iw-choice-btn,.iw-work-line,.iw-gate-msg,#iw-build-notes,#iw-choice-mount{
   box-shadow:none!important;
-  filter:none;
+  filter:none!important;
+  background-image:none!important;
+  text-shadow:none!important;
 }
-.iw-chip{transform:none}
+.iw-chip,.iw-choice-btn{transform:none;appearance:none;-webkit-appearance:none}
+
+/* Nuclear flat — walkthrough stage only */
+#iw-stage{
+  box-shadow:none!important;
+  filter:none!important;
+  background-image:none!important;
+  border-radius:0!important;
+}
+#iw-stage *{
+  box-shadow:none!important;
+  filter:none!important;
+  text-shadow:none!important;
+}
+/* Focus rings stay (outline) */
+#iw-stage *:focus-visible,
+#iw-problem-panel *:focus-visible,
+#iw-work-panel *:focus-visible,
+#iw-nav button:focus-visible,
+.iw-pill:focus-visible,
+.iw-choice-btn:focus-visible{
+  outline:3px solid var(--focus);
+  outline-offset:2px;
+}

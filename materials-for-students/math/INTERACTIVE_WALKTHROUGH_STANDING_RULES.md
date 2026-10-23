@@ -145,13 +145,15 @@ Helpers live in `interactive-player.css`.
 When the student opens the walkthrough (`Show walkthrough` or **Continue to walkthrough** after a correct Check; `gateState → open`), **hide/collapse the try-first pane** (answer-choice selection, Check, and gate feedback) so **Work so far** gets more vertical room. Before the walkthrough starts, try-first stays visible. Implemented in `_applyGate` + `#iw-app.iw-open #iw-choice-mount` CSS.
 
 
-## 17. Flat non-button surfaces
+## 17. Raised panes vs flat walkthrough
 
-Non-button UI must **not** look raised: **no drop shadows**, no black underside shadow, no fake 3D / scale-up on chips or numbers. Keep colors; flatten (`box-shadow: none`).
+**Problem** (`#iw-problem-panel`) and **Work so far** (`#iw-work-panel`) **may** use subtle raised styling (light `box-shadow`, card border/radius) so their content reads as distinct from the page background.
 
-Applies to: step number circles (`.iw-num`, `.iw-work-n`), answer/value chips (`.iw-chip`), term highlights (`.iw-term`), shaded panels behind numbers, problem/work/stage cards.
+The **walkthrough / explanation pane** (`#iw-stage`) must be **completely flat**: no `box-shadow`, drop-shadow, inset shadow, gradient shading, or 3D depth tricks. Prefer flat background, simple 1px border, `border-radius: 0`.
 
-**Real buttons** (Back, Next, Replay, Check, Show walkthrough, choice buttons) may keep a light interactive affordance if needed. Chips that are not buttons stay flat.
+Non-button chips and step numbers elsewhere stay flat (no drop shadows / fake 3D): `.iw-chip`, `.iw-num`, `.iw-work-n`, `.iw-term`, choice chips (border only).
+
+**Real buttons** (Back, Next, Replay, Voice, Check, Show walkthrough, Continue/Stop) may keep a light interactive affordance if needed.
 
 ## Checklist for every new interactive page
 
@@ -167,5 +169,5 @@ Applies to: step number circles (`.iw-num`, `.iw-work-n`), answer/value chips (`
 10. After Check: per-chip correct/wrong/missed marks (§13); no reveal before Check
 11. Choice button labels: MC shows A–D only; multi-form chips show math values only (never `f1`/`d1`/`p1`)
 12. On-screen fractions stacked via MathJax (§14); add/sub col, mul/div row (§15)
-13. Non-button chips/numbers/panels flat — no drop shadows (§17)
+13. Stage flat; problem/work may be raised; chips/numbers flat (§17)
 14. `audit.sh` → commit → push → confirm Pages 200
