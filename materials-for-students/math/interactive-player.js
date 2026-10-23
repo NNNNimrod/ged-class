@@ -1,18 +1,16 @@
 /**
  * Interactive walkthrough player (shared shell).
- * Usage: InteractiveWalkthrough.mount(document.getElementById('iw-app'), { slides: [...] })
+ * Usage: InteractiveWalkthrough.mount(root, { problem, slides, autoplay, muted })
+ *
+ * Config:
+ *   problem: HTML always shown in the Problem rail (required for useful UX)
+ *   slides: array of slide objects
  *
  * Slide fields:
- *   kind: 'title' | 'step' | 'answer' (optional; affects chrome)
- *   kicker: small uppercase label
- *   title: string (HTML ok for math spans)
- *   num: step number shown in badge (omit on title)
- *   accent: CSS color for badge / why border
- *   whyBg: optional why panel bg
- *   body: HTML string
- *   why: HTML string (optional aside)
- *   voice: plain text spoken via Web Speech API (or ignored if audio set)
- *   audio: optional URL to mp3/ogg; when present, Replay/autoplay use it instead of TTS
+ *   kind: 'title' | 'step' | 'answer'
+ *   kicker, title, num, accent, whyBg, body, why, voice, audio
+ *   work: optional HTML snippet appended to the "Work so far" strip when this
+ *         slide is reached (and kept for later slides). Omit on title slides.
  */
 (function (global) {
   'use strict';
@@ -42,9 +40,19 @@
     return Promise.resolve();
   }
 
+  function resolveProblem(config) {
+    if (config.problem) return config.problem;
+    var slides = config.slides || [];
+    for (var i = 0; i < slides.length; i++) {
+      if (slides[i].problem) return slides[i].problem;
+    }
+    return '';
+  }
+
   function InteractiveWalkthrough(root, config) {
     this.root = root;
     this.slides = (config && config.slides) || [];
+    this.problemHtml = resolveProblem(config || {});
     this.i = 0;
     this.autoplay = config.autoplay !== false;
     this.muted = !!config.muted;
@@ -72,8 +80,30 @@
     var toggles = el('div', { id: 'iw-toggles' }, [this.btnAuto, this.btnMute]);
     var top = el('div', { id: 'iw-topbar' }, [this.progress, toggles]);
 
+    this.problemBody = el('div', { id: 'iw-problem-body', html: this.problemHtml || '<p><em>No problem text provided.</em></p>' });
+    var problemPanel = el('section', {
+      id: 'iw-problem-panel',
+      'aria-label': 'Original problem'
+    }, [
+      el('h2', { className: 'iw-panel-label', text: 'Problem' }),
+      this.problemBody
+    ]);
+
+    this.workEl = el('div', { id: 'iw-work', className: 'iw-work-empty', 'aria-live': 'polite' });
+    var workPanel = el('section', {
+      id: 'iw-work-panel',
+      'aria-label': 'Work so far'
+    }, [
+      el('h2', { className: 'iw-panel-label', text: 'Work so far' }),
+      this.workEl
+    ]);
+
+    this.rail = el('aside', { id: 'iw-rail' }, [problemPanel, workPanel]);
+
     this.slideEl = el('div', { id: 'iw-slide', role: 'region', 'aria-live': 'polite' });
     var stage = el('div', { id: 'iw-stage' }, [this.slideEl]);
+
+    var main = el('div', { id: 'iw-main' }, [this.rail, stage]);
 
     this.btnBack = el('button', {
       type: 'button', id: 'iw-back', text: '← Back',
@@ -93,7 +123,7 @@
     ]);
 
     this.root.appendChild(top);
-    this.root.appendChild(stage);
+    this.root.appendChild(main);
     this.root.appendChild(nav);
 
     document.addEventListener('keydown', function (e) {
@@ -170,6 +200,37 @@
     speechSynthesis.speak(u);
   };
 
+  InteractiveWalkthrough.prototype._renderWork = function () {
+    var self = this;
+    this.workEl.innerHTML = '';
+    var lines = [];
+    for (var i = 0; i <= this.i; i++) {
+      var s = this.slides[i];
+      var w = s.work || s.scratch;
+      if (!s || !w) continue;
+      lines.push({ index: i, slide: s, html: w });
+    }
+    if (!lines.length) {
+      this.workEl.classList.add('iw-work-empty');
+      return Promise.resolve();
+    }
+    this.workEl.classList.remove('iw-work-empty');
+    lines.forEach(function (line, li) {
+      var isCurrent = line.index === self.i;
+      var label = line.slide.num != null ? String(line.slide.num) : String(li + 1);
+      var row = el('div', {
+        className: 'iw-work-line' + (isCurrent ? ' iw-work-current' : '')
+      }, [
+        el('span', { className: 'iw-work-n', 'aria-hidden': 'true', text: label }),
+        el('div', { className: 'iw-work-html', html: line.html })
+      ]);
+      self.workEl.appendChild(row);
+    });
+    // Keep newest work in view
+    self.workEl.scrollTop = self.workEl.scrollHeight;
+    return typeset(this.workEl);
+  };
+
   InteractiveWalkthrough.prototype._show = function (index, skipVoice) {
     if (index < 0 || index >= this.slides.length) return;
     this.stopVoice();
@@ -215,7 +276,7 @@
     }
 
     var self = this;
-    typeset(this.slideEl).then(function () {
+    Promise.all([typeset(this.slideEl), this._renderWork(), typeset(this.problemBody)]).then(function () {
       if (!skipVoice && self.autoplay) self.speak(false);
     });
   };

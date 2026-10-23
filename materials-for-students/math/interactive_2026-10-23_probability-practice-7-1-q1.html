@@ -15,8 +15,13 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var arrowSvg =
-    '<svg width="36" height="18" viewBox="0 0 36 18" aria-hidden="true">' +
+    '<svg width="28" height="14" viewBox="0 0 36 18" aria-hidden="true">' +
     '<path d="M2 9h28M24 3l8 6-8 6" fill="none" stroke="#4a4a5a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  var problemHtml =
+    '<p><strong>Problem 1: the vowel tiles</strong></p>' +
+    '<p>In a word game there are <strong>50</strong> wooden letter tiles in all. <strong>20</strong> of them have a vowel on them. You pull out one tile without looking. What\'s the chance it shows a vowel?</p>' +
+    '<span class="iw-nocalc">✋ By hand. No calculator.</span>';
 
   var slides = [
     {
@@ -30,23 +35,21 @@ document.addEventListener('DOMContentLoaded', function () {
         '\\[\\text{probability}=\\frac{\\text{what you want}}{\\text{all the chances}}\\]' +
         'It is always a number from 0 (it can\'t happen) to 1 (it will surely happen).</div>' +
         '<p>You\'ll write the answer three ways: as a <strong>fraction</strong>, a <strong>decimal</strong>, and a <strong>percent</strong>.</p>' +
-        '<span class="iw-nocalc">✋ Do this by hand. No calculator.</span>' +
-        '<p style="margin-top:12px;color:var(--muted);font-size:.92em">Tap <strong>Next</strong> after each step so you can digest it. Use <strong>Replay voice</strong> anytime. Arrow keys work too.</p>',
+        '<p style="margin-top:12px;color:var(--muted);font-size:.92em">The <strong>Problem</strong> stays pinned on the left. <strong>Work so far</strong> builds under it as you go. Tap <strong>Next</strong> after each step.</p>',
       why: 'One idea per slide keeps the clean walkthrough feel: markups and voice together, then you pause before the next beat.',
-      voice: 'Lesson 7 Probability, page 297, problem 1. Probability is what you want over all the chances. We will write the answer as a fraction, a decimal, and a percent. Do this by hand. Tap Next after each step.'
+      voice: 'Lesson 7 Probability, page 297, problem 1. Probability is what you want over all the chances. We will write the answer as a fraction, a decimal, and a percent. Do this by hand. The problem stays on the left. Tap Next after each step.'
     },
     {
       kind: 'step',
-      kicker: 'The problem',
-      title: 'Problem 1: the vowel tiles',
-      num: null,
+      kicker: 'Look at the problem',
+      title: 'Read the whole problem once',
       accent: '#1a1a2e',
       body:
-        '<div class="iw-problem">' +
-        '<p>In a word game there are <strong>50</strong> wooden letter tiles in all. <strong>20</strong> of them have a vowel on them. You pull out one tile without looking. What\'s the chance it shows a vowel?</p>' +
-        '</div>',
+        '<p>The original problem is pinned on the left so you can glance back anytime.</p>' +
+        '<p>Find the two numbers you\'ll need: how many <strong>vowels</strong>, and how many tiles <strong>in all</strong>.</p>',
       why: 'Read the whole problem once before touching numbers. The numbers you need are already sitting in the sentence.',
-      voice: 'Problem 1: the vowel tiles. In a word game there are 50 wooden letter tiles in all. 20 of them have a vowel on them. You pull out one tile without looking. What is the chance it shows a vowel?'
+      voice: 'Read the whole problem once. It stays pinned on the left. Find how many vowels and how many tiles in all.',
+      work: '<em>Read problem</em> — look for vowels and total'
     },
     {
       kind: 'step',
@@ -59,7 +62,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '<p>It wants the <strong>probability of getting a vowel tile</strong>, written as a fraction, a decimal and a percent.</p>' +
         '<p class="iw-arrow-row"><span class="iw-chip iw-chip-fav">goal: chance of a vowel</span></p>',
       why: 'Saying the goal out loud before touching numbers keeps you from solving the wrong question. Here the goal is "chance of a vowel", not "how many vowels".',
-      voice: 'Step 1. Read it. What is it asking? It wants the probability of getting a vowel tile, written as a fraction, a decimal, and a percent. Say the goal out loud before touching numbers.'
+      voice: 'Step 1. Read it. What is it asking? It wants the probability of getting a vowel tile, written as a fraction, a decimal, and a percent.',
+      work: '<span class="iw-chip iw-chip-fav iw-chip-sm">goal: P(vowel)</span>'
     },
     {
       kind: 'step',
@@ -76,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '</div>' +
         '<p style="text-align:center">Keyword: <strong>probability</strong> → build <em>favorable</em> over <em>possible</em>.</p>',
       why: 'A <strong>favorable outcome</strong> is the result you\'re hoping for (a vowel). The <strong>possible outcomes</strong> are every tile you could pull (all 50). Probability isn\'t on the formula sheet, so you need to remember this one.',
-      voice: 'Step 2. Givens and keywords. Want: 20 vowel tiles. Total: 50 tiles. Keyword: probability. That means favorable over possible.'
+      voice: 'Step 2. Givens and keywords. Want: 20 vowel tiles. Total: 50 tiles. Keyword: probability. That means favorable over possible.',
+      work: '<span class="iw-chip iw-chip-fav iw-chip-sm">20 vowels</span> ' + arrowSvg + ' <span class="iw-chip iw-chip-tot iw-chip-sm">50 total</span>'
     },
     {
       kind: 'step',
@@ -94,7 +99,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '</div>' +
         '<p>Plan: write the fraction → simplify → decimal → percent.</p>',
       why: 'Every tile has the same chance of being picked, so the chance of a vowel is just "how many vowels" out of "how many tiles". The part you want goes on <strong>top</strong> and the total goes on the <strong>bottom</strong>.',
-      voice: 'Step 3. Plan and set up the fraction. Favorable over possible equals 20 over 50. Part you want on top, total on the bottom. Then simplify, make a decimal, make a percent.'
+      voice: 'Step 3. Plan and set up the fraction. Favorable over possible equals 20 over 50. Part you want on top, total on the bottom.',
+      work: '\\(\\dfrac{20}{50}\\)'
     },
     {
       kind: 'step',
@@ -108,7 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '<p class="big">\\[\\frac{20}{50}=\\frac{20\\div 10}{50\\div 10}=\\frac{2}{5}\\]</p>' +
         '<p style="text-align:center">Lowest terms: <span class="iw-hl">\\(\\frac{2}{5}\\)</span> — 2 and 5 share no other factor.</p>',
       why: 'Dividing the top and bottom by the <strong>same</strong> number is like cutting a pizza into bigger slices: you have fewer slices, but the same amount of pizza. The value doesn\'t change.',
-      voice: 'Step 4. Simplify. Both 20 and 50 divide by 10, so 20 over 50 becomes 2 over 5. That is lowest terms.'
+      voice: 'Step 4. Simplify. Both 20 and 50 divide by 10, so 20 over 50 becomes 2 over 5. That is lowest terms.',
+      work: '\\(\\dfrac{20}{50}=\\dfrac{2}{5}\\) <span class="iw-hl">lowest terms</span>'
     },
     {
       kind: 'step',
@@ -122,7 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '<p class="big">\\[\\frac{2}{5}=\\frac{2\\times 2}{5\\times 2}=\\frac{4}{10}=0.4\\]</p>' +
         '<p><strong>Way B, long division:</strong> \\(2\\div 5\\). 5 doesn\'t go into 2, so write "0." and bring down a zero: 5 goes into 20 four times → <span class="iw-circ">0.4</span></p>',
       why: 'A fraction bar means "divide". Tenths are the first place after the decimal point, so 4 tenths is written 0.4. Making the bottom 10 or 100 is the fastest hand trick whenever it works.',
-      voice: 'Step 5. Fraction to decimal. Two fifths equals 4 tenths, which is 0.4. Or divide 2 by 5 and get the same answer.'
+      voice: 'Step 5. Fraction to decimal. Two fifths equals 4 tenths, which is 0.4. Or divide 2 by 5 and get the same answer.',
+      work: '\\(\\dfrac{2}{5}=0.4\\) <span class="iw-circ" style="font-size:.85em;min-width:auto;padding:2px 8px">0.4</span>'
     },
     {
       kind: 'step',
@@ -135,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '<p class="big">\\[0.4=\\frac{4}{10}=\\frac{40}{100}=40\\%\\]</p>' +
         '<p style="text-align:center">Shortcut: move the decimal 2 places right. 0.4 → 0.40 → <span class="iw-circ">40%</span></p>',
       why: '<strong>Percent means "per hundred"</strong>: 40% is 40 out of every 100. So once the bottom is 100, the top number is the percent.',
-      voice: 'Step 6. Decimal to percent. 0.4 is 40 per hundred, so 40 percent. Shortcut: move the decimal point two places to the right.'
+      voice: 'Step 6. Decimal to percent. 0.4 is 40 per hundred, so 40 percent. Shortcut: move the decimal point two places to the right.',
+      work: '\\(0.4=40\\%\\) <span class="iw-circ" style="font-size:.85em;min-width:auto;padding:2px 8px">40%</span>'
     },
     {
       kind: 'answer',
@@ -153,11 +162,13 @@ document.addEventListener('DOMContentLoaded', function () {
         '<span class="iw-chip iw-chip-ans">40%</span>' +
         '</div></div>',
       why: 'A quick "is it about right?" check catches upside-down fractions. If you\'d gotten \\(\\frac{50}{20}\\), that\'s more than 1, and a probability can never be more than 1.',
-      voice: 'Step 7. Check. Fewer than half the tiles are vowels, so a little under 50 percent makes sense. 40 percent fits. The answer is 2 fifths, 0.4, and 40 percent.'
+      voice: 'Step 7. Check. Fewer than half the tiles are vowels, so a little under 50 percent makes sense. 40 percent fits. The answer is 2 fifths, 0.4, and 40 percent.',
+      work: '<span class="iw-chip iw-chip-fav iw-chip-sm">\\(\\frac{2}{5}\\)</span> <span class="iw-chip iw-chip-tot iw-chip-sm">0.4</span> <span class="iw-chip iw-chip-ans iw-chip-sm">40%</span>'
     }
   ];
 
   InteractiveWalkthrough.mount(document.getElementById('iw-app'), {
+    problem: problemHtml,
     slides: slides,
     autoplay: true,
     muted: false
