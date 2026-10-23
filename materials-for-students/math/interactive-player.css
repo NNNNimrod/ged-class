@@ -21,7 +21,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 /* Desktop: problem + work rail | current step main */
 #iw-main{flex:1;display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);gap:12px;min-height:420px;align-items:stretch}
 #iw-rail{display:flex;flex-direction:column;gap:12px;min-width:0}
-#iw-problem-panel,#iw-work-panel,#iw-stage{
+#iw-problem-panel,#iw-work-panel{
   background:var(--card);border:2px solid var(--line);border-radius:16px;overflow:hidden}
 /* §17: Problem + Work so far MAY be raised (subtle shadow) to distinguish on page bg */
 #iw-problem-panel,#iw-work-panel{
@@ -30,7 +30,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 /* §17: Walkthrough stage (#iw-stage) must be COMPLETELY flat — no raised/3D look */
 #iw-stage{
   background:var(--bg);
-  border:1px solid var(--line);
+  border:none;
   border-radius:0;
   box-shadow:none!important;
   filter:none!important;
@@ -273,17 +273,35 @@ button.iw-work-line.iw-work-current:hover{border-color:var(--c3);background:var(
 }
 .iw-chip,.iw-choice-btn{transform:none;appearance:none;-webkit-appearance:none}
 
-/* Nuclear flat — walkthrough stage only */
+/* Nuclear flat — walkthrough stage only (§17) */
 #iw-stage{
+  background:var(--bg)!important;
+  background-image:none!important;
+  border:none!important;
+  border-radius:0!important;
   box-shadow:none!important;
   filter:none!important;
-  background-image:none!important;
+  outline:none!important;
+  text-shadow:none!important;
+  overflow:visible;
+}
+/* Inner slide surface also flat — no nested white card look */
+#iw-stage #iw-slide,
+#iw-stage #iw-gate-placeholder{
+  background:transparent!important;
+  box-shadow:none!important;
+  border:none!important;
   border-radius:0!important;
+  filter:none!important;
 }
 #iw-stage *{
   box-shadow:none!important;
   filter:none!important;
   text-shadow:none!important;
+}
+#iw-stage .iw-why{
+  /* keep tint, but no depth */
+  box-shadow:none!important;
 }
 /* Focus rings stay (outline) */
 #iw-stage *:focus-visible,
