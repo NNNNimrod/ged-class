@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="ged-students" content="S001">
 <title>Lesson 7 Probability, page 297, problems 1, walkthrough</title>
-<link rel="stylesheet" href="interactive-player.css?v=flat19">
+<link rel="stylesheet" href="interactive-player.css?v=tex19">
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-<script defer src="interactive-player.js?v=flat19"></script>
+<script defer src="interactive-player.js?v=tex19"></script>
 </head>
 <body>
 <div id="iw-app"></div>
@@ -21,18 +21,20 @@ document.addEventListener('DOMContentLoaded', function () {
      term-pct pink   = 40% percent form
   */
   var C_FAV = '#0f7a3d', C_TOT = '#1d4ed8';
+  var C_FAV_MATH = '0f7a3d', C_TOT_MATH = '1d4ed8';
   var F = function (h) { return '<strong class="iw-term iw-term-fav">' + h + '</strong>'; };
   var Tot = function (h) { return '<strong class="iw-term iw-term-tot">' + h + '</strong>'; };
   var Dec = function (h) { return '<strong class="iw-term iw-term-dec">' + h + '</strong>'; };
   var Pct = function (h) { return '<strong class="iw-term iw-term-pct">' + h + '</strong>'; };
 
   /** Stacked MathJax fraction (on-screen). Voice still says "two fifths" etc. */
+  function texColor(c){ return String(c == null ? '' : c).replace(/#/g, ''); }
   function sf(num, den, cNum, cDen) {
-    cNum = cNum || C_FAV; cDen = cDen || C_TOT;
-    return '\\(\\dfrac{\\color{' + cNum + '}{\\mathbf{' + num + '}}}{\\color{' + cDen + '}{\\mathbf{' + den + '}}}\\)';
+    cNum = cNum || C_FAV_MATH; cDen = cDen || C_TOT_MATH;
+    return '\\(\\dfrac{\\color{' + texColor(cNum) + '}{\\mathbf{' + num + '}}}{\\color{' + texColor(cDen) + '}{\\mathbf{' + den + '}}}\\)';
   }
   function sfText(numT, denT) {
-    return '\\(\\dfrac{\\color{' + C_FAV + '}{\\mathbf{\\text{' + numT + '}}}}{\\color{' + C_TOT + '}{\\mathbf{\\text{' + denT + '}}}}\\)';
+    return '\\(\\dfrac{\\color{' + texColor(C_FAV_MATH) + '}{\\mathbf{\\text{' + numT + '}}}}{\\color{' + texColor(C_TOT_MATH) + '}{\\mathbf{\\text{' + denT + '}}}}\\)';
   }
   function row() {
     return '<div class="iw-frac-work-row">' + Array.prototype.slice.call(arguments).join('') + '</div>';
@@ -54,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var frac410 = sf('4', '10');
   var frac40100 = sf('40', '100');
   var fracMid = sf('20\\div 10', '50\\div 10');
-  var fracUpside = sf('50', '20', C_TOT, C_FAV); // wrong orientation example
+  var fracUpside = sf('50', '20', C_TOT_MATH, C_FAV_MATH); // wrong orientation example
   var fracWant = sfText('what you want', 'all the chances');
   var fracFavPoss = sfText('favorable', 'possible');
 
