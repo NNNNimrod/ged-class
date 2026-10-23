@@ -60,7 +60,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 #iw-stage{display:flex;flex-direction:column;min-height:0}
 #iw-slide{flex:1;padding:22px 24px 18px;display:flex;flex-direction:column;gap:12px}
 #iw-slide.iw-enter{animation:iwFade .28s ease}
-@keyframes iwFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes iwFade{from{opacity:0}to{opacity:1}}
 
 .iw-kicker{font-size:.78em;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0}
 .iw-title{margin:0;font-size:1.45em;line-height:1.25;display:flex;align-items:flex-start;gap:12px}
@@ -70,7 +70,7 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 .iw-body p{margin:.55em 0}
 .iw-body .big{font-size:1.2em;text-align:center;margin:14px 0}
 .iw-why{background:var(--whybg,#ececf3);border-left:4px solid var(--accent,#1a1a2e);
-  border-radius:0 12px 12px 0;padding:12px 14px;font-size:.93em;margin-top:4px}
+  border-radius:0;padding:12px 14px;font-size:.93em;margin-top:4px}
 .iw-why h3{margin:0 0 4px;font-size:.82em;text-transform:uppercase;letter-spacing:.05em;color:var(--accent,#1a1a2e)}
 
 .iw-chips{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center;justify-content:center}
@@ -90,16 +90,16 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 .iw-problem strong{color:#fff}
 .iw-nocalc{display:inline-block;background:#b42318;color:#fff;font-weight:700;border-radius:999px;
   padding:4px 14px;margin-top:8px;font-size:.88em}
-.iw-answerbox{background:var(--c3bg);border:3px solid var(--c3);border-radius:14px;padding:14px 16px;margin:10px 0;text-align:center}
+.iw-answerbox{background:var(--c3bg);border:3px solid var(--c3);border-radius:0;padding:14px 16px;margin:10px 0;text-align:center}
 .iw-forms{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:8px}
 .iw-hl{background:var(--c5bg);padding:2px 6px;border-radius:6px;border-bottom:3px solid var(--c5)}
 .iw-circ{display:inline-flex;align-items:center;justify-content:center;min-width:2.4em;padding:4px 10px;
   border:3px solid var(--c2);border-radius:50%;font-weight:800;color:var(--c2);background:var(--c2bg)}
-.iw-goal{background:#fff;border:2px dashed #8a8aa0;border-radius:12px;padding:12px 16px;margin:8px 0}
+.iw-goal{background:var(--bg);border:2px dashed #8a8aa0;border-radius:0;padding:12px 16px;margin:8px 0}
 .iw-tag{font-size:.78em;color:#d5d5e5;font-family:ui-monospace,Menlo,Consolas,monospace;margin-top:8px}
 
-#iw-nav{display:flex;flex-wrap:wrap;gap:10px;padding:12px 14px;margin-top:12px;border:2px solid var(--line);
-  border-radius:16px;background:#fafafc;box-shadow:none}
+#iw-nav{display:flex;flex-wrap:wrap;gap:10px;padding:12px 0;margin-top:12px;border:none;
+  border-top:1px solid var(--line);border-radius:0;background:var(--bg);box-shadow:none}
 #iw-nav button{font:inherit;font-weight:700;padding:10px 18px;border-radius:999px;border:2px solid transparent;cursor:pointer}
 #iw-nav button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 #iw-back{background:#fff;border-color:var(--line);color:var(--ink)}
@@ -314,6 +314,36 @@ button.iw-work-line.iw-work-current:hover{border-color:var(--c3);background:var(
   outline-offset:2px;
 }
 
+
+/* —— flat22: contrast-based raise, not shadow ——
+   DevTools showed #iw-stage already flat (same bg as body, no shadow).
+   The "raised" look was: (1) #iw-nav as a rounded card on #fafafc,
+   (2) .iw-goal white fill on cream page, (3) translateY slide animation.
+   Real buttons keep their own fills. */
+#iw-nav{
+  background:var(--bg)!important;
+  border:none!important;
+  border-top:1px solid var(--line)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+#iw-stage .iw-goal,
+#iw-stage .iw-answerbox,
+#iw-stage .iw-why,
+#iw-stage .iw-problem{
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  background-image:none!important;
+}
+#iw-stage .iw-goal{
+  background:var(--bg)!important; /* match page — no white card float */
+}
+#iw-stage .iw-problem{
+  /* dark callout is content, not a raised sheet — keep fill, kill radius */
+  border-radius:0!important;
+}
 
 /* HTML stacked fractions (standing rule: stacked, no MathJax \\color) */
 .iw-stack-frac{

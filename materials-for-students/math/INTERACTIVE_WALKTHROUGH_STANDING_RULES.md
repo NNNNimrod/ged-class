@@ -149,7 +149,7 @@ When the student opens the walkthrough (`Show walkthrough` or **Continue to walk
 
 **Problem** (`#iw-problem-panel`) and **Work so far** (`#iw-work-panel`) **may** use subtle raised styling (light `box-shadow`, card border/radius) so their content reads as distinct from the page background.
 
-The **walkthrough / explanation pane** (`#iw-stage`) must be **completely flat**: no `box-shadow`, drop-shadow, inset shadow, gradient shading, or 3D depth tricks. Prefer flat background, simple 1px border, `border-radius: 0`.
+The **walkthrough / explanation pane** (`#iw-stage`) must be **completely flat**: no `box-shadow`, drop-shadow, inset shadow, gradient shading, or 3D depth tricks. Prefer flat background, simple 1px border, `border-radius: 0`. Also avoid **contrast cards**: white or near-white fills and rounded frames on the stage (and the under-stage `#iw-nav` bar) read as raised even with zero shadow — match `var(--bg)` and keep radius 0. Real nav buttons may stay pill-shaped.
 
 Non-button chips and step numbers elsewhere stay flat (no drop shadows / fake 3D): `.iw-chip`, `.iw-num`, `.iw-work-n`, `.iw-term`, choice chips (border only).
 
