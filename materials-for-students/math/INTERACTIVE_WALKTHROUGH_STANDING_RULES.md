@@ -2,9 +2,9 @@
 
 **Status:** locked 2026-10-23 (Facts voice). Applies to **every** interactive walkthrough: Practice 7.1 #1, Kaplan p348 #1, and all future pages.
 
-**This file** (next to `interactive-player.js`) is the durable source of truth in the public repo.  
-Private project mirror: `ged/framework/INTERACTIVE_WALKTHROUGH_STANDING_RULES.md`.  
-Summary also in project `DESIGN_DECISIONS.md` (Interactive walkthroughs).
+**Canonical (this file):** `ged/framework/INTERACTIVE_WALKTHROUGH_STANDING_RULES.md`  
+**Repo copy (ships with player):** `materials-for-students/math/INTERACTIVE_WALKTHROUGH_STANDING_RULES.md`  
+**Also summarized in:** `ged/DESIGN_DECISIONS.md` (Interactive walkthroughs).
 
 Shared shell: `interactive-player.js` + `interactive-player.css`.
 
@@ -16,12 +16,13 @@ Always show a sticky **Problem** box (top-left rail) with the **original problem
 
 ## 2. Choose-first gate
 
-The student picks an answer **before** engaging the walkthrough.
+The student picks an answer **before** engaging the walkthrough. Both MC and multi-form use a **Check** button to submit.
 
-- **Wrong:** flag as wrong only — do **not** explain why, and do **not** highlight or reveal the correct answer.
-- **Right:** short confirmation + option to **continue** into the walkthrough **or stop**.
+- **While choosing (before Check):** click only **selects** (or toggles, for multi). Do **not** evaluate on bare click. Do **not** reveal which choices are correct.
+- **After Check — wrong:** say **Not quite** (no long explanation of *why*), **and** mark **each** choice chip so the student sees which were correct vs wrong (see §13). Never a blanket “all wrong” with no per-chip marks.
+- **After Check — right:** short confirmation + option to **continue** into the walkthrough **or stop**, with the same per-chip marks.
 
-MC → A/B/C/D (`choiceMode: 'single'`). FIB / multi-form → chips with distractors (`choiceMode: 'multi'` + Check).
+MC → A/B/C/D (`choiceMode: 'single'` + Check). FIB / multi-form → chips with distractors (`choiceMode: 'multi'` + Check).
 
 ## 3. Show walkthrough pill
 
@@ -105,9 +106,26 @@ Ban **all** long dashes used as separators in interactive walkthrough content: e
 
 Each entry in the **Work so far** strip is **clickable**. Clicking a step (for example step 2) jumps the main explanation panel to that same step and plays its voice if auto-voice is on. Back and Next stay unchanged. Visited steps remain listed (and clickable) even after jumping backward. Implemented in the shared player (`button.iw-work-line` → `_show(index)`).
 
+## 13. Per-chip reveal only after Check
+
+After the student hits **Check** (submit), mark **every** choice chip to show whether that choice is a correct answer or not — not a blanket “all wrong.”
+
+Chip states after Check:
+
+| State | Meaning | Visual |
+|-------|---------|--------|
+| selected-correct | student picked a correct form | green + ✓ |
+| selected-wrong | student picked a distractor | red + ✗ |
+| missed | correct form **not** selected | dashed green + ✓ (“missed”) |
+| distractor-ok | distractor not selected | dimmed, no mark |
+
+- **Before Check / during choosing:** wrong or incomplete picks must **not** reveal which answers are correct. Single MC: click selects only; Check submits (same as multi).
+- Full per-chip correct vs incorrect reveal happens **only** after Check/submit.
+- Implemented in `interactive-player.js` (`_checkAnswers` + `_applyRevealMarks`).
+
 ## Checklist for every new interactive page
 
-1. Sticky problem + `choices` + choose-first gate
+1. Sticky problem + `choices` + choose-first gate (Check for single **and** multi)
 2. Show walkthrough pill; work + main hidden until open
 3. Student-only `why`; `buildNotes` below nav
 4. Bold + color-matched terms across problem / body / work / diagrams
@@ -116,5 +134,6 @@ Each entry in the **Work so far** strip is **clickable**. Clicking a step (for e
 7. Header: `Lesson [n] [topic], page [p], problems [nums], walkthrough`
 8. No em/en dashes as separators (use parentheses / colon / “to”)
 9. Work so far rows are clickable (jump to that step)
-10. `audit.sh` → commit → push → confirm Pages 200
-13. **Choice button labels:** For multiple-choice, show A–D only. For fill-in / multi-form chips, show the math value only — never internal ids like `f1`, `d1`, `p1`.
+10. After Check: per-chip correct/wrong/missed marks (§13); no reveal before Check
+11. Choice button labels: MC shows A–D only; multi-form chips show math values only (never `f1`/`d1`/`p1`)
+12. `audit.sh` → commit → push → confirm Pages 200

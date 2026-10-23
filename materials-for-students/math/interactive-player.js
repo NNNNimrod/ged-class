@@ -166,6 +166,7 @@
     // Gate: choosing → wrong | correct → open (walkthrough visible)
     this.gateState = this.requireChoice ? 'choosing' : 'open';
     this._selected = {}; // id → true
+    this._checked = false; // true after Check/submit — then per-chip reveal is on
     this._maxVisited = 0; // highest slide index reached (work strip stays clickable)
     this._build();
     this._applyGate();
@@ -285,7 +286,7 @@
       className: 'iw-choice-prompt',
       text: this.choiceMode === 'multi'
         ? 'Try first — select every correct form, then Check.'
-        : 'Try first — pick an answer before the walkthrough.'
+        : 'Try first — select an answer, then Check.'
     });
     var list = el('div', { className: 'iw-choice-list' + (this.choiceMode === 'multi' ? ' iw-choice-row' : ''), role: this.choiceMode === 'multi' ? 'group' : 'radiogroup' });
     this.choices.forEach(function (c) {
@@ -298,7 +299,8 @@
           var id = c.id || '';
           // Show letter tags only for MC (A–D). Hide internal FIB ids like f1/d1/p1.
           var showId = /^[A-Da-d]$/.test(id);
-          return (showId ? '<span class="iw-choice-id">' + id.toUpperCase() + '</span>' : '') +
+          return '<span class="iw-choice-mark" aria-hidden="true"></span>' +
+            (showId ? '<span class="iw-choice-id">' + id.toUpperCase() + '</span>' : '') +
             '<span class="iw-choice-label">' + (c.label || '') + '</span>';
         })(),
         onclick: function () { self._onChoiceClick(c.id); }
@@ -307,47 +309,35 @@
     });
     this.choiceMount.appendChild(prompt);
     this.choiceMount.appendChild(list);
-    if (this.choiceMode === 'multi') {
-      this.btnCheck = el('button', {
-        type: 'button',
-        className: 'iw-pill iw-pill-check',
-        text: 'Check',
-        onclick: function () { self._checkMulti(); }
-      });
-      this.choiceMount.appendChild(this.btnCheck);
-    }
+    // Both single MC and multi-form use Check to submit (no reveal on bare click).
+    this.btnCheck = el('button', {
+      type: 'button',
+      className: 'iw-pill iw-pill-check',
+      text: 'Check',
+      onclick: function () { self._checkAnswers(); }
+    });
+    this.choiceMount.appendChild(this.btnCheck);
     typeset(this.choiceMount);
   };
 
   InteractiveWalkthrough.prototype._onChoiceClick = function (id) {
-    if (this.gateState === 'open') return; // lock after walkthrough opened? allow re-try before open
-    if (this.gateState === 'correct') return; // already confirmed
+    if (this.gateState === 'open') return;
+    if (this._checked) return; // locked after Check — marks stay visible
     if (this.choiceMode === 'multi') {
       this._selected[id] = !this._selected[id];
-      this._syncChoiceButtons();
-      this.gateState = 'choosing';
-      this.gateFeedback.innerHTML = '';
-      this.gateFeedback.className = '';
-      return;
-    }
-    // single
-    this._selected = {};
-    this._selected[id] = true;
-    this._syncChoiceButtons();
-    var choice = null;
-    for (var i = 0; i < this.choices.length; i++) {
-      if (this.choices[i].id === id) { choice = this.choices[i]; break; }
-    }
-    if (!choice) return;
-    if (choice.correct) {
-      this._setCorrect();
     } else {
-      this._setWrong();
+      // single: click only selects; Check submits
+      this._selected = {};
+      this._selected[id] = true;
     }
+    this.gateState = 'choosing';
+    this.gateFeedback.innerHTML = '';
+    this.gateFeedback.className = '';
+    this._syncChoiceButtons();
   };
 
-  InteractiveWalkthrough.prototype._checkMulti = function () {
-    if (this.gateState === 'open' || this.gateState === 'correct') return;
+  InteractiveWalkthrough.prototype._checkAnswers = function () {
+    if (this.gateState === 'open' || this._checked) return;
     var ok = true;
     var any = false;
     for (var i = 0; i < this.choices.length; i++) {
@@ -359,41 +349,111 @@
     }
     if (!any) {
       this.gateFeedback.className = 'iw-gate-msg iw-gate-hint';
-      this.gateFeedback.textContent = 'Select the forms you think are correct, then Check.';
+      this.gateFeedback.textContent = this.choiceMode === 'multi'
+        ? 'Select the forms you think are correct, then Check.'
+        : 'Select an answer, then Check.';
       return;
     }
+    this._checked = true;
+    if (this.btnCheck) this.btnCheck.disabled = true;
     if (ok) this._setCorrect();
     else this._setWrong();
+  };
+
+  // Back-compat alias
+  InteractiveWalkthrough.prototype._checkMulti = function () {
+    this._checkAnswers();
+  };
+
+  InteractiveWalkthrough.prototype._choiceById = function (id) {
+    for (var i = 0; i < this.choices.length; i++) {
+      if (this.choices[i].id === id) return this.choices[i];
+    }
+    return null;
+  };
+
+  /**
+   * After Check: mark EVERY chip so the student sees which choices are correct vs wrong.
+   * States: selected-correct, selected-wrong, missed (unselected correct), distractor-ok (unselected wrong).
+   * Before Check: never call this — no reveal while choosing.
+   */
+  InteractiveWalkthrough.prototype._applyRevealMarks = function () {
+    var self = this;
+    var btns = this.choiceMount.querySelectorAll('.iw-choice-btn');
+    btns.forEach(function (b) {
+      var id = b.getAttribute('data-id');
+      var choice = self._choiceById(id);
+      var sel = !!self._selected[id];
+      var isCorrect = !!(choice && choice.correct);
+      var mark = b.querySelector('.iw-choice-mark');
+      b.classList.remove(
+        'iw-choice-right', 'iw-choice-wrong-mark',
+        'iw-choice-selected-correct', 'iw-choice-selected-wrong',
+        'iw-choice-missed', 'iw-choice-distractor-ok'
+      );
+      b.classList.add('iw-choice-locked');
+      b.disabled = true;
+      if (isCorrect && sel) {
+        b.classList.add('iw-choice-selected-correct', 'iw-choice-right');
+        if (mark) { mark.textContent = '✓'; mark.title = 'Correct — you selected this'; }
+        b.setAttribute('aria-label', (choice.label || id) + ' (correct, selected)');
+      } else if (!isCorrect && sel) {
+        b.classList.add('iw-choice-selected-wrong', 'iw-choice-wrong-mark');
+        if (mark) { mark.textContent = '✗'; mark.title = 'Incorrect — you selected this'; }
+        b.setAttribute('aria-label', (choice.label || id) + ' (incorrect, selected)');
+      } else if (isCorrect && !sel) {
+        b.classList.add('iw-choice-missed');
+        if (mark) { mark.textContent = '✓'; mark.title = 'Correct — missed'; }
+        b.setAttribute('aria-label', (choice.label || id) + ' (correct, missed)');
+      } else {
+        b.classList.add('iw-choice-distractor-ok');
+        if (mark) { mark.textContent = ''; mark.title = ''; }
+        b.setAttribute('aria-label', (choice.label || id) + ' (incorrect, not selected)');
+      }
+    });
   };
 
   InteractiveWalkthrough.prototype._syncChoiceButtons = function () {
     var self = this;
     var btns = this.choiceMount.querySelectorAll('.iw-choice-btn');
+    if (this._checked) {
+      this._applyRevealMarks();
+      return;
+    }
     btns.forEach(function (b) {
       var id = b.getAttribute('data-id');
       var on = !!self._selected[id];
       b.setAttribute('aria-pressed', String(on));
       b.classList.toggle('iw-choice-selected', on);
-      // Never mark correct/incorrect visually in a way that reveals the answer
-      b.classList.remove('iw-choice-right', 'iw-choice-wrong-mark');
-      if (self.gateState === 'wrong' && on) b.classList.add('iw-choice-wrong-mark');
-      if (self.gateState === 'correct' && on) b.classList.add('iw-choice-right');
+      // Before Check: never mark correct/incorrect — no reveal while choosing
+      b.classList.remove(
+        'iw-choice-right', 'iw-choice-wrong-mark',
+        'iw-choice-selected-correct', 'iw-choice-selected-wrong',
+        'iw-choice-missed', 'iw-choice-distractor-ok', 'iw-choice-locked'
+      );
+      b.disabled = false;
+      var mark = b.querySelector('.iw-choice-mark');
+      if (mark) { mark.textContent = ''; mark.title = ''; }
     });
   };
 
   InteractiveWalkthrough.prototype._setWrong = function () {
     this.gateState = 'wrong';
-    this._syncChoiceButtons();
+    this._syncChoiceButtons(); // applies per-chip reveal when _checked
     this.gateFeedback.className = 'iw-gate-msg iw-gate-wrong';
     this.gateFeedback.innerHTML =
-      '<strong>Not quite.</strong> Try another answer, or tap <em>Show walkthrough</em> when you want the steps.';
-    // Do NOT highlight or name the correct choice
+      '<strong>Not quite.</strong> Each choice is marked: ' +
+      '<span class="iw-inline-ok">✓ correct</span>, ' +
+      '<span class="iw-inline-bad">✗ wrong pick</span>, ' +
+      'and dashed green means a correct form you missed. ' +
+      'Tap <em>Show walkthrough</em> when you want the steps.';
+    // Per-chip truth is revealed ONLY after Check — never on bare click
   };
 
   InteractiveWalkthrough.prototype._setCorrect = function () {
     var self = this;
     this.gateState = 'correct';
-    this._syncChoiceButtons();
+    this._syncChoiceButtons(); // applies per-chip reveal when _checked
     this.gateFeedback.className = 'iw-gate-msg iw-gate-correct';
     this.gateFeedback.innerHTML = '';
     this.gateFeedback.appendChild(el('p', {
@@ -448,7 +508,7 @@
         '<p>Pick an answer in the <strong>Problem</strong> panel on the left. ' +
         'The step-by-step walkthrough and <strong>Work so far</strong> stay hidden until you tap ' +
         '<span class="iw-inline-pill">Show walkthrough</span>.</p>' +
-        '<p style="color:var(--muted);font-size:.92em;margin-top:10px">Wrong answers are flagged only — we will not tip the correct choice.</p>' +
+        '<p style="color:var(--muted);font-size:.92em;margin-top:10px">Select your answer(s), then hit <strong>Check</strong>. Before Check we will not reveal which choices are correct.</p>' +
         '</div>';
     } else {
       this.gatePlaceholder.hidden = true;
