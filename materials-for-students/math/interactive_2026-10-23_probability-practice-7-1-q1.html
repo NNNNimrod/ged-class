@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'It is always a number from 0 (it can\'t happen) to 1 (it will surely happen).</div>' +
         '<p>You\'ll write the answer three ways: as a <strong>fraction</strong>, a <strong>decimal</strong>, and a <strong>percent</strong>.</p>' +
         '<p style="margin-top:12px;color:var(--muted);font-size:.92em">The <strong>Problem</strong> stays pinned on the left. <strong>Work so far</strong> builds under it as you go. Tap <strong>Next</strong> after each step.</p>',
-      why: 'One idea per slide keeps the clean walkthrough feel: markups and voice together, then you pause before the next beat.',
+      why: 'Probability is a ratio from 0 to 1. Writing it three ways (fraction, decimal, percent) is the same amount of pizza, different slice sizes.',
       voice: 'Lesson 7 Probability, page 297, problem 1. Probability is what you want over all the chances. We will write the answer as a fraction, a decimal, and a percent. Do this by hand. The problem stays on the left. Tap Next after each step.'
     },
     {
@@ -167,9 +167,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   ];
 
+  // FIB gate: three correct forms mixed with distractors; multi-select + Check
+  var choices = [
+    { id: 'f1', label: '\\(\\frac{2}{5}\\)', correct: true },
+    { id: 'f2', label: '\\(\\frac{1}{5}\\)', correct: false },
+    { id: 'd1', label: '0.4', correct: true },
+    { id: 'd2', label: '0.2', correct: false },
+    { id: 'p1', label: '40%', correct: true },
+    { id: 'p2', label: '20%', correct: false }
+  ];
+
   InteractiveWalkthrough.mount(document.getElementById('iw-app'), {
     problem: problemHtml,
     slides: slides,
+    choices: choices,
+    choiceMode: 'multi',
+    buildNotes:
+      '<p>Player shell: choose-first gate before walkthrough; Build notes live below nav (not in Why it works).</p>' +
+      '<p>FIB handling: multi-select chips for the three answer forms plus distractors; Check requires all correct and no extras.</p>' +
+      '<p>Assigned student code only in meta (S001).</p>',
     autoplay: true,
     muted: false
   });

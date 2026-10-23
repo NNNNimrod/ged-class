@@ -113,3 +113,61 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
   #iw-nav,#iw-toggles,#iw-speaking{display:none!important}
   #iw-stage,#iw-problem-panel,#iw-work-panel{box-shadow:none;border-color:#000}
 }
+
+/* —— Choose-first gate —— */
+#iw-choice-mount{padding:0 14px 12px;border-top:1px dashed var(--line);margin-top:4px}
+.iw-choice-prompt{margin:10px 0 8px;font-size:.88em;font-weight:700;color:var(--muted)}
+.iw-choice-list{display:flex;flex-direction:column;gap:8px}
+.iw-choice-btn{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;
+  font:inherit;font-size:.95em;padding:10px 12px;border-radius:12px;border:2px solid var(--line);
+  background:#fff;color:var(--ink);cursor:pointer}
+.iw-choice-btn:hover{border-color:#8a8aa0}
+.iw-choice-btn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.iw-choice-btn[aria-pressed="true"],.iw-choice-btn.iw-choice-selected{
+  border-color:var(--c1);background:var(--c1bg)}
+.iw-choice-btn.iw-choice-wrong-mark{border-color:var(--c2);background:var(--c2bg)}
+.iw-choice-btn.iw-choice-right{border-color:var(--c3);background:var(--c3bg)}
+.iw-choice-id{flex:none;font-weight:800;min-width:1.4em;color:var(--muted)}
+.iw-choice-label{flex:1;min-width:0}
+.iw-choice-list.iw-choice-row{flex-direction:row;flex-wrap:wrap}
+.iw-choice-list.iw-choice-row .iw-choice-btn{width:auto;flex:1 1 auto;min-width:6.5em;justify-content:center}
+
+#iw-gate-feedback{padding:0 14px 12px}
+.iw-gate-msg{margin:8px 0 0;padding:10px 12px;border-radius:12px;font-size:.92em}
+.iw-gate-wrong{background:var(--c2bg);border:2px solid var(--c2);color:var(--c2)}
+.iw-gate-correct{background:var(--c3bg);border:2px solid var(--c3);color:var(--c3)}
+.iw-gate-hint{background:var(--c1bg);border:2px solid var(--c1);color:var(--c1)}
+.iw-gate-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.iw-pill{font:inherit;font-weight:700;font-size:.9em;padding:8px 16px;border-radius:999px;
+  border:2px solid transparent;cursor:pointer}
+.iw-pill:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.iw-pill-check{background:var(--c1);color:#fff;border-color:var(--c1);margin-top:10px}
+.iw-pill-continue{background:var(--c3);color:#fff;border-color:var(--c3)}
+.iw-pill-stop{background:#fff;color:var(--ink);border-color:var(--line)}
+#iw-show-walk{background:var(--c1);color:#fff;border-color:var(--c1);margin-left:auto}
+.iw-inline-pill{display:inline-block;background:var(--c1bg);color:var(--c1);font-weight:700;
+  border-radius:999px;padding:1px 10px;border:1.5px solid var(--c1);font-size:.92em}
+
+#iw-gate-placeholder{flex:1;display:flex;align-items:center;justify-content:center;padding:22px 24px}
+#iw-gate-placeholder[hidden]{display:none!important}
+.iw-gate-card{max-width:34em;text-align:left}
+.iw-gate-card .iw-title{font-size:1.35em;margin:.2em 0 .6em}
+.iw-gate-card p{margin:.5em 0;color:var(--ink)}
+
+#iw-app.iw-gated #iw-work-panel{display:none}
+#iw-app.iw-gated #iw-slide[hidden]{display:none!important}
+#iw-app.iw-gated #iw-stage{min-height:280px}
+#iw-app.iw-open #iw-gate-placeholder{display:none!important}
+
+/* —— Build notes (below nav; not student “Why it works”) —— */
+#iw-build-notes{margin-top:14px;padding:12px 14px;border-radius:12px;border:1px dashed #b8b8c8;
+  background:#f3f3f7;color:#5a5a6a;font-size:.82em;line-height:1.45}
+#iw-build-notes h3{margin:0 0 6px;font-size:.78em;letter-spacing:.06em;text-transform:uppercase;
+  color:#6a6a7a;font-weight:800}
+#iw-build-notes[hidden]{display:none!important}
+.iw-build-notes-body p{margin:.35em 0}
+.iw-build-notes-body p:first-child{margin-top:0}
+
+@media (max-width:820px){
+  #iw-app.iw-gated #iw-stage{min-height:200px}
+}
