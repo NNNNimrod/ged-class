@@ -100,6 +100,11 @@ Ban **all** long dashes used as separators in interactive walkthrough content: e
 - **Keep** real minus signs in math (ASCII `-` or Unicode minus `−` in expressions like `−4x`).
 - Applies to explanations, choice lists, Work so far, Build notes, kickers, and voice-adjacent on-screen text.
 
+
+## 12. Clickable Work so far
+
+Each entry in the **Work so far** strip is **clickable**. Clicking a step (for example step 2) jumps the main explanation panel to that same step and plays its voice if auto-voice is on. Back and Next stay unchanged. Visited steps remain listed (and clickable) even after jumping backward. Implemented in the shared player (`button.iw-work-line` → `_show(index)`).
+
 ## Checklist for every new interactive page
 
 1. Sticky problem + `choices` + choose-first gate
@@ -110,4 +115,5 @@ Ban **all** long dashes used as separators in interactive walkthrough content: e
 6. Voice strings pass `speakMath` (letters + math); spot-check Replay
 7. Header: `Lesson [n] [topic], page [p], problems [nums], walkthrough`
 8. No em/en dashes as separators (use parentheses / colon / “to”)
-9. `audit.sh` → commit → push → confirm Pages 200
+9. Work so far rows are clickable (jump to that step)
+10. `audit.sh` → commit → push → confirm Pages 200

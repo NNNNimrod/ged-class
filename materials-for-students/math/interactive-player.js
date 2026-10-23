@@ -166,6 +166,7 @@
     // Gate: choosing → wrong | correct → open (walkthrough visible)
     this.gateState = this.requireChoice ? 'choosing' : 'open';
     this._selected = {}; // id → true
+    this._maxVisited = 0; // highest slide index reached (work strip stays clickable)
     this._build();
     this._applyGate();
     if (this.gateState === 'open') this._show(0, true);
@@ -518,7 +519,8 @@
       return Promise.resolve();
     }
     var lines = [];
-    for (var i = 0; i <= this.i; i++) {
+    var upto = Math.max(this._maxVisited || 0, this.i);
+    for (var i = 0; i <= upto; i++) {
       var s = this.slides[i];
       var w = s.work || s.scratch;
       if (!s || !w) continue;
@@ -532,15 +534,31 @@
     lines.forEach(function (line, li) {
       var isCurrent = line.index === self.i;
       var label = line.slide.num != null ? String(line.slide.num) : String(li + 1);
-      var row = el('div', {
-        className: 'iw-work-line' + (isCurrent ? ' iw-work-current' : '')
+      var row = el('button', {
+        type: 'button',
+        className: 'iw-work-line' + (isCurrent ? ' iw-work-current' : ''),
+        'data-slide-index': String(line.index),
+        'aria-label': 'Go to step ' + label,
+        'aria-current': isCurrent ? 'step' : null,
+        title: 'Jump to this step',
+        onclick: function () {
+          if (self.gateState !== 'open') return;
+          // skipVoice=false so auto-voice plays when enabled
+          self._show(line.index, false);
+        }
       }, [
         el('span', { className: 'iw-work-n', 'aria-hidden': 'true', text: label }),
         el('div', { className: 'iw-work-html', html: line.html })
       ]);
       self.workEl.appendChild(row);
     });
-    self.workEl.scrollTop = self.workEl.scrollHeight;
+    // Keep current work line in view (not only newest)
+    var cur = self.workEl.querySelector('.iw-work-current');
+    if (cur && cur.scrollIntoView) {
+      try { cur.scrollIntoView({ block: 'nearest' }); } catch (e) { self.workEl.scrollTop = cur.offsetTop; }
+    } else {
+      self.workEl.scrollTop = self.workEl.scrollHeight;
+    }
     return typeset(this.workEl);
   };
 
@@ -549,6 +567,7 @@
     if (index < 0 || index >= this.slides.length) return;
     this.stopVoice();
     this.i = index;
+    this._maxVisited = Math.max(this._maxVisited || 0, index);
     var slide = this.slides[this.i];
     var n = this.slides.length;
     this.progress.textContent = 'Step ' + (this.i + 1) + ' of ' + n;

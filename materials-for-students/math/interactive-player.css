@@ -202,3 +202,12 @@ html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
 }
 .iw-distribute svg{max-width:100%;height:auto;display:block}
 .iw-distribute-caption{text-align:center;font-size:.88em;color:var(--muted);margin:0 0 4px;font-weight:600}
+
+/* —— Clickable Work so far (jump to step) —— */
+button.iw-work-line{
+  width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  appearance:none;-webkit-appearance:none;
+}
+button.iw-work-line:hover{border-color:var(--c1);background:var(--c1bg)}
+button.iw-work-line:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+button.iw-work-line.iw-work-current:hover{border-color:var(--c3);background:var(--c3bg)}
