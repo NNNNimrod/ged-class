@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 Plot Elements, page 101, problems 1, walkthrough</title>
+<link rel="stylesheet" href="../math/interactive-player.css?v=flat25">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<script defer src="../math/interactive-player.js?v=flat25"></script>
+<style>
+/* Reading-question adaptation (page-local; shared player unchanged) */
+#iw-main{grid-template-columns:minmax(280px,420px) minmax(0,1fr)}
+@media (min-width:821px){
+  #iw-rail{position:sticky;top:8px;align-self:start;max-height:calc(100vh - 16px);overflow-y:auto}
+}
+/* Reading text: let colored phrases wrap like normal words */
+#iw-app .iw-term{white-space:normal;padding:0 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+#iw-problem-panel{flex:none}
+#iw-app.iw-open #rla-passage{max-height:30vh}
+.rla-dir{font-size:.88em;color:var(--muted)}
+.rla-ptitle{font-weight:800;font-size:.85em;letter-spacing:.03em;margin:.4em 0 .3em}
+#rla-passage{max-height:34vh;overflow-y:auto;border:1px solid var(--line);border-radius:8px;background:#fff;
+  padding:6px 8px;font-size:.88em;line-height:1.45;scroll-behavior:smooth}
+.rla-para{display:grid;grid-template-columns:2em 1fr;gap:4px;padding:3px 4px;border-left:4px solid transparent;border-radius:0}
+.rla-pn{font-size:.78em;color:var(--muted);text-align:right;padding-top:.2em;font-variant-numeric:tabular-nums}
+.rla-para.rla-cited{background:#fff7e0;border-left-color:#a35a00}
+.rla-para.rla-cited .rla-pn{color:#a35a00;font-weight:800}
+.rla-credit{font-size:.75em;color:var(--muted);margin:.3em 0 .6em}
+.rla-stem{margin-top:.6em}
+.rla-choice-ref{list-style:none;padding:0;margin:.4em 0 0;font-size:.92em}
+.rla-choice-ref li{margin:.15em 0}
+#iw-app:not(.iw-open) .rla-choice-ref{display:none}
+/* Before the walkthrough opens, passage + stem are plain (no color hints during choose-first) */
+#iw-app:not(.iw-open) #iw-problem-body .iw-term{color:inherit;background:transparent;font-weight:inherit!important;padding:0}
+#iw-app:not(.iw-open) .rla-hint{display:none}
+.rla-cite{font:inherit;font-weight:700;color:#a35a00;background:#fff1dc;border:none;border-radius:4px;
+  padding:0 5px;cursor:pointer;box-shadow:none}
+.rla-cite:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.rla-q{display:block;margin:.5em 0;padding:.4em .7em;border-left:4px solid var(--line);background:transparent}
+</style>
+</head>
+<body>
+<div id="iw-app"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  /* Color roles (this page):
+     term-a purple = the action asked about ("lifted his hand, spat at one side ... his honor"), paragraph 12
+     term-d teal   = the key word "attest"
+     term-f red    = the Mayor's disbelief (paragraph 11)
+     term-b blue   = the peasant's oath words (paragraph 4 "word of honor", paragraph 13 "God's own truth", "on my soul and my salvation")
+     term-e amber  = "furious" (his feeling, the trap behind choice A)
+     term-c green  = choice B wording (the answer)
+     amber left bar in the passage = paragraphs the current step cites
+  */
+  function T(cls, h) { return '<strong class="iw-term iw-term-' + cls + '">' + h + '</strong>'; }
+  function cite(n) { return '<button type="button" class="rla-cite" data-cite="' + n + '" aria-label="Show paragraph ' + n + ' in the passage">¶' + n + '</button>'; }
+  function q(h) { return '<span class="rla-q">' + h + '</span>'; }
+
+  var ACT1 = 'lifted his hand, spat at one side to';
+  var ACT2 = 'his honor';
+  var action = T('a', ACT1) + ' ' + T('d', 'attest') + ' ' + T('a', ACT2);
+
+  /* Passage: Guy de Maupassant, "The Piece of String", tr. Ernest Boyd (published 1922; US public domain).
+     Wording, paragraph numbers and ellipsis exactly as printed on the page. */
+  var paras = [
+    'The countryman looked at the Mayor in astonishment, already terrified by this suspicion resting on him without his knowing why.',
+    '\u201cMe? Me? I picked up the pocketbook?\u201d',
+    '\u201cYes, you, yourself.\u201d',
+    '\u201c' + T('b', 'On my word of honor') + ', I never heard of it.\u201d',
+    '\u201cBut you were seen.\u201d',
+    '\u201cI was seen, me? Who says he saw me?\u201d',
+    '\u201cMonsieur Malandain, the harness-maker.\u201d',
+    'The old man remembered, understood, and flushed with anger.',
+    '\u201cAh, he saw me, the clodhopper, he saw me pick up this string, here, Mayor.\u201d And rummaging in his pocket he drew out the little piece of string.',
+    'But the Mayor, incredulous, shook his head.',
+    '\u201c' + T('f', 'You will not make me believe') + ', Ma\u00eetre Hauchecorne, that Monsieur Malandain, who is a man we can believe, mistook this cord for a pocketbook.\u201d',
+    'The peasant, ' + T('e', 'furious') + ', ' + action + ', repeating:',
+    '\u201cIt is nevertheless ' + T('b', 'God\u2019s own truth') + ', the sacred truth. I repeat it ' + T('b', 'on my soul and my salvation') + '.\u201d',
+    'The Mayor resumed:',
+    '\u201cAfter picking up the object, you stood like a stilt, looking a long while in the mud to see if any piece of money had fallen out.\u201d',
+    'The old fellow choked with indignation and fear. . . .',
+    'He was confronted with Monsieur Malandain, who repeated and maintained his affirmation. They abused each other for an hour. At his own request, Ma\u00eetre Hauchecorne was searched. Nothing was found on him.',
+    'Finally the Mayor, very much perplexed, discharged him with the warning that he would consult the Public Prosecutor and ask for further orders.'
+  ];
+  var passageHtml = paras.map(function (p, i) {
+    return '<div class="rla-para" id="rla-p' + (i + 1) + '"><span class="rla-pn">' + (i + 1) + '</span><span>' + p + '</span></div>';
+  }).join('');
+
+  var CH = {
+    A: 'thinking of striking the Mayor',
+    B: 'swearing that he was telling the truth',
+    C: 'pleading to the Mayor for mercy',
+    D: 'performing a peasant ritual'
+  };
+
+  var problemHtml =
+    '<div data-verbatim="problem">' +
+    '<p class="rla-dir"><strong>Questions 1 through 4 refer to the following excerpt from a short story.</strong></p>' +
+    '<p class="rla-ptitle">EXCERPTED FROM \u201cTHE PIECE OF STRING\u201d</p>' +
+    '<div id="rla-passage" tabindex="0" aria-label="Passage, paragraphs 1 to 18 (scroll)">' + passageHtml + '</div>' +
+    '<p class="rla-stem"><strong>1.</strong> What was the peasant doing when he \u201c' + action + '\u201d (' + T('a', 'paragraph 12') + ')?</p>' +
+    '<ul class="rla-choice-ref" aria-label="Answer choices">' +
+    '<li>A. ' + CH.A + '</li>' +
+    '<li>B. ' + T('c', CH.B) + '</li>' +
+    '<li>C. ' + CH.C + '</li>' +
+    '<li>D. ' + CH.D + '</li>' +
+    '</ul>' +
+    '</div>' +
+    '<p class="rla-credit">Guy de Maupassant, \u201cThe Piece of String,\u201d translated by Ernest Boyd (1922). Scroll the passage; numbers on the left are paragraph numbers.</p>';
+
+  var slides = [
+    {
+      kind: 'title',
+      kicker: 'Interactive walkthrough',
+      title: 'Lesson 1 Plot Elements, page 101, problems 1, walkthrough',
+      accent: '#1a1a2e',
+      whyBg: '#ececf3',
+      cite: [],
+      body:
+        '<div class="iw-goal"><strong>The big idea:</strong> when a question asks what a character was <em>doing</em> with an action, it wants the <strong>reason</strong> behind the action. The story usually tells you, in the same sentence or the one right after it.</div>' +
+        '<p>We will find ' + T('a', 'paragraph 12') + ', read the paragraphs on each side of it, figure out one key word, and then test every choice against the passage.</p>' +
+        '<p style="margin-top:12px;color:var(--muted);font-size:.92em">Colors match across the page. Paragraphs a step talks about get an amber bar in the passage on the left. Tap a paragraph tag like ' + cite(12) + ' to jump to it. Tap <strong>Next</strong> after each step.</p>',
+      why: 'Readers who skip back to the passage beat readers who answer from memory. Every answer on a reading question has to be backed by words you can point to.',
+      voice: 'Lesson 1, Plot Elements, page 101, problem 1. When a question asks what a character was doing with an action, it wants the reason behind the action. We will find paragraph 12, read around it, figure out one key word, and test every choice. Tap Next after each step.'
+    },
+    {
+      kind: 'step',
+      kicker: 'Step 1',
+      title: 'What is the question really asking?',
+      num: 1,
+      accent: '#7a3fb3',
+      whyBg: '#f1e8fb',
+      cite: [12],
+      body:
+        '<p>The question quotes an action from ' + cite(12) + ':</p>' +
+        q('\u201c' + action + '\u201d') +
+        '<p>It is not asking <em>what his body did</em>. The quote already tells you that. It asks what he was <strong>doing</strong> in the bigger sense: what he meant by it, his purpose.</p>' +
+        '<p class="iw-arrow-row"><span class="iw-chip iw-chip-sm">goal: why he did it</span></p>',
+      why: 'Notice the little word <strong>to</strong> in the quote. \u201cHe did X <strong>to</strong> do Y\u201d is how English states a purpose. The author has put the reason right inside the sentence for you.',
+      voice: 'Step 1. What is the question really asking? It quotes an action from paragraph 12. It already tells you what his body did. It wants to know what he meant by it: his purpose.',
+      work: '<em>Goal</em>: why he ' + T('a', 'lifted his hand, spat') + ' (' + T('a', '¶12') + ')'
+    },
+    {
+      kind: 'step',
+      kicker: 'Step 2',
+      title: 'Read the paragraph before it',
+      num: 2,
+      accent: '#b42318',
+      whyBg: '#fde8e6',
+      cite: [10, 11],
+      body:
+        '<p>What just happened? In ' + cite(9) + ' the peasant says he only picked up a piece of string. Then in ' + cite(10) + ' and ' + cite(11) + ' the Mayor shakes his head and says:</p>' +
+        q('\u201c' + T('f', 'You will not make me believe') + ' \u2026\u201d') +
+        '<p>So the Mayor is calling him a liar. The peasant\u2019s action in ' + cite(12) + ' is his <strong>answer</strong> to being disbelieved.</p>',
+      why: 'An action in a story is usually a reaction. Ask \u201cwhat was this character responding to?\u201d The paragraph right before is the first place to look.',
+      voice: 'Step 2. Read the paragraph before it. The Mayor says, you will not make me believe. He is calling the peasant a liar. So the action in paragraph 12 is the peasant\u2019s answer to not being believed.',
+      work: T('f', 'Mayor: \u201cYou will not make me believe\u201d') + ' (' + T('f', '¶11') + ')'
+    },
+    {
+      kind: 'step',
+      kicker: 'Step 3',
+      title: 'Figure out the key word: \u201cattest\u201d',
+      num: 3,
+      accent: '#0e6e7a',
+      whyBg: '#e0f4f6',
+      cite: [12],
+      body:
+        '<p>The sentence says he did it to ' + T('d', 'attest') + ' ' + T('a', 'his honor') + '.</p>' +
+        '<p>To <strong>' + T('d', 'attest') + '</strong> something means to <strong>declare that it is true</strong>, the way a witness backs something up. You may know the related word <em>testify</em>, which comes from the same root.</p>' +
+        '<p>So \u201cto ' + T('d', 'attest') + ' ' + T('a', 'his honor') + '\u201d means: to declare that he is an honest man who is telling the truth.</p>',
+      why: 'If you do not know a word, look inside it for a word you do know (attest, testify, testimony) and check it against what is going on in the scene. Here, a man accused of lying would want to prove he is honest.',
+      voice: 'Step 3. The key word is attest. To attest something means to declare that it is true, the way a witness does. It is related to the word testify. So to attest his honor means to declare that he is honest and telling the truth.',
+      work: T('d', 'attest') + ' = declare it is true'
+    },
+    {
+      kind: 'step',
+      kicker: 'Step 4',
+      title: 'Read what he says next',
+      num: 4,
+      accent: '#1d4ed8',
+      whyBg: '#e6eeff',
+      cite: [12, 13],
+      body:
+        '<p>' + cite(12) + ' ends with the word <strong>repeating</strong>, and ' + cite(13) + ' gives the words he repeats:</p>' +
+        q('\u201c\u2026 ' + T('b', 'God\u2019s own truth') + ' \u2026 ' + T('b', 'on my soul and my salvation') + '.\u201d') +
+        '<p>Calling on God and putting your soul on the line is how people make an <strong>oath</strong>. Back in ' + cite(4) + ' he already said ' + T('b', 'On my word of honor') + '. Raising a hand while saying words like these is a familiar way to swear (think of a witness in court).</p>',
+      why: 'When a passage tells you what a character <em>says</em> during an action, the words and the action usually mean the same thing. Here the words are an oath, so the gesture is part of the oath.',
+      voice: 'Step 4. Read what he says next. Paragraph 12 ends with the word repeating. In paragraph 13 he calls it God\u2019s own truth, and he swears on his soul and his salvation. That is an oath. Raising a hand while saying words like that is a way to swear.',
+      work: T('b', '\u201cGod\u2019s own truth\u201d') + ', ' + T('b', '\u201con my soul\u201d') + ' (' + T('b', '¶13') + '): an oath'
+    },
+    {
+      kind: 'step',
+      kicker: 'Step 5',
+      title: 'Test every choice against the passage',
+      num: 5,
+      accent: '#a35a00',
+      whyBg: '#fff1dc',
+      cite: [12, 13],
+      body:
+        '<p><strong>A. ' + CH.A + '</strong> (not supported): he is ' + T('e', 'furious') + ', but he never moves toward the Mayor. He speaks. The hand goes up with an oath, not a fist.</p>' +
+        '<p><strong>B. ' + T('c', CH.B) + '</strong> (supported): ' + T('d', 'attest') + ' means declare true, and his next words in ' + cite(13) + ' are an oath.</p>' +
+        '<p><strong>C. ' + CH.C + '</strong> (not supported): asking for mercy means asking to be let off. He does the opposite. He insists he did nothing wrong.</p>' +
+        '<p><strong>D. ' + CH.D + '</strong> (not the best answer): the gesture may be a country custom, but that only names <em>what kind</em> of act it is. The question asks what he was doing, and the passage gives the purpose: to ' + T('d', 'attest') + ' ' + T('a', 'his honor') + '.</p>',
+      why: 'On a reading test, the best answer is the one the passage proves, not the one that could be true. Choice D might be true, but choice B is what the words on the page actually say. Watch out for a choice built from a feeling word like ' + T('e', 'furious') + ' (choice A). It sounds right but is not what the action is for.',
+      voice: 'Step 5. Test every choice. Choice A: he is furious, but he never moves toward the Mayor. He speaks. Not supported. Choice B: attest means declare true, and his next words are an oath. Supported. Choice C: he is not asking to be let off. He insists he is innocent. Not supported. Choice D: it may be a custom, but the passage tells us the purpose, to attest his honor. Not the best answer.',
+      work: 'A ✗ &nbsp; ' + T('c', 'B ✓') + ' &nbsp; C ✗ &nbsp; D ✗ (no purpose)'
+    },
+    {
+      kind: 'answer',
+      kicker: 'Step 6 (check and answer)',
+      title: 'Put it back in the sentence',
+      num: 6,
+      accent: '#0f7a3d',
+      whyBg: '#e3f6ea',
+      cite: [11, 12, 13],
+      body:
+        '<p>Read the scene with the answer plugged in: the Mayor ' + T('f', 'won\u2019t believe him') + ', so the peasant ' + T('a', 'lifts his hand and spits') + ', ' + T('c', 'swearing that he was telling the truth') + ', and then says it is ' + T('b', 'God\u2019s own truth') + '. Every piece fits.</p>' +
+        '<div class="iw-answerbox">Problem 1 answer:' +
+        '<div class="iw-forms">' +
+        '<span class="iw-chip iw-chip-ans iw-chip-hi">B. ' + CH.B + '</span>' +
+        '</div></div>',
+      why: 'A good last check for reading questions: put your answer back into the passage and read the scene again. If it flows with what comes before and after, you have it.',
+      voice: 'Step 6. Check. The Mayor won\u2019t believe him, so the peasant lifts his hand and spits, swearing that he was telling the truth, and then calls it God\u2019s own truth. Every piece fits. The answer is bee: swearing that he was telling the truth.',
+      work: '<span class="iw-chip iw-chip-ans iw-chip-sm">B. ' + T('c', 'swearing that he was telling the truth') + '</span>'
+    }
+  ];
+
+  var choices = [
+    { id: 'A', label: CH.A, correct: false },
+    { id: 'B', label: CH.B, correct: true },
+    { id: 'C', label: CH.C, correct: false },
+    { id: 'D', label: CH.D, correct: false }
+  ];
+
+  var app = InteractiveWalkthrough.mount(document.getElementById('iw-app'), {
+    problem: problemHtml,
+    slides: slides,
+    choices: choices,
+    choiceMode: 'single',
+    buildNotes:
+      '<p><strong>Tag:</strong> [RLA | R.3.2 | none | 2 | MC4 | NA | CCR:E,RA.3]. Secondary: R.4.1/L.4.1 (meaning of \u201cattest\u201d in context, DOK 1 to 3, HII). Source: Kaplan GED Test Prep Plus, Unit 1 RLA, Chapter 3 Interpreting Fiction, Lesson 1 Plot Elements, Practice 1, question 1 (page 101).</p>' +
+      '<p>Color roles: ' + T('a', 'the action asked about, ¶12') + ', ' + T('d', 'attest') + ', ' + T('f', 'Mayor\u2019s disbelief, ¶11') + ', ' + T('b', 'oath words, ¶4 and ¶13') + ', ' + T('e', 'furious (trap for A)') + ', ' + T('c', 'choice B') + '. Amber bar in the passage marks the paragraphs each step cites; ¶ tags in the steps scroll the passage. Colors in the problem pane stay neutral until the walkthrough opens so they do not hint at the answer.</p>' +
+      '<p>Passage: Maupassant, translated by Ernest Boyd, published 1922 (public domain in the US), shown as printed inside the verbatim problem block with the question stem and choices. Explanations are original. Answer key (page 649) is not in the library, so the answer was solved independently and not cross-checked.</p>',
+    autoplay: true,
+    muted: false
+  });
+
+  var choiceMount = document.getElementById('iw-choice-mount');
+  if (choiceMount) choiceMount.setAttribute('data-verbatim', 'problem');
+
+  var passage = document.getElementById('rla-passage');
+  function scrollToPara(n) {
+    var p = document.getElementById('rla-p' + n);
+    if (!p || !passage) return;
+    passage.scrollTop = p.offsetTop - passage.offsetTop - 6;
+  }
+  function markCited(list) {
+    if (!passage) return;
+    Array.prototype.forEach.call(passage.querySelectorAll('.rla-para'), function (el) { el.classList.remove('rla-cited'); });
+    (list || []).forEach(function (n) {
+      var p = document.getElementById('rla-p' + n);
+      if (p) p.classList.add('rla-cited');
+    });
+    if (list && list.length) scrollToPara(list[0]);
+  }
+  var origShow = app._show;
+  app._show = function (index, skipVoice) {
+    origShow.call(app, index, skipVoice);
+    if (app.gateState === 'open' && slides[app.i]) markCited(slides[app.i].cite);
+  };
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.rla-cite');
+    if (!b) return;
+    var n = parseInt(b.getAttribute('data-cite'), 10);
+    var p = document.getElementById('rla-p' + n);
+    if (p) { p.classList.add('rla-cited'); scrollToPara(n); }
+  });
+});
+</script>
+</body>
+</html>

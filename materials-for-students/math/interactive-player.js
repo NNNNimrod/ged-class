@@ -288,8 +288,8 @@
     var prompt = el('p', {
       className: 'iw-choice-prompt',
       text: this.choiceMode === 'multi'
-        ? 'Try first — select every correct form, then Check.'
-        : 'Try first — select an answer, then Check.'
+        ? 'Try first: select every correct form, then Check.'
+        : 'Try first: select an answer, then Check.'
     });
     var list = el('div', { className: 'iw-choice-list' + (this.choiceMode === 'multi' ? ' iw-choice-row' : ''), role: this.choiceMode === 'multi' ? 'group' : 'radiogroup' });
     this.choices.forEach(function (c) {
@@ -398,15 +398,15 @@
       b.disabled = true;
       if (isCorrect && sel) {
         b.classList.add('iw-choice-selected-correct', 'iw-choice-right');
-        if (mark) { mark.textContent = '✓'; mark.title = 'Correct — you selected this'; }
+        if (mark) { mark.textContent = '✓'; mark.title = 'Correct (you selected this)'; }
         b.setAttribute('aria-label', (choice.label || id) + ' (correct, selected)');
       } else if (!isCorrect && sel) {
         b.classList.add('iw-choice-selected-wrong', 'iw-choice-wrong-mark');
-        if (mark) { mark.textContent = '✗'; mark.title = 'Incorrect — you selected this'; }
+        if (mark) { mark.textContent = '✗'; mark.title = 'Incorrect (you selected this)'; }
         b.setAttribute('aria-label', (choice.label || id) + ' (incorrect, selected)');
       } else if (isCorrect && !sel) {
         b.classList.add('iw-choice-missed');
-        if (mark) { mark.textContent = '✓'; mark.title = 'Correct — missed'; }
+        if (mark) { mark.textContent = '✓'; mark.title = 'Correct (missed)'; }
         b.setAttribute('aria-label', (choice.label || id) + ' (correct, missed)');
       } else {
         b.classList.add('iw-choice-distractor-ok');
@@ -460,7 +460,7 @@
     this.gateFeedback.className = 'iw-gate-msg iw-gate-correct';
     this.gateFeedback.innerHTML = '';
     this.gateFeedback.appendChild(el('p', {
-      html: '<strong>Nice work — that\'s right.</strong> You can stop here, or continue into the step-by-step walkthrough.'
+      html: '<strong>Nice work, that\'s right.</strong> You can stop here, or continue into the step-by-step walkthrough.'
     }));
     var row = el('div', { className: 'iw-gate-actions' });
     row.appendChild(el('button', {
